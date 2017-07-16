@@ -17,17 +17,16 @@ const cwd = process.cwd();
 export class Semver {
 
   filename: string;
-  max: ISemverMax;
   full: string;           // full version incl. pre-release if any.
   ver: string;            // version without pre-release.
-  pre: string;            // pre-release version if applicable.
+  pre: string = '';       // pre-release version if applicable.
   verArr: number[] = [];  // the version as an array.
   preArr: number[] = [];  // the pre-release as an array.
 
-  constructor(filename?: string, max?: number | ISemverMax) {
+  constructor(filename?: string) {
 
     this.filename = filename;
-    this.max = isNumber(max) ? <ISemverMax>{ major: max, minor: max, patch: max } : isPlainObject(max) ? <ISemverMax>max : <ISemverMax>{ major: 99, minor: 99, patch: 99 };
+
     const _pkg = pkg(filename);
     const parsed = this.parse(_pkg.version);
     this.full = parsed.full;
@@ -75,6 +74,10 @@ export class Semver {
 
   }
 
+  private update() {
+    this.full = this.pre && this.pre.length ? this.ver + '-' + this.pre : this.ver;
+  }
+
   /**
    * Get Index
    * Gets the current value in semver by index and the next value.
@@ -83,6 +86,8 @@ export class Semver {
    * @param next optional next value.
    */
   private getIndex(idx: number, next?: number) {
+    if (!isValue(this.verArr[idx]))
+      log.error(`cannot get version at index ${idx} of undefined.`);
     return { current: this.verArr[idx], next: next || this.verArr[idx] + 1 };
   }
 
@@ -94,11 +99,8 @@ export class Semver {
    * @param next the next value to be set.
    */
   private setIndex(idx: number, next: number) {
-    const maxKeys = keys(this.max);
-    const max = this.max[maxKeys[idx]];
-    if (max > 0 && next > max) {
-      return log.warn(`cannot set ${maxKeys[idx]} as it exceeds the maximum value.`);
-    }
+    if (!isValue(this.verArr[idx]))
+      log.error(`could not set version at index ${idx} of undefined.`);
     this.verArr[idx] = next;
     this.ver = this.verArr.join('.');
   }
@@ -110,29 +112,15 @@ export class Semver {
     }
   }
 
-  major(val?: number) {
-    const cur = this.getIndex(0, val);
-    this.setIndex(0, cur.next);
-  }
+  /**
+   * Before Bump
+   * Calculates and returns bumped values.
+   *
+   * @private
+   */
+  private beforeBump() {
 
-  minor(val?: number) {
-    const cur = this.getIndex(1, val);
-    this.setIndex(1, cur.next);
-  }
-
-  patch(val?: number) {
-    const cur = this.getIndex(2, val);
-    this.setIndex(2, cur.next);
-  }
-
-  prerelease(prefix: string, val?: number) {
-    const cur = this.getIndex(2, val);
-    this.setIndex(2, cur.next);
-  }
-
-  bump() {
-
-    const _keys = keys(this.max);
+    const _keys = ['major', 'minor', 'patch'];
     let arr = [].slice.call(this.verArr, 0);
     let isPre = false;
 
@@ -147,41 +135,82 @@ export class Semver {
     while (i-- && !bump) {
 
       const next = arr[i] + 1;
-      const max = this.max[_keys[i]];
 
-      if (next <= max) {
+      arr[i] = next;
 
-        arr[i] = next;
+      // If previous version level set to 0.
+      if (isValue(arr[i - 1]))
+        arr[i - 1] = 0;
 
-        // If previous version level set to 0.
-        if (isValue(arr[i - 1]))
-          arr[i - 1] = 0;
+      bump = {
+        type: !isPre ? _keys[i] : 'pre',
+        next: next
+      };
 
-        bump = {
-          type: !isPre ? _keys[i] : 'pre',
-          next: next
-        };
-
-        if (isPre) {
-          bump.preArr = [this.preArr[0]].concat(arr);
-          bump.pre = bump.preArr.join('.');
-          bump.ver = this.ver;
-          bump.verArr = this.verArr;
-        }
-        else {
-          bump.ver = arr.join('.');
-          bump.verArr = arr;
-          bump.preArr = this.preArr;
-          bump.pre = this.pre;
-        }
-
-        bump.full = bump.pre && bump.pre.length ? bump.ver + '-' + bump.pre : bump.ver;
-
+      if (isPre) {
+        bump.preArr = [this.preArr[0]].concat(arr);
+        bump.pre = bump.preArr.join('.');
+        bump.ver = this.ver;
+        bump.verArr = this.verArr;
       }
+      else {
+        bump.ver = arr.join('.');
+        bump.verArr = arr;
+        bump.preArr = this.preArr;
+        bump.pre = this.pre;
+      }
+
+      bump.full = bump.pre && bump.pre.length ? bump.ver + '-' + bump.pre : bump.ver;
 
     }
 
     return bump;
+  }
+
+  major(val?: number): Semver {
+    const cur = this.getIndex(0, val);
+    this.setIndex(0, cur.next);
+    return this;
+  }
+
+  minor(val?: number): Semver {
+    const cur = this.getIndex(1, val);
+    this.setIndex(1, cur.next);
+    return this;
+  }
+
+  patch(val?: number): Semver {
+    const cur = this.getIndex(2, val);
+    this.setIndex(2, cur.next);
+    return this;
+  }
+
+  prerelease(prefix: string, val?: number): Semver {
+    const cur = this.getIndex(2, val);
+    this.setIndex(2, cur.next);
+    return this;
+  }
+
+  /**
+   * Bump
+   * Gets ONLY or gets and sets version bump.
+   *
+   * @param suppress optional bool to suppress setting values.
+   */
+  bump(suppress?: boolean): Semver {
+
+    const bumped = this.beforeBump();
+
+    if (suppress)
+      return bumped;
+
+    this.full = bumped.full;
+    this.ver = bumped.ver;
+    this.verArr = bumped.verArr;
+    this.pre = bumped.pre;
+    this.preArr = bumped.preArr;
+
+    return this;
 
   }
 
@@ -274,5 +303,5 @@ export function pkg(filename?: string) {
 }
 
 export function semver(filename?: string, max?: number) {
-  return new Semver(filename, max);
+  return new Semver(filename);
 }

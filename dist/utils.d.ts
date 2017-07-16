@@ -4,16 +4,15 @@
  *
  * All paths will be resolved from current working directory.
  */
-import { CopyTuple, IMap, ICopy, ISemverMax } from './interfaces';
+import { CopyTuple, IMap, ICopy } from './interfaces';
 export declare class Semver {
     filename: string;
-    max: ISemverMax;
     full: string;
     ver: string;
     pre: string;
     verArr: number[];
     preArr: number[];
-    constructor(filename?: string, max?: number | ISemverMax);
+    constructor(filename?: string);
     /**
      * Parse
      * Parses a version string.
@@ -21,6 +20,7 @@ export declare class Semver {
      * @param ver the version string to parse.
      */
     private parse(ver);
+    private update();
     /**
      * Get Index
      * Gets the current value in semver by index and the next value.
@@ -38,11 +38,24 @@ export declare class Semver {
      */
     private setIndex(idx, next);
     private setPre(idx, next);
-    major(val?: number): void;
-    minor(val?: number): void;
-    patch(val?: number): void;
-    prerelease(prefix: string, val?: number): void;
-    bump(): any;
+    /**
+     * Before Bump
+     * Calculates and returns bumped values.
+     *
+     * @private
+     */
+    private beforeBump();
+    major(val?: number): Semver;
+    minor(val?: number): Semver;
+    patch(val?: number): Semver;
+    prerelease(prefix: string, val?: number): Semver;
+    /**
+     * Bump
+     * Gets ONLY or gets and sets version bump.
+     *
+     * @param suppress optional bool to suppress setting values.
+     */
+    bump(suppress?: boolean): Semver;
     compare(val1: string, val2: string, operator: string): void;
     save(): void;
 }
