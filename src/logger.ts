@@ -108,7 +108,7 @@ function logger(type, ...args: any[]) {
   const idx = typeKeys.indexOf(type);
   if (idx > _level || idx === -1)
     return;
-  if (typeKeys.indexOf(type))
+  if (typeKeys.indexOf(type) !== -1)
     type = clrs[types[type]](type);
   args.unshift(type + ':');
   getConsole(type)(...args);

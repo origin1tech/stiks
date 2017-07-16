@@ -9,3 +9,9 @@ export interface ICopy {
   src: string;
   dest: string;
 }
+
+export interface ISemverMax {
+  major: number;
+  minor: number;
+  patch: number;
+}

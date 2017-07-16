@@ -12,6 +12,145 @@ var path_1 = require("path");
 var chek_1 = require("chek");
 var log = require("./logger");
 var cwd = process.cwd();
+var Semver = (function () {
+    function Semver(filename, max) {
+        this.verArr = []; // the version as an array.
+        this.preArr = []; // the pre-release as an array.
+        this.filename = filename;
+        this.max = chek_1.isNumber(max) ? { major: max, minor: max, patch: max } : chek_1.isPlainObject(max) ? max : { major: 99, minor: 99, patch: 99 };
+        var _pkg = pkg(filename);
+        var parsed = this.parse(_pkg.version);
+        this.full = parsed.full;
+        this.ver = parsed.ver;
+        this.verArr = parsed.verArr;
+        this.pre = parsed.pre;
+        this.preArr = parsed.preArr;
+    }
+    /**
+     * Parse
+     * Parses a version string.
+     *
+     * @param ver the version string to parse.
+     */
+    Semver.prototype.parse = function (ver) {
+        ver = ver.replace(/^(=|v|^|~)/, '');
+        var full = ver;
+        var verSplit = chek_1.split(full, '-');
+        ver = verSplit[0];
+        var verArr = chek_1.castType(chek_1.split(ver), ['integer'], []);
+        if (verArr.length < 3)
+            log.error('the parsed version is invalid, missing major, minor or patch in semver.)');
+        var pre = verSplit[1] || '';
+        var preSplit, preArr;
+        if (chek_1.isValue(pre)) {
+            preSplit = chek_1.split(pre);
+            preArr = chek_1.castType(preSplit, ['string', 'integer'], []);
+            if (preArr.length < 2)
+                log.error('the prerelease is invalid, examples "alpha.1", "rc.1.0" )');
+        }
+        return {
+            full: full,
+            ver: ver,
+            pre: pre,
+            verArr: verArr,
+            preArr: preArr
+        };
+    };
+    /**
+     * Get Index
+     * Gets the current value in semver by index and the next value.
+     *
+     * @param idx the index in version array.
+     * @param next optional next value.
+     */
+    Semver.prototype.getIndex = function (idx, next) {
+        return { current: this.verArr[idx], next: next || this.verArr[idx] + 1 };
+    };
+    /**
+     * Set Index
+     * Sets the value in semver by index.
+     *
+     * @param idx the index in semver to set.
+     * @param next the next value to be set.
+     */
+    Semver.prototype.setIndex = function (idx, next) {
+        var maxKeys = chek_1.keys(this.max);
+        var max = this.max[maxKeys[idx]];
+        if (max > 0 && next > max) {
+            return log.warn("cannot set " + maxKeys[idx] + " as it exceeds the maximum value.");
+        }
+        this.verArr[idx] = next;
+        this.ver = this.verArr.join('.');
+    };
+    Semver.prototype.setPre = function (idx, next) {
+        var arr = this.preArr.slice(1);
+        if (arr) {
+        }
+    };
+    Semver.prototype.major = function (val) {
+        var cur = this.getIndex(0, val);
+        this.setIndex(0, cur.next);
+    };
+    Semver.prototype.minor = function (val) {
+        var cur = this.getIndex(1, val);
+        this.setIndex(1, cur.next);
+    };
+    Semver.prototype.patch = function (val) {
+        var cur = this.getIndex(2, val);
+        this.setIndex(2, cur.next);
+    };
+    Semver.prototype.prerelease = function (prefix, val) {
+        var cur = this.getIndex(2, val);
+        this.setIndex(2, cur.next);
+    };
+    Semver.prototype.bump = function () {
+        var _keys = chek_1.keys(this.max);
+        var arr = [].slice.call(this.verArr, 0);
+        var isPre = false;
+        if (this.preArr.length) {
+            arr = [].slice.call(this.preArr, 1);
+            isPre = true;
+        }
+        var i = arr.length;
+        var bump;
+        while (i-- && !bump) {
+            var next = arr[i] + 1;
+            var max = this.max[_keys[i]];
+            if (next <= max) {
+                arr[i] = next;
+                // If previous version level set to 0.
+                if (chek_1.isValue(arr[i - 1]))
+                    arr[i - 1] = 0;
+                bump = {
+                    type: !isPre ? _keys[i] : 'pre',
+                    next: next
+                };
+                if (isPre) {
+                    bump.preArr = [this.preArr[0]].concat(arr);
+                    bump.pre = bump.preArr.join('.');
+                    bump.ver = this.ver;
+                    bump.verArr = this.verArr;
+                }
+                else {
+                    bump.ver = arr.join('.');
+                    bump.verArr = arr;
+                    bump.preArr = this.preArr;
+                    bump.pre = this.pre;
+                }
+                bump.full = bump.pre && bump.pre.length ? bump.ver + '-' + bump.pre : bump.ver;
+            }
+        }
+        return bump;
+    };
+    Semver.prototype.compare = function (val1, val2, operator) {
+        //
+    };
+    Semver.prototype.save = function () {
+        //
+    };
+    return Semver;
+}());
+exports.Semver = Semver;
 /**
  * Clean
  * Removes file(s) using provided glob(s).
@@ -68,31 +207,13 @@ exports.copyAll = copyAll;
  * Pkg
  * Loads the package.json file for project.
  */
-function pkg() {
-    return fs_extra_1.readJSONSync(path_1.resolve(cwd, 'package.json'));
+function pkg(filename) {
+    filename = filename || path_1.resolve(cwd, 'package.json');
+    return fs_extra_1.readJSONSync(filename);
 }
 exports.pkg = pkg;
-function semver(max) {
-    var Server = (function () {
-        function Server() {
-        }
-        Server.prototype.load = function () {
-            var _pkg = pkg();
-            var ver = _pkg.version;
-            var verSplit = chek_1.split(ver, '-');
-            var verArr = chek_1.castType(chek_1.split(verSplit[0]), ['integer']);
-            var pre = verSplit[1] || '';
-            var preSplit, preType;
-            if (chek_1.isValue(pre)) {
-                preSplit = chek_1.split(pre);
-                preType = preSplit[0];
-            }
-        };
-        Server.prototype.toArray = function () {
-        };
-        return Server;
-    }());
-    return methods;
+function semver(filename, max) {
+    return new Semver(filename, max);
 }
 exports.semver = semver;
 //# sourceMappingURL=utils.js.map
