@@ -1,228 +1,13 @@
-/**
- * File operations
- * Read, Remove, Copy etc.
- *
- * All paths will be resolved from current working directory.
- */
 
-import { CopyTuple, IMap, ICopy, ISemverMax } from './interfaces';
-import { readFileSync, readJSONSync, copySync } from 'fs-extra';
+import { CopyTuple, IMap, ICopy, ITSNodeOptions } from './interfaces';
+import { readFileSync, readJSONSync, copySync, writeJSONSync } from 'fs-extra';
+import * as tsnode from 'ts-node';
 import * as del from 'del';
 import { resolve, parse, relative, join } from 'path';
-import { toArray, isString, split, isPlainObject, isArray, keys, isNumber, castType, isValue } from 'chek';
+import { toArray, isString, split, isPlainObject, isArray, keys, isNumber, castType, isValue, extend } from 'chek';
 import * as log from './logger';
 
 const cwd = process.cwd();
-
-export class Semver {
-
-  filename: string;
-  full: string;           // full version incl. pre-release if any.
-  ver: string;            // version without pre-release.
-  pre: string = '';       // pre-release version if applicable.
-  verArr: number[] = [];  // the version as an array.
-  preArr: number[] = [];  // the pre-release as an array.
-
-  constructor(filename?: string) {
-
-    this.filename = filename;
-
-    const _pkg = pkg(filename);
-    const parsed = this.parse(_pkg.version);
-    this.full = parsed.full;
-    this.ver = parsed.ver;
-    this.verArr = parsed.verArr;
-    this.pre = parsed.pre;
-    this.preArr = parsed.preArr;
-
-  }
-
-  /**
-   * Parse
-   * Parses a version string.
-   *
-   * @param ver the version string to parse.
-   */
-  private parse(ver: string) {
-
-    ver = ver.replace(/^(=|v|^|~)/, '');
-    const full = ver;
-    const verSplit = split(full, '-');
-    ver = verSplit[0];
-    const verArr = castType<number[]>(split(ver), ['integer'], []);
-
-    if (verArr.length < 3)
-      log.error('the parsed version is invalid, missing major, minor or patch in semver.)');
-
-    const pre = verSplit[1] || '';
-    let preSplit, preArr;
-
-    if (isValue(pre)) {
-      preSplit = split(pre);
-      preArr = castType<any[]>(preSplit, ['string', 'integer'], []);
-      if (preArr.length < 2)
-        log.error('the prerelease is invalid, examples "alpha.1", "rc.1.0" )');
-    }
-
-    return {
-      full,
-      ver,
-      pre,
-      verArr,
-      preArr
-    };
-
-  }
-
-  private update() {
-    this.full = this.pre && this.pre.length ? this.ver + '-' + this.pre : this.ver;
-  }
-
-  /**
-   * Get Index
-   * Gets the current value in semver by index and the next value.
-   *
-   * @param idx the index in version array.
-   * @param next optional next value.
-   */
-  private getIndex(idx: number, next?: number) {
-    if (!isValue(this.verArr[idx]))
-      log.error(`cannot get version at index ${idx} of undefined.`);
-    return { current: this.verArr[idx], next: next || this.verArr[idx] + 1 };
-  }
-
-  /**
-   * Set Index
-   * Sets the value in semver by index.
-   *
-   * @param idx the index in semver to set.
-   * @param next the next value to be set.
-   */
-  private setIndex(idx: number, next: number) {
-    if (!isValue(this.verArr[idx]))
-      log.error(`could not set version at index ${idx} of undefined.`);
-    this.verArr[idx] = next;
-    this.ver = this.verArr.join('.');
-  }
-
-  private setPre(idx: number, next: number) {
-    const arr = this.preArr.slice(1);
-    if (arr) {
-
-    }
-  }
-
-  /**
-   * Before Bump
-   * Calculates and returns bumped values.
-   *
-   * @private
-   */
-  private beforeBump() {
-
-    const _keys = ['major', 'minor', 'patch'];
-    let arr = [].slice.call(this.verArr, 0);
-    let isPre = false;
-
-    if (this.preArr.length) {
-      arr = [].slice.call(this.preArr, 1);
-      isPre = true;
-    }
-
-    let i = arr.length;
-    let bump: any;
-
-    while (i-- && !bump) {
-
-      const next = arr[i] + 1;
-
-      arr[i] = next;
-
-      // If previous version level set to 0.
-      if (isValue(arr[i - 1]))
-        arr[i - 1] = 0;
-
-      bump = {
-        type: !isPre ? _keys[i] : 'pre',
-        next: next
-      };
-
-      if (isPre) {
-        bump.preArr = [this.preArr[0]].concat(arr);
-        bump.pre = bump.preArr.join('.');
-        bump.ver = this.ver;
-        bump.verArr = this.verArr;
-      }
-      else {
-        bump.ver = arr.join('.');
-        bump.verArr = arr;
-        bump.preArr = this.preArr;
-        bump.pre = this.pre;
-      }
-
-      bump.full = bump.pre && bump.pre.length ? bump.ver + '-' + bump.pre : bump.ver;
-
-    }
-
-    return bump;
-  }
-
-  major(val?: number): Semver {
-    const cur = this.getIndex(0, val);
-    this.setIndex(0, cur.next);
-    return this;
-  }
-
-  minor(val?: number): Semver {
-    const cur = this.getIndex(1, val);
-    this.setIndex(1, cur.next);
-    return this;
-  }
-
-  patch(val?: number): Semver {
-    const cur = this.getIndex(2, val);
-    this.setIndex(2, cur.next);
-    return this;
-  }
-
-  prerelease(prefix: string, val?: number): Semver {
-    const cur = this.getIndex(2, val);
-    this.setIndex(2, cur.next);
-    return this;
-  }
-
-  /**
-   * Bump
-   * Gets ONLY or gets and sets version bump.
-   *
-   * @param suppress optional bool to suppress setting values.
-   */
-  bump(suppress?: boolean): Semver {
-
-    const bumped = this.beforeBump();
-
-    if (suppress)
-      return bumped;
-
-    this.full = bumped.full;
-    this.ver = bumped.ver;
-    this.verArr = bumped.verArr;
-    this.pre = bumped.pre;
-    this.preArr = bumped.preArr;
-
-    return this;
-
-  }
-
-  compare(val1: string, val2: string, operator: string) {
-    //
-  }
-
-  save() {
-    //
-  }
-
-}
 
 /**
  * Clean
@@ -231,7 +16,7 @@ export class Semver {
  * @param globs glob or array of glob strings.
  */
 export function clean(globs: string | string[]) {
-  globs = toArray(globs);
+  globs = toArray<string>(globs);
   del.sync(globs);
 }
 
@@ -295,13 +80,106 @@ export function copyAll(copies: CopyTuple | IMap<ICopy> | string[]) {
 
 /**
  * Pkg
- * Loads the package.json file for project.
+ * Loads the package.json file for project or saves package.json.
+ *
+ * @param val the package.json object to be written to file.
  */
-export function pkg(filename?: string) {
-  filename = filename || resolve(cwd, 'package.json');
-  return readJSONSync(filename);
+export function pkg(val?: any) {
+  const filename = resolve(cwd, 'package.json');
+  if (!val)
+    return readJSONSync(filename);
+  writeJSONSync(filename, val, { spaces: 2 });
 }
 
-export function semver(filename?: string, max?: number) {
-  return new Semver(filename);
+/**
+ * Bump
+ * Bumps project to next version.
+ *
+ * @param filename optional filename defaults to package.json in cwd.
+ */
+export function bump() {
+
+  const semverKeys = ['major', 'minor', 'patch'];
+  const _pkg = pkg();
+
+  const origVer = _pkg.version;
+  const splitVer = _pkg.version.split('-');
+  let ver = (splitVer[0] || '').replace(/^(=|v|^|~)/, '');
+  let pre = splitVer[1] || '';
+  let verArr = castType<number[]>(split(ver), ['integer'], []);
+  let preArr = [];
+
+  if (pre && pre.length)
+    preArr = castType<any[]>(split(pre), ['string', 'integer'], []);
+
+  let arr = verArr;
+  let isPre = false;
+
+  if (preArr.length) {
+    arr = [].slice.call(preArr, 1); // remove first arg.
+    isPre = true;
+  }
+
+  let i = arr.length;
+  let bump: any;
+
+  while (i-- && !bump) {
+
+    const next = arr[i] + 1;
+
+    arr[i] = next;
+
+    bump = {
+      type: !isPre ? semverKeys[i] : 'pre',
+      next: next
+    };
+
+    if (isPre) {
+      bump.preArr = [preArr[0]].concat(arr);
+      bump.pre = bump.preArr.join('.');
+      bump.ver = ver;
+      bump.verArr = verArr;
+    }
+    else {
+      bump.ver = arr.join('.');
+      bump.verArr = arr;
+      bump.preArr = preArr;
+      bump.pre = pre;
+    }
+
+    bump.full = bump.pre && bump.pre.length ? bump.ver + '-' + bump.pre : bump.ver;
+
+  }
+
+  _pkg.version = bump.full;
+  pkg(_pkg);
+
+  log.info(`bumped ${_pkg.name} from ${origVer} to ${bump.full}.`);
+
+
+}
+
+/**
+ * TS Register
+ * Calls ts-node's register option.
+ * @see https://github.com/TypeStrong/ts-node#configuration-options
+ *
+ * @param opts ts-node options.
+ */
+export function tsRegister(project?: string | ITSNodeOptions, opts?: ITSNodeOptions) {
+
+  if (isPlainObject(project)) {
+    opts = <ITSNodeOptions>project;
+    project = undefined;
+  }
+
+  const defaults = {
+    project: './src/tsconfig.spec.json',
+    fast: true
+  };
+
+  opts = extend<ITSNodeOptions>({}, defaults, opts);
+
+  tsnode.register(opts);
+
 }

@@ -6,8 +6,16 @@ export interface ICopy {
     src: string;
     dest: string;
 }
-export interface ISemverMax {
-    major: number;
-    minor: number;
-    patch: number;
+export interface ITSNodeOptions {
+    fast?: boolean | null;
+    cache?: boolean | null;
+    cacheDirectory?: string;
+    compiler?: string;
+    project?: boolean | string;
+    ignore?: boolean | string | string[];
+    ignoreWarnings?: number | string | Array<number | string>;
+    disableWarnings?: boolean | null;
+    getFile?: (path: string) => string;
+    fileExists?: (path: string) => boolean;
+    compilerOptions?: any;
 }

@@ -1,64 +1,4 @@
-/**
- * File operations
- * Read, Remove, Copy etc.
- *
- * All paths will be resolved from current working directory.
- */
-import { CopyTuple, IMap, ICopy } from './interfaces';
-export declare class Semver {
-    filename: string;
-    full: string;
-    ver: string;
-    pre: string;
-    verArr: number[];
-    preArr: number[];
-    constructor(filename?: string);
-    /**
-     * Parse
-     * Parses a version string.
-     *
-     * @param ver the version string to parse.
-     */
-    private parse(ver);
-    private update();
-    /**
-     * Get Index
-     * Gets the current value in semver by index and the next value.
-     *
-     * @param idx the index in version array.
-     * @param next optional next value.
-     */
-    private getIndex(idx, next?);
-    /**
-     * Set Index
-     * Sets the value in semver by index.
-     *
-     * @param idx the index in semver to set.
-     * @param next the next value to be set.
-     */
-    private setIndex(idx, next);
-    private setPre(idx, next);
-    /**
-     * Before Bump
-     * Calculates and returns bumped values.
-     *
-     * @private
-     */
-    private beforeBump();
-    major(val?: number): Semver;
-    minor(val?: number): Semver;
-    patch(val?: number): Semver;
-    prerelease(prefix: string, val?: number): Semver;
-    /**
-     * Bump
-     * Gets ONLY or gets and sets version bump.
-     *
-     * @param suppress optional bool to suppress setting values.
-     */
-    bump(suppress?: boolean): Semver;
-    compare(val1: string, val2: string, operator: string): void;
-    save(): void;
-}
+import { CopyTuple, IMap, ICopy, ITSNodeOptions } from './interfaces';
 /**
  * Clean
  * Removes file(s) using provided glob(s).
@@ -83,7 +23,23 @@ export declare function copy(src: string, dest: string): void;
 export declare function copyAll(copies: CopyTuple | IMap<ICopy> | string[]): void;
 /**
  * Pkg
- * Loads the package.json file for project.
+ * Loads the package.json file for project or saves package.json.
+ *
+ * @param val the package.json object to be written to file.
  */
-export declare function pkg(filename?: string): any;
-export declare function semver(filename?: string, max?: number): Semver;
+export declare function pkg(val?: any): any;
+/**
+ * Bump
+ * Bumps project to next version.
+ *
+ * @param filename optional filename defaults to package.json in cwd.
+ */
+export declare function bump(): void;
+/**
+ * TS Register
+ * Calls ts-node's register option.
+ * @see https://github.com/TypeStrong/ts-node#configuration-options
+ *
+ * @param opts ts-node options.
+ */
+export declare function tsRegister(project?: string | ITSNodeOptions, opts?: ITSNodeOptions): void;
