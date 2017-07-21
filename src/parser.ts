@@ -1,4 +1,6 @@
 
+import { castType, getType } from 'chek';
+
 let _args = process.argv.slice(2);
 
 // Array of packages to install
@@ -41,7 +43,7 @@ function getFlag(flag: string, idx: number, args: any[]) {
 }
 
 // Parse the arguments
-function parse(args?: any[]) {
+function parse(args?: any[]): { flags: { [key: string]: any }, cmds: any[] } {
   args = args || _args;
   args.forEach((el, idx) => {
     const flag = getFlag(el, idx, args);

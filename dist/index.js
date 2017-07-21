@@ -5,6 +5,8 @@ function __export(m) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var log = require("./logger");
 exports.log = log;
+var npm = require("./npm");
+exports.npm = npm;
 __export(require("./parser"));
 __export(require("./utils"));
 //# sourceMappingURL=index.js.map

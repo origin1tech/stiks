@@ -1,5 +1,5 @@
 import * as log from './logger';
-export * from './npm';
+import * as npm from './npm';
 export * from './parser';
 export * from './utils';
-export { log };
+export { log, npm };

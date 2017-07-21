@@ -92,8 +92,6 @@ function error(err) {
     logger('error', msg, stack[0]);
   }
 
-  process.exit(1);
-
 }
 
 /**

@@ -7,6 +7,7 @@ var path_1 = require("path");
 var chek_1 = require("chek");
 var log = require("./logger");
 var cwd = process.cwd();
+var _pkg;
 /**
  * Clean
  * Removes file(s) using provided glob(s).
@@ -68,7 +69,7 @@ exports.copyAll = copyAll;
 function pkg(val) {
     var filename = path_1.resolve(cwd, 'package.json');
     if (!val)
-        return fs_extra_1.readJSONSync(filename);
+        return _pkg || (_pkg = fs_extra_1.readJSONSync(filename));
     fs_extra_1.writeJSONSync(filename, val, { spaces: 2 });
 }
 exports.pkg = pkg;
@@ -124,13 +125,14 @@ function bump() {
 }
 exports.bump = bump;
 /**
- * TS Register
- * Calls ts-node's register option.
+ * TS Node Register
+ * Calls ts-node's register method for use with testing frameworks..
  * @see https://github.com/TypeStrong/ts-node#configuration-options
  *
+ * @param project the tsconfig.json path or ts-node options.
  * @param opts ts-node options.
  */
-function tsRegister(project, opts) {
+function tsnodeRegister(project, opts) {
     if (chek_1.isPlainObject(project)) {
         opts = project;
         project = undefined;
@@ -142,5 +144,5 @@ function tsRegister(project, opts) {
     opts = chek_1.extend({}, defaults, opts);
     tsnode.register(opts);
 }
-exports.tsRegister = tsRegister;
+exports.tsnodeRegister = tsnodeRegister;
 //# sourceMappingURL=utils.js.map

@@ -36,10 +36,11 @@ export declare function pkg(val?: any): any;
  */
 export declare function bump(): void;
 /**
- * TS Register
- * Calls ts-node's register option.
+ * TS Node Register
+ * Calls ts-node's register method for use with testing frameworks..
  * @see https://github.com/TypeStrong/ts-node#configuration-options
  *
+ * @param project the tsconfig.json path or ts-node options.
  * @param opts ts-node options.
  */
-export declare function tsRegister(project?: string | ITSNodeOptions, opts?: ITSNodeOptions): void;
+export declare function tsnodeRegister(project?: string | ITSNodeOptions, opts?: ITSNodeOptions): void;

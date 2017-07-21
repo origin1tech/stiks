@@ -1,18 +1,18 @@
 {
   "name": "stiks",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "Node bundling & workflow utility for building Node apps.",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
   "scripts": {
     "clean": "node ./build/clean",
     "compile": "node ./node_modules/typescript/bin/tsc -p ./src/tsconfig.json",
+    "bump": "node ./build/bump",
+    "docs": "node ./node_modules/typedoc/bin/typedoc --out ./docs ./src --options ./typedoc.json --tsconfig ./src/tsconfig.json",
     "prod": "NODE_ENV=production BROWSER=true node ./node_modules/webpack/bin/webpack --progress --env=prod --profile --config build/webpack",
     "dev": "NODE_ENV=development BROWSER=true node ./node_modules/webpack-dev-server/bin/webpack-dev-server -d --hot --colors --watch --progress --profile --config build/webpack",
-    "docs": "node ./node_modules/typedoc/bin/typedoc --out ./docs ./src --options ./typedoc.json --tsconfig ./src/tsconfig.json",
-    "build": "npm run clean && npm run compile && npm run browserify && npm run uglify && npm run docs",
+    "build": "npm run clean && npm run compile && npm run docs",
     "commit": "git add . && git commit -am 'auto commit' && git push",
-    "bump": "node ./build/bump",
     "release": "npm run build && npm run bump && npm run commit && npm publish",
     "test": "mocha --opts ./src/mocha.opts"
   },
@@ -38,9 +38,9 @@
     "@types/node": "^8.0.7",
     "chai": "^4.0.2",
     "mocha": "^3.4.2",
+    "tslint": "^5.5.0",
     "typedoc": "^0.7.1",
-    "typescript": "^2.4.1",
-    "tslint": "^5.5.0"
+    "typescript": "^2.4.1"
   },
   "dependencies": {
     "chek": "^1.0.5",

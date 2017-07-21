@@ -1,45 +1,51 @@
+"use strict";
 /**
  * Enables installing npm packages
- * programatically. Only supports
- * install and uninstall.
+ * programatically.
+ *
+ * Should support most if not all
+ * methods but not tested.
  */
-"use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var npm = require("npm");
 var parser = require("./parser");
 var chek_1 = require("chek");
 var log = require("./logger");
-var args = parser.parse();
 // NPM Options.
-var config = {
+var defaults = {
     loaded: false
 };
-function run(cmd, conf, pkgs, done) {
-    if (chek_1.isArray(conf)) {
-        done = pkgs;
-        pkgs = conf;
-        conf = undefined;
-    }
-    // extend the options
-    config = chek_1.extend({}, config, conf || args.flags);
-    pkgs = pkgs || args.cmds;
-    // Load and install.
-    npm.load(config, function (err) {
+function configure(config, onDone, onLog) {
+    // Parse command line args. We'll
+    // merge these in for convenience.
+    var parsed = parser.parse();
+    config = chek_1.extend({}, defaults, config, parsed.flags);
+    function handleDone(err, data) {
         if (err)
             log.error(err);
-        // function log(msg) {
-        //   console.log(msg);
-        // }
-        // npm.on('log', log);
-        function _done(err, data) {
-            if (err)
-                log.error(err);
-            done(err, data);
+        (onDone || chek_1.noop)(err, data);
+    }
+    function exec(cmd) {
+        var args = [];
+        for (var _i = 1; _i < arguments.length; _i++) {
+            args[_i - 1] = arguments[_i];
         }
-        if (cmd === 'install')
-            npm.commands.install(pkgs, _done);
-        else
-            npm.commands.uninstall(pkgs, _done);
+        if (onLog)
+            npm.on('log', onLog);
+        // Concat any command args pased from cli.
+        args = args.concat(parsed.cmds);
+        npm.load(config, function (err) {
+            if (err)
+                return handleDone(err, null);
+            // Exec npm command.
+            npm.commands[cmd](args, handleDone);
+        });
+    }
+    var cmds = {};
+    chek_1.keys(npm.commands).forEach(function (k) {
+        cmds[k] = exec.bind(null, k);
     });
+    return cmds;
 }
+exports.configure = configure;
 //# sourceMappingURL=npm.js.map

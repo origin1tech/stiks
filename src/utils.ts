@@ -1,6 +1,7 @@
 
 import { CopyTuple, IMap, ICopy, ITSNodeOptions } from './interfaces';
 import { readFileSync, readJSONSync, copySync, writeJSONSync } from 'fs-extra';
+import * as npm from './npm';
 import * as tsnode from 'ts-node';
 import * as del from 'del';
 import { resolve, parse, relative, join } from 'path';
@@ -8,6 +9,7 @@ import { toArray, isString, split, isPlainObject, isArray, keys, isNumber, castT
 import * as log from './logger';
 
 const cwd = process.cwd();
+let _pkg;
 
 /**
  * Clean
@@ -87,7 +89,7 @@ export function copyAll(copies: CopyTuple | IMap<ICopy> | string[]) {
 export function pkg(val?: any) {
   const filename = resolve(cwd, 'package.json');
   if (!val)
-    return readJSONSync(filename);
+    return _pkg || (_pkg = readJSONSync(filename));
   writeJSONSync(filename, val, { spaces: 2 });
 }
 
@@ -160,13 +162,14 @@ export function bump() {
 }
 
 /**
- * TS Register
- * Calls ts-node's register option.
+ * TS Node Register
+ * Calls ts-node's register method for use with testing frameworks..
  * @see https://github.com/TypeStrong/ts-node#configuration-options
  *
+ * @param project the tsconfig.json path or ts-node options.
  * @param opts ts-node options.
  */
-export function tsRegister(project?: string | ITSNodeOptions, opts?: ITSNodeOptions) {
+export function tsnodeRegister(project?: string | ITSNodeOptions, opts?: ITSNodeOptions) {
 
   if (isPlainObject(project)) {
     opts = <ITSNodeOptions>project;
@@ -183,3 +186,4 @@ export function tsRegister(project?: string | ITSNodeOptions, opts?: ITSNodeOpti
   tsnode.register(opts);
 
 }
+

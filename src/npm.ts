@@ -1,56 +1,62 @@
 /**
  * Enables installing npm packages
- * programatically. Only supports
- * install and uninstall.
+ * programatically.
+ *
+ * Should support most if not all
+ * methods but not tested.
  */
 
 import * as npm from 'npm';
 import * as parser from './parser';
-import { extend, isArray } from 'chek';
+import { extend, isArray, noop, keys } from 'chek';
+import { INpmCommands, NpmCommand } from './interfaces';
 import * as log from './logger';
 
-const args = parser.parse();
-
 // NPM Options.
-let config = {
+let defaults = {
   loaded: false
 };
 
-function run(cmd: string, conf: any, pkgs: any[] | Function, done?: Function) {
+export function configure(config?: any, onDone?: (err?: Error, data?: any) => void, onLog?: (msg: any) => void): INpmCommands {
 
-  if (isArray(conf)) {
-    done = <Function>pkgs;
-    pkgs = conf;
-    conf = undefined;
-  }
+  // Parse command line args. We'll
+  // merge these in for convenience.
+  const parsed = parser.parse();
 
-  // extend the options
-  config = extend<any>({}, config, conf || args.flags);
+  config = extend({}, defaults, config, parsed.flags);
 
-  pkgs = pkgs || args.cmds;
-
-  // Load and install.
-  npm.load(config, (err) => {
-
+  function handleDone(err, data) {
     if (err)
       log.error(err);
+    (onDone || noop)(err, data);
+  }
 
-    // function log(msg) {
-    //   console.log(msg);
-    // }
-    // npm.on('log', log);
+  function exec(cmd: string, ...args: any[]) {
 
-    function _done(err, data) {
+    if (onLog)
+      npm.on('log', onLog);
+
+    // Concat any command args pased from cli.
+    args = args.concat(parsed.cmds);
+
+    npm.load(config, (err) => {
+
       if (err)
-        log.error(err);
-      done(err, data);
-    }
+        return handleDone(err, null);
 
-    if (cmd === 'install')
-      npm.commands.install(pkgs, _done);
-    else
-      npm.commands.uninstall(pkgs, _done);
+      // Exec npm command.
+      npm.commands[cmd](args, handleDone);
 
+    });
+
+  }
+
+  let cmds: INpmCommands = <any>{};
+
+  keys(npm.commands).forEach((k) => {
+    cmds[k] = exec.bind(null, k);
   });
+
+  return cmds;
 
 }
