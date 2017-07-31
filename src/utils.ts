@@ -211,6 +211,7 @@ export function tsnodeRegister(project?: string | ITSNodeOptions, opts?: ITSNode
 /**
  * Serve
  * Hook to Browser Sync accepts name and options returning a Browser Sync Server Instance.
+ * @see https://www.browsersync.io/docs/api
  *
  * @param name the name of the server or Browser Sync options.
  * @param options the Browser Sync Options.
