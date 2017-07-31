@@ -1,6 +1,6 @@
 {
   "name": "stiks",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Node bundling & workflow utility for building Node apps.",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
@@ -33,6 +33,7 @@
   },
   "homepage": "https://github.com/origin1tech/stiks#readme",
   "devDependencies": {
+    "@types/browser-sync": "0.0.35",
     "@types/chai": "^4.0.1",
     "@types/mocha": "^2.2.41",
     "@types/node": "^8.0.7",
@@ -43,6 +44,7 @@
     "typescript": "^2.4.1"
   },
   "dependencies": {
+    "browser-sync": "^2.18.13",
     "chek": "^1.0.5",
     "colurs": "^1.0.4",
     "del": "^3.0.0",

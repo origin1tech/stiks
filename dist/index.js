@@ -15,5 +15,7 @@ var fs = require("fs-extra");
 exports.fs = fs;
 var argv = require("./argv");
 exports.argv = argv;
+var bsync = require("browser-sync");
+exports.bsync = bsync;
 __export(require("./utils"));
 //# sourceMappingURL=index.js.map

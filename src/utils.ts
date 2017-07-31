@@ -8,6 +8,7 @@ import { resolve, parse, relative, join } from 'path';
 import { toArray, isString, split, isPlainObject, isArray, keys, isNumber, castType, isValue, extend } from 'chek';
 import * as log from './logger';
 import * as glob from 'glob';
+import * as bsync from 'browser-sync';
 
 let _pkg;
 
@@ -109,7 +110,7 @@ export function copyAll(copies: CopyTuple[] | CopyTuple | IMap<ICopy> | string[]
 export function pkg(val?: any) {
   const filename = resolve(cwd, 'package.json');
   if (!val)
-    return _pkg || (_pkg = readJSONSync(filename));
+    return _pkg || (_pkg = readJSONSync(filename)) || {};
   writeJSONSync(filename, val, { spaces: 2 });
 }
 
@@ -207,3 +208,36 @@ export function tsnodeRegister(project?: string | ITSNodeOptions, opts?: ITSNode
 
 }
 
+/**
+ * Serve
+ * Hook to Browser Sync accepts name and options returning a Browser Sync Server Instance.
+ *
+ * @param name the name of the server or Browser Sync options.
+ * @param options the Browser Sync Options.
+ */
+export function serve(name?: string | bsync.Options, options?: bsync.Options): bsync.BrowserSyncInstance {
+
+  const _pkg = pkg();
+
+  if (isPlainObject(name)) {
+    options = <bsync.Options>name;
+    name = undefined;
+  }
+
+  const defaults: bsync.Options = {
+    server: {
+      baseDir: './dist'
+    }
+  };
+
+  name = name || _pkg.name || 'dev-server';
+  options = extend({}, defaults, options);
+
+  const server = bsync.create(<string>name);
+
+  server.init(options);
+
+  return server;
+
+
+}

@@ -1,4 +1,5 @@
 import { CopyTuple, IMap, ICopy, ITSNodeOptions } from './interfaces';
+import * as bsync from 'browser-sync';
 export declare const cwd: string;
 /**
  * Clean
@@ -45,3 +46,11 @@ export declare function bump(): void;
  * @param opts ts-node options.
  */
 export declare function tsnodeRegister(project?: string | ITSNodeOptions, opts?: ITSNodeOptions): void;
+/**
+ * Serve
+ * Hook to Browser Sync accepts name and options returning a Browser Sync Server Instance.
+ *
+ * @param name the name of the server or Browser Sync options.
+ * @param options the Browser Sync Options.
+ */
+export declare function serve(name?: string | bsync.Options, options?: bsync.Options): bsync.BrowserSyncInstance;

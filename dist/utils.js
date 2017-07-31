@@ -7,6 +7,7 @@ var path_1 = require("path");
 var chek_1 = require("chek");
 var log = require("./logger");
 var glob = require("glob");
+var bsync = require("browser-sync");
 var _pkg;
 exports.cwd = process.cwd();
 /**
@@ -89,7 +90,7 @@ exports.copyAll = copyAll;
 function pkg(val) {
     var filename = path_1.resolve(exports.cwd, 'package.json');
     if (!val)
-        return _pkg || (_pkg = fs_extra_1.readJSONSync(filename));
+        return _pkg || (_pkg = fs_extra_1.readJSONSync(filename)) || {};
     fs_extra_1.writeJSONSync(filename, val, { spaces: 2 });
 }
 exports.pkg = pkg;
@@ -165,4 +166,29 @@ function tsnodeRegister(project, opts) {
     tsnode.register(opts);
 }
 exports.tsnodeRegister = tsnodeRegister;
+/**
+ * Serve
+ * Hook to Browser Sync accepts name and options returning a Browser Sync Server Instance.
+ *
+ * @param name the name of the server or Browser Sync options.
+ * @param options the Browser Sync Options.
+ */
+function serve(name, options) {
+    var _pkg = pkg();
+    if (chek_1.isPlainObject(name)) {
+        options = name;
+        name = undefined;
+    }
+    var defaults = {
+        server: {
+            baseDir: './dist'
+        }
+    };
+    name = name || _pkg.name || 'dev-server';
+    options = chek_1.extend({}, defaults, options);
+    var server = bsync.create(name);
+    server.init(options);
+    return server;
+}
+exports.serve = serve;
 //# sourceMappingURL=utils.js.map
