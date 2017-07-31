@@ -8,7 +8,7 @@
  */
 Object.defineProperty(exports, "__esModule", { value: true });
 var npm = require("npm");
-var parser = require("./parser");
+var argv = require("./argv");
 var chek_1 = require("chek");
 var log = require("./logger");
 // NPM Options.
@@ -18,7 +18,7 @@ var defaults = {
 function configure(config, onDone, onLog) {
     // Parse command line args. We'll
     // merge these in for convenience.
-    var parsed = parser.parse();
+    var parsed = argv.parse();
     config = chek_1.extend({}, defaults, config, parsed.flags);
     function handleDone(err, data) {
         if (err)

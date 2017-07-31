@@ -52,4 +52,4 @@ function parse(args) {
     };
 }
 exports.parse = parse;
-//# sourceMappingURL=parser.js.map
+//# sourceMappingURL=argv.js.map

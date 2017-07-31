@@ -11,6 +11,9 @@ var colurs = require("colurs");
 exports.colurs = colurs;
 var chek = require("chek");
 exports.chek = chek;
-__export(require("./parser"));
+var fs = require("fs-extra");
+exports.fs = fs;
+var argv = require("./argv");
+exports.argv = argv;
 __export(require("./utils"));
 //# sourceMappingURL=index.js.map

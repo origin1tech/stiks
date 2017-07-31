@@ -1,4 +1,5 @@
 import { CopyTuple, IMap, ICopy, ITSNodeOptions } from './interfaces';
+export declare const cwd: string;
 /**
  * Clean
  * Removes file(s) using provided glob(s).

@@ -7,8 +7,8 @@ var path_1 = require("path");
 var chek_1 = require("chek");
 var log = require("./logger");
 var glob = require("glob");
-var cwd = process.cwd();
 var _pkg;
+exports.cwd = process.cwd();
 /**
  * Clean
  * Removes file(s) using provided glob(s).
@@ -87,7 +87,7 @@ exports.copyAll = copyAll;
  * @param val the package.json object to be written to file.
  */
 function pkg(val) {
-    var filename = path_1.resolve(cwd, 'package.json');
+    var filename = path_1.resolve(exports.cwd, 'package.json');
     if (!val)
         return _pkg || (_pkg = fs_extra_1.readJSONSync(filename));
     fs_extra_1.writeJSONSync(filename, val, { spaces: 2 });

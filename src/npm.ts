@@ -7,7 +7,7 @@
  */
 
 import * as npm from 'npm';
-import * as parser from './parser';
+import * as argv from './argv';
 import { extend, isArray, noop, keys } from 'chek';
 import { INpmCommands, NpmCommand } from './interfaces';
 import * as log from './logger';
@@ -21,7 +21,7 @@ export function configure(config?: any, onDone?: (err?: Error, data?: any) => vo
 
   // Parse command line args. We'll
   // merge these in for convenience.
-  const parsed = parser.parse();
+  const parsed = argv.parse();
 
   config = extend({}, defaults, config, parsed.flags);
 

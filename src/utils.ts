@@ -9,8 +9,9 @@ import { toArray, isString, split, isPlainObject, isArray, keys, isNumber, castT
 import * as log from './logger';
 import * as glob from 'glob';
 
-const cwd = process.cwd();
 let _pkg;
+
+export const cwd = process.cwd();
 
 /**
  * Clean
