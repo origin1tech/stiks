@@ -7,6 +7,7 @@ import * as del from 'del';
 import { resolve, parse, relative, join } from 'path';
 import { toArray, isString, split, isPlainObject, isArray, keys, isNumber, castType, isValue, extend } from 'chek';
 import * as log from './logger';
+import * as glob from 'glob';
 
 const cwd = process.cwd();
 let _pkg;
@@ -24,14 +25,12 @@ export function clean(globs: string | string[]) {
 
 /**
  * Copy
- * Copies source to target.
+ * Copies source to target. Does NOT support globs.
  *
  * @param src the source path to be copied.
  * @param dest the destination path to copy to.
  */
 export function copy(src: string, dest: string) {
-
-  const globs = toArray<string>(src);
 
   src = resolve(process.cwd(), src);
   dest = resolve(process.cwd(), dest);
@@ -41,24 +40,34 @@ export function copy(src: string, dest: string) {
 
   copySync(src, dest);
 
-  log.info(`successfully copied ${relative(cwd, join(parsedSrc.dir, parsedSrc.base))} to ${relative(cwd, join(parsedDest.dir, parsedDest.base))}.`);
+  // log.info(`successfully copied ${relative(cwd, join(parsedSrc.dir, parsedSrc.base))} to ${relative(cwd, join(parsedDest.dir, parsedDest.base))}.`);
 
 }
 
 /**
- * CopyAll
- * Takes collection and copies each source/destination pair.
+ * Copy All
+ * Takes collection and copies to destination.
  *
  * @param copies collection of source and destination targets.
  */
-export function copyAll(copies: CopyTuple | IMap<ICopy> | string[]) {
+export function copyAll(copies: CopyTuple[] | CopyTuple | IMap<ICopy> | string[]) {
 
   if (isPlainObject(copies)) {
 
     keys(<IMap<ICopy>>copies).forEach((k) => {
 
       const itm: ICopy = copies[k];
-      copy(itm.src, itm.dest);
+
+      // Check if src is glob.
+      if (itm.src.indexOf('*') !== -1) {
+        const arr = glob.sync(itm.src);
+        arr.forEach((str) => {
+          copy(str, itm.dest);
+        });
+      }
+      else {
+        copy(itm.src, itm.dest);
+      }
 
     });
 
@@ -66,11 +75,21 @@ export function copyAll(copies: CopyTuple | IMap<ICopy> | string[]) {
 
   else if (isArray(copies)) {
 
-    (copies as string[]).forEach((c) => {
+    // If not array of tuples convert.
+    if (isString(copies[0]))
+      copies = toArray<CopyTuple>(copies);
 
-      const tuple = isString(c) ? split(c) : c;
-      copy(tuple[0], tuple[1]);
-
+    (copies as CopyTuple[]).forEach((c) => {
+      const tuple = isString(c) ? split(c, '|') : c;
+      if (tuple[0].indexOf('*') !== -1) {
+        const arr = glob.sync(tuple[0]);
+        arr.forEach((str) => {
+          copy(str, tuple[1]);
+        });
+      }
+      else {
+        copy(tuple[0], tuple[1]);
+      }
     });
 
   }

@@ -6,6 +6,7 @@ var del = require("del");
 var path_1 = require("path");
 var chek_1 = require("chek");
 var log = require("./logger");
+var glob = require("glob");
 var cwd = process.cwd();
 var _pkg;
 /**
@@ -21,24 +22,23 @@ function clean(globs) {
 exports.clean = clean;
 /**
  * Copy
- * Copies source to target.
+ * Copies source to target. Does NOT support globs.
  *
  * @param src the source path to be copied.
  * @param dest the destination path to copy to.
  */
 function copy(src, dest) {
-    var globs = chek_1.toArray(src);
     src = path_1.resolve(process.cwd(), src);
     dest = path_1.resolve(process.cwd(), dest);
     var parsedSrc = path_1.parse(src);
     var parsedDest = path_1.parse(dest);
     fs_extra_1.copySync(src, dest);
-    log.info("successfully copied " + path_1.relative(cwd, path_1.join(parsedSrc.dir, parsedSrc.base)) + " to " + path_1.relative(cwd, path_1.join(parsedDest.dir, parsedDest.base)) + ".");
+    // log.info(`successfully copied ${relative(cwd, join(parsedSrc.dir, parsedSrc.base))} to ${relative(cwd, join(parsedDest.dir, parsedDest.base))}.`);
 }
 exports.copy = copy;
 /**
- * CopyAll
- * Takes collection and copies each source/destination pair.
+ * Copy All
+ * Takes collection and copies to destination.
  *
  * @param copies collection of source and destination targets.
  */
@@ -46,13 +46,33 @@ function copyAll(copies) {
     if (chek_1.isPlainObject(copies)) {
         chek_1.keys(copies).forEach(function (k) {
             var itm = copies[k];
-            copy(itm.src, itm.dest);
+            // Check if src is glob.
+            if (itm.src.indexOf('*') !== -1) {
+                var arr = glob.sync(itm.src);
+                arr.forEach(function (str) {
+                    copy(str, itm.dest);
+                });
+            }
+            else {
+                copy(itm.src, itm.dest);
+            }
         });
     }
     else if (chek_1.isArray(copies)) {
+        // If not array of tuples convert.
+        if (chek_1.isString(copies[0]))
+            copies = chek_1.toArray(copies);
         copies.forEach(function (c) {
-            var tuple = chek_1.isString(c) ? chek_1.split(c) : c;
-            copy(tuple[0], tuple[1]);
+            var tuple = chek_1.isString(c) ? chek_1.split(c, '|') : c;
+            if (tuple[0].indexOf('*') !== -1) {
+                var arr = glob.sync(tuple[0]);
+                arr.forEach(function (str) {
+                    copy(str, tuple[1]);
+                });
+            }
+            else {
+                copy(tuple[0], tuple[1]);
+            }
         });
     }
     else {

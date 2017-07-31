@@ -8,19 +8,19 @@ import { CopyTuple, IMap, ICopy, ITSNodeOptions } from './interfaces';
 export declare function clean(globs: string | string[]): void;
 /**
  * Copy
- * Copies source to target.
+ * Copies source to target. Does NOT support globs.
  *
  * @param src the source path to be copied.
  * @param dest the destination path to copy to.
  */
 export declare function copy(src: string, dest: string): void;
 /**
- * CopyAll
- * Takes collection and copies each source/destination pair.
+ * Copy All
+ * Takes collection and copies to destination.
  *
  * @param copies collection of source and destination targets.
  */
-export declare function copyAll(copies: CopyTuple | IMap<ICopy> | string[]): void;
+export declare function copyAll(copies: CopyTuple[] | CopyTuple | IMap<ICopy> | string[]): void;
 /**
  * Pkg
  * Loads the package.json file for project or saves package.json.
