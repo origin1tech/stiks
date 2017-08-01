@@ -1,16 +1,14 @@
 {
   "name": "stiks",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "Node bundling & workflow utility for building Node apps.",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
   "scripts": {
-    "clean": "node ./build/clean",
+    "clean": "node ./build clean",
+    "bump": "node ./build bump",
     "compile": "node ./node_modules/typescript/bin/tsc -p ./src/tsconfig.json",
-    "bump": "node ./build/bump",
     "docs": "node ./node_modules/typedoc/bin/typedoc --out ./docs ./src --options ./typedoc.json --tsconfig ./src/tsconfig.json",
-    "prod": "NODE_ENV=production BROWSER=true node ./node_modules/webpack/bin/webpack --progress --env=prod --profile --config build/webpack",
-    "dev": "NODE_ENV=development BROWSER=true node ./node_modules/webpack-dev-server/bin/webpack-dev-server -d --hot --colors --watch --progress --profile --config build/webpack",
     "build": "npm run clean && npm run compile && npm run docs",
     "commit": "git add . && git commit -am 'auto commit' && git push",
     "release": "npm run build && npm run bump && npm run commit && npm publish",
@@ -32,6 +30,11 @@
     "url": "https://github.com/origin1tech/sticks/issues"
   },
   "homepage": "https://github.com/origin1tech/stiks#readme",
+  "build": {
+    "clean": [
+      "./dist"
+    ]
+  },
   "devDependencies": {
     "@types/browser-sync": "0.0.35",
     "@types/chai": "^4.0.1",

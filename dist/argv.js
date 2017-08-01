@@ -59,4 +59,16 @@ function parse(args) {
     };
 }
 exports.parse = parse;
+function findCommand(valid, args) {
+    // If no command line args passed try to parse them.
+    args = args || parse().cmds;
+    var i = valid.length;
+    var found;
+    while (i-- && !found) {
+        if (chek_1.contains(args, valid[i]))
+            found = valid[i];
+    }
+    return found;
+}
+exports.findCommand = findCommand;
 //# sourceMappingURL=argv.js.map

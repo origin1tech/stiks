@@ -1,4 +1,4 @@
 src/**/*.spec.ts*
 --ignoreWarnings
---compilers ts:ts-node/register,tsx:ts-node/register
+--compilers ts:./build/spec,tsx:./build/spec
 --reporter list

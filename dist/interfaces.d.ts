@@ -1,10 +1,20 @@
 export declare type CopyTuple = [string, string];
+export declare type StringBuilderAdd = (str: any, styles: string | string[]) => IStringBuilderMethods;
+export declare type StringBuilderRender = (char?: string) => string;
+export declare type StringBuilderJoin = (char?: string) => IStringBuilderMethods;
+export declare type StringBuilderFormat = (...args: any[]) => IStringBuilderMethods;
 export interface IMap<T> {
     [key: string]: T;
 }
 export interface ICopy {
     src: string;
     dest: string;
+}
+export interface IStringBuilderMethods {
+    add: StringBuilderAdd;
+    join: StringBuilderJoin;
+    format: StringBuilderFormat;
+    render: StringBuilderRender;
 }
 export interface ITSNodeOptions {
     fast?: boolean | null;
@@ -37,6 +47,7 @@ export interface INpmCommands {
     edit: NpmCommand;
     explore: NpmCommand;
     get: NpmCommand;
+    install: NpmCommand;
     list: NpmCommand;
     ln: NpmCommand;
     login: NpmCommand;

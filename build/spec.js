@@ -1,3 +1,4 @@
+const stiks = require('../dist');
 
 /**
  * TS-Node
@@ -5,15 +6,12 @@
  * @see https://github.com/TypeStrong/ts-node#configuration-options
  */
 
-const tsnode = require('ts-node');
-
 // Options
-const opts = {
+const options = {
   project: './src/tsconfig.spec.json',
   ignoreWarnings: true,
   disableWarnings: true,
   fast: true
 };
 
-// Register ts-node.
-tsnode.register(opts);
+stiks.tsnodeRegister(options);

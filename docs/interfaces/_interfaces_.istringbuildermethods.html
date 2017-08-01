@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>ICopy | Stiks</title>
+	<title>IStringBuilderMethods | Stiks</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -59,10 +59,10 @@
 					<a href="../modules/_interfaces_.html">&quot;interfaces&quot;</a>
 				</li>
 				<li>
-					<a href="_interfaces_.icopy.html">ICopy</a>
+					<a href="_interfaces_.istringbuildermethods.html">IStringBuilderMethods</a>
 				</li>
 			</ul>
-			<h1>Interface ICopy</h1>
+			<h1>Interface IStringBuilderMethods</h1>
 		</div>
 	</div>
 </header>
@@ -73,7 +73,7 @@
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">ICopy</span>
+						<span class="target">IStringBuilderMethods</span>
 					</li>
 				</ul>
 			</section>
@@ -84,8 +84,10 @@
 						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_interfaces_.icopy.html#dest" class="tsd-kind-icon">dest</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_interfaces_.icopy.html#src" class="tsd-kind-icon">src</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_interfaces_.istringbuildermethods.html#add" class="tsd-kind-icon">add</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_interfaces_.istringbuildermethods.html#format" class="tsd-kind-icon">format</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_interfaces_.istringbuildermethods.html#join" class="tsd-kind-icon">join</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_interfaces_.istringbuildermethods.html#render" class="tsd-kind-icon">render</a></li>
 							</ul>
 						</section>
 					</div>
@@ -94,22 +96,42 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Properties</h2>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="dest" class="tsd-anchor"></a>
-					<h3>dest</h3>
-					<div class="tsd-signature tsd-kind-icon">dest<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<a name="add" class="tsd-anchor"></a>
+					<h3>add</h3>
+					<div class="tsd-signature tsd-kind-icon">add<span class="tsd-signature-symbol">:</span> <a href="../modules/_interfaces_.html#stringbuilderadd" class="tsd-signature-type">StringBuilderAdd</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/origin1tech/stiks/blob/88e234a/src/interfaces.ts#L15">interfaces.ts:15</a></li>
+							<li>Defined in <a href="https://github.com/origin1tech/stiks/blob/88e234a/src/interfaces.ts#L19">interfaces.ts:19</a></li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="src" class="tsd-anchor"></a>
-					<h3>src</h3>
-					<div class="tsd-signature tsd-kind-icon">src<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<a name="format" class="tsd-anchor"></a>
+					<h3>format</h3>
+					<div class="tsd-signature tsd-kind-icon">format<span class="tsd-signature-symbol">:</span> <a href="../modules/_interfaces_.html#stringbuilderformat" class="tsd-signature-type">StringBuilderFormat</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/origin1tech/stiks/blob/88e234a/src/interfaces.ts#L14">interfaces.ts:14</a></li>
+							<li>Defined in <a href="https://github.com/origin1tech/stiks/blob/88e234a/src/interfaces.ts#L21">interfaces.ts:21</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="join" class="tsd-anchor"></a>
+					<h3>join</h3>
+					<div class="tsd-signature tsd-kind-icon">join<span class="tsd-signature-symbol">:</span> <a href="../modules/_interfaces_.html#stringbuilderjoin" class="tsd-signature-type">StringBuilderJoin</a></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/origin1tech/stiks/blob/88e234a/src/interfaces.ts#L20">interfaces.ts:20</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="render" class="tsd-anchor"></a>
+					<h3>render</h3>
+					<div class="tsd-signature tsd-kind-icon">render<span class="tsd-signature-symbol">:</span> <a href="../modules/_interfaces_.html#stringbuilderrender" class="tsd-signature-type">StringBuilderRender</a></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/origin1tech/stiks/blob/88e234a/src/interfaces.ts#L22">interfaces.ts:22</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -143,30 +165,36 @@
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
-				</ul>
-				<ul class="current">
-					<li class="current tsd-kind-interface tsd-parent-kind-external-module">
+					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
 						<a href="_interfaces_.icopy.html" class="tsd-kind-icon">ICopy</a>
-						<ul>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_interfaces_.icopy.html#dest" class="tsd-kind-icon">dest</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_interfaces_.icopy.html#src" class="tsd-kind-icon">src</a>
-							</li>
-						</ul>
 					</li>
-				</ul>
-				<ul class="after-current">
 					<li class=" tsd-kind-interface tsd-parent-kind-external-module tsd-has-type-parameter">
 						<a href="_interfaces_.imap.html" class="tsd-kind-icon">IMap</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
 						<a href="_interfaces_.inpmcommands.html" class="tsd-kind-icon">INpm<wbr>Commands</a>
 					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
+				</ul>
+				<ul class="current">
+					<li class="current tsd-kind-interface tsd-parent-kind-external-module">
 						<a href="_interfaces_.istringbuildermethods.html" class="tsd-kind-icon">IString<wbr>Builder<wbr>Methods</a>
+						<ul>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="_interfaces_.istringbuildermethods.html#add" class="tsd-kind-icon">add</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="_interfaces_.istringbuildermethods.html#format" class="tsd-kind-icon">format</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="_interfaces_.istringbuildermethods.html#join" class="tsd-kind-icon">join</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="_interfaces_.istringbuildermethods.html#render" class="tsd-kind-icon">render</a>
+							</li>
+						</ul>
 					</li>
+				</ul>
+				<ul class="after-current">
 					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
 						<a href="_interfaces_.itsnodeoptions.html" class="tsd-kind-icon">ITSNode<wbr>Options</a>
 					</li>

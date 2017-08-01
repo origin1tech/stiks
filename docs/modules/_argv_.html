@@ -84,6 +84,7 @@
 						<section class="tsd-index-section ">
 							<h3>Functions</h3>
 							<ul class="tsd-index-list">
+								<li class="tsd-kind-function tsd-parent-kind-external-module"><a href="_argv_.html#findcommand" class="tsd-kind-icon">find<wbr>Command</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-external-module"><a href="_argv_.html#getflag" class="tsd-kind-icon">get<wbr>Flag</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-external-module"><a href="_argv_.html#isflag" class="tsd-kind-icon">is<wbr>Flag</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-external-module"><a href="_argv_.html#parse" class="tsd-kind-icon">parse</a></li>
@@ -100,7 +101,7 @@
 					<div class="tsd-signature tsd-kind-icon">_args<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> =&nbsp;process.argv.slice(2)</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/origin1tech/stiks/blob/d640010/src/argv.ts#L4">argv.ts:4</a></li>
+							<li>Defined in <a href="https://github.com/origin1tech/stiks/blob/88e234a/src/argv.ts#L4">argv.ts:4</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -110,7 +111,7 @@
 					<div class="tsd-signature tsd-kind-icon">_cmds<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> =&nbsp;[]</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/origin1tech/stiks/blob/d640010/src/argv.ts#L8">argv.ts:8</a></li>
+							<li>Defined in <a href="https://github.com/origin1tech/stiks/blob/88e234a/src/argv.ts#L8">argv.ts:8</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -120,7 +121,7 @@
 					<div class="tsd-signature tsd-kind-icon">_exclude<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> =&nbsp;[]</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/origin1tech/stiks/blob/d640010/src/argv.ts#L17">argv.ts:17</a></li>
+							<li>Defined in <a href="https://github.com/origin1tech/stiks/blob/88e234a/src/argv.ts#L17">argv.ts:17</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -130,7 +131,7 @@
 					<div class="tsd-signature tsd-kind-icon">_flag<wbr>Exp<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">RegExp</span><span class="tsd-signature-symbol"> =&nbsp;/^--?/</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/origin1tech/stiks/blob/d640010/src/argv.ts#L14">argv.ts:14</a></li>
+							<li>Defined in <a href="https://github.com/origin1tech/stiks/blob/88e234a/src/argv.ts#L14">argv.ts:14</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -140,7 +141,7 @@
 					<div class="tsd-signature tsd-kind-icon">_flags<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/origin1tech/stiks/blob/d640010/src/argv.ts#L11">argv.ts:11</a></li>
+							<li>Defined in <a href="https://github.com/origin1tech/stiks/blob/88e234a/src/argv.ts#L11">argv.ts:11</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-type-declaration">
@@ -155,13 +156,39 @@
 					<div class="tsd-signature tsd-kind-icon">orig<wbr>Args<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">any</span><span class="tsd-signature-symbol"> =&nbsp;[].slice.call(_args, 0)</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/origin1tech/stiks/blob/d640010/src/argv.ts#L5">argv.ts:5</a></li>
+							<li>Defined in <a href="https://github.com/origin1tech/stiks/blob/88e234a/src/argv.ts#L5">argv.ts:5</a></li>
 						</ul>
 					</aside>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Functions</h2>
+				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-external-module">
+					<a name="findcommand" class="tsd-anchor"></a>
+					<h3>find<wbr>Command</h3>
+					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module">
+						<li class="tsd-signature tsd-kind-icon">find<wbr>Command<span class="tsd-signature-symbol">(</span>valid<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span>, args<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/origin1tech/stiks/blob/88e234a/src/argv.ts#L66">argv.ts:66</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>valid: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></h5>
+								</li>
+								<li>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> args: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">any</span></h4>
+						</li>
+					</ul>
+				</section>
 				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-external-module">
 					<a name="getflag" class="tsd-anchor"></a>
 					<h3>get<wbr>Flag</h3>
@@ -172,7 +199,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/origin1tech/stiks/blob/d640010/src/argv.ts#L30">argv.ts:30</a></li>
+									<li>Defined in <a href="https://github.com/origin1tech/stiks/blob/88e234a/src/argv.ts#L30">argv.ts:30</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -201,7 +228,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/origin1tech/stiks/blob/d640010/src/argv.ts#L20">argv.ts:20</a></li>
+									<li>Defined in <a href="https://github.com/origin1tech/stiks/blob/88e234a/src/argv.ts#L20">argv.ts:20</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -229,7 +256,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/origin1tech/stiks/blob/d640010/src/argv.ts#L50">argv.ts:50</a></li>
+									<li>Defined in <a href="https://github.com/origin1tech/stiks/blob/88e234a/src/argv.ts#L50">argv.ts:50</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -305,6 +332,9 @@
 					</li>
 					<li class=" tsd-kind-variable tsd-parent-kind-external-module tsd-is-not-exported">
 						<a href="_argv_.html#origargs" class="tsd-kind-icon">orig<wbr>Args</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-external-module">
+						<a href="_argv_.html#findcommand" class="tsd-kind-icon">find<wbr>Command</a>
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-external-module">
 						<a href="_argv_.html#getflag" class="tsd-kind-icon">get<wbr>Flag</a>

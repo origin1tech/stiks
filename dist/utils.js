@@ -202,7 +202,7 @@ function bump() {
     }
     _pkg.version = bump.full;
     pkg(_pkg);
-    log.info("bumped " + _pkg.name + " from " + origVer + " to " + bump.full + ".");
+    log.write("bumped " + _pkg.name + " from " + origVer + " to " + bump.full + ".");
 }
 exports.bump = bump;
 /**
@@ -253,7 +253,7 @@ function serve(name, options) {
             log.error(err);
         }
         else {
-            log.info("Browser Sync server " + name + " successfully initialized.");
+            log.info("browser Sync server " + name + " successfully initialized.");
         }
     });
     return server;
@@ -340,4 +340,99 @@ function layout(width, wrap) {
     };
 }
 exports.layout = layout;
+/**
+ * String Builder
+ * Builds string then joins by char with optional colorization.
+ *
+ * @param str the base value to build from if any.
+ */
+function stringBuilder(str) {
+    var arr = [];
+    str = str || '';
+    var methods;
+    var result;
+    /**
+     * Add
+     * Adds a value to the collection for rendering.
+     *
+     * @param str the string to be added.
+     * @param styles any colurs styles to be applied.
+     */
+    function add(str, styles) {
+        if (chek_1.isString(styles))
+            styles = styles.split('.');
+        styles = chek_1.toArray(styles, null, []);
+        if (styles.length)
+            str = colurs.applyAnsi(str, styles);
+        arr.push(str);
+        return methods;
+    }
+    /**
+     * Join
+     *
+     * @param char the char used for joining array.
+     */
+    function join(char) {
+        char = char || ' ';
+        result = arr.join(char);
+        return methods;
+    }
+    /**
+     * Format
+     *
+     * @param args arguments used to format string.
+     */
+    function format() {
+        var args = [];
+        for (var _i = 0; _i < arguments.length; _i++) {
+            args[_i] = arguments[_i];
+        }
+        if (!result)
+            join();
+        result = stringFormat(result, args);
+        return methods;
+    }
+    /**
+     * Render
+     * Joins and renders the built string.
+     *
+     * @param char optional character to join by.
+     */
+    function render(char) {
+        if (result)
+            return result;
+        join();
+        return result;
+    }
+    methods = {
+        add: add,
+        join: join,
+        format: format,
+        render: render
+    };
+    return methods;
+}
+exports.stringBuilder = stringBuilder;
+/**
+ * String Format
+ * Very simple string formatter by index.
+ * Supports using %s or %n chars.
+ *
+ * @private
+ * @param str the string to be formatted.
+ * @param args arguments used for formatting.
+ */
+function stringFormat(str) {
+    var args = [];
+    for (var _i = 1; _i < arguments.length; _i++) {
+        args[_i - 1] = arguments[_i];
+    }
+    var ctr = 0;
+    return str.replace(/%(s|n)/g, function (cur) {
+        var val = args[ctr];
+        ctr++;
+        return val || cur;
+    });
+}
+exports.stringFormat = stringFormat;
 //# sourceMappingURL=utils.js.map

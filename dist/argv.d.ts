@@ -8,4 +8,5 @@ export declare function parse(args?: any[]): {
     cmds: any[];
     cmd: string;
 };
+export declare function findCommand(valid: string[], args?: string[]): any;
 export { origArgs as args };

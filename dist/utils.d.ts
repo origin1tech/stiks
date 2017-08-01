@@ -1,4 +1,4 @@
-import { CopyTuple, IMap, ICopy, ITSNodeOptions } from './interfaces';
+import { CopyTuple, IMap, ICopy, ITSNodeOptions, IStringBuilderMethods } from './interfaces';
 import * as bsync from 'browser-sync';
 export declare const cwd: string;
 /**
@@ -70,3 +70,20 @@ export declare function layout(width?: number, wrap?: boolean): {
     span: <T>(...elements: T[]) => void;
     render: <T>(...elements: T[]) => void;
 };
+/**
+ * String Builder
+ * Builds string then joins by char with optional colorization.
+ *
+ * @param str the base value to build from if any.
+ */
+export declare function stringBuilder(str?: any): IStringBuilderMethods;
+/**
+ * String Format
+ * Very simple string formatter by index.
+ * Supports using %s or %n chars.
+ *
+ * @private
+ * @param str the string to be formatted.
+ * @param args arguments used for formatting.
+ */
+export declare function stringFormat(str: any, ...args: any[]): any;

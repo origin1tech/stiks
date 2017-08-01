@@ -1,5 +1,5 @@
 
-import { castType, getType, toBoolean } from 'chek';
+import { castType, getType, toBoolean, contains } from 'chek';
 
 let _args: string[] = process.argv.slice(2);
 let origArgs = [].slice.call(_args, 0);
@@ -63,6 +63,19 @@ export function parse(args?: any[]): { flags: { [key: string]: any }, cmds: any[
   };
 }
 
+export function findCommand(valid: string[], args?: string[]) {
+
+  // If no command line args passed try to parse them.
+  args = args || parse().cmds;
+  let i = valid.length;
+  let found;
+  while (i-- && !found) {
+    if (contains(args, valid[i]))
+      found = valid[i];
+  }
+  return found;
+
+}
 
 export { origArgs as args };
 

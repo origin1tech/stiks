@@ -1,5 +1,5 @@
 
-import { CopyTuple, IMap, ICopy, ITSNodeOptions, IUIOptions } from './interfaces';
+import { CopyTuple, IMap, ICopy, ITSNodeOptions, IUIOptions, IStringBuilderMethods } from './interfaces';
 import { readFileSync, readJSONSync, copySync, writeJSONSync } from 'fs-extra';
 import * as npm from './npm';
 import * as tsnode from 'ts-node';
@@ -243,7 +243,7 @@ export function bump() {
   _pkg.version = bump.full;
   pkg(_pkg);
 
-  log.info(`bumped ${_pkg.name} from ${origVer} to ${bump.full}.`);
+  log.write(`bumped ${_pkg.name} from ${origVer} to ${bump.full}.`);
 
 
 }
@@ -307,13 +307,11 @@ export function serve(name?: string | bsync.Options, options?: bsync.Options): b
       log.error(err);
     }
     else {
-      log.info(`Browser Sync server ${name} successfully initialized.`);
+      log.info(`browser Sync server ${name} successfully initialized.`);
     }
   });
 
-
   return server;
-
 
 }
 
@@ -390,5 +388,104 @@ export function layout(width?: number, wrap?: boolean) {
     render
   };
 
+
+}
+
+/**
+ * String Builder
+ * Builds string then joins by char with optional colorization.
+ *
+ * @param str the base value to build from if any.
+ */
+export function stringBuilder(str?: any): IStringBuilderMethods {
+
+  const arr = [];
+  str = str || '';
+
+  let methods: IStringBuilderMethods;
+  let result;
+
+  /**
+   * Add
+   * Adds a value to the collection for rendering.
+   *
+   * @param str the string to be added.
+   * @param styles any colurs styles to be applied.
+   */
+  function add(str: any, styles: string | string[]) {
+    if (isString(styles))
+      styles = (styles as string).split('.');
+    styles = toArray(styles, null, []);
+    if (styles.length)
+      str = colurs.applyAnsi(str, styles);
+    arr.push(str);
+    return methods;
+  }
+
+  /**
+   * Join
+   *
+   * @param char the char used for joining array.
+   */
+  function join(char?: string) {
+    char = char || ' ';
+    result = arr.join(char);
+    return methods;
+  }
+
+  /**
+   * Format
+   *
+   * @param args arguments used to format string.
+   */
+  function format(...args: any[]) {
+    if (!result)
+      join();
+    result = stringFormat(result, args);
+    return methods;
+  }
+
+  /**
+   * Render
+   * Joins and renders the built string.
+   *
+   * @param char optional character to join by.
+   */
+  function render(char?: string) {
+    if (result)
+      return result;
+    join();
+    return result;
+  }
+
+  methods = {
+    add,
+    join,
+    format,
+    render
+  };
+
+  return methods;
+
+}
+
+/**
+ * String Format
+ * Very simple string formatter by index.
+ * Supports using %s or %n chars.
+ *
+ * @private
+ * @param str the string to be formatted.
+ * @param args arguments used for formatting.
+ */
+export function stringFormat(str, ...args: any[]) {
+
+  let ctr = 0;
+
+  return str.replace(/%(s|n)/g, (cur) => {
+    const val = args[ctr];
+    ctr++;
+    return val || cur;
+  });
 
 }
