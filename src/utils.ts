@@ -1,5 +1,5 @@
 
-import { CopyTuple, IMap, ICopy, ITSNodeOptions } from './interfaces';
+import { CopyTuple, IMap, ICopy, ITSNodeOptions, IUIOptions } from './interfaces';
 import { readFileSync, readJSONSync, copySync, writeJSONSync } from 'fs-extra';
 import * as npm from './npm';
 import * as tsnode from 'ts-node';
@@ -9,10 +9,23 @@ import { toArray, isString, split, isPlainObject, isArray, keys, isNumber, castT
 import * as log from './logger';
 import * as glob from 'glob';
 import * as bsync from 'browser-sync';
+import * as cliui from 'cliui';
+import * as clrs from 'colurs';
 
 let _pkg;
 
 export const cwd = process.cwd();
+const colurs = clrs.get();
+
+function getParsed(filename) {
+  filename = resolve(cwd, filename);
+  return parse(filename);
+}
+
+function getRelative(filename) {
+  const parsed = isString(filename) ? getParsed(filename) : filename;
+  return relative(cwd, join(parsed.dir, parsed.base || ''));
+}
 
 /**
  * Clean
@@ -22,7 +35,15 @@ export const cwd = process.cwd();
  */
 export function clean(globs: string | string[]) {
   globs = toArray<string>(globs);
-  del.sync(globs);
+  globs.forEach((g) => {
+    try {
+      del.sync(g);
+      log.info(`successfully cleaned ${getRelative(g)}.`);
+    }
+    catch (ex) {
+      log.info(`failed to clean ${getRelative(g)}.`);
+    }
+  });
 }
 
 /**
@@ -32,17 +53,20 @@ export function clean(globs: string | string[]) {
  * @param src the source path to be copied.
  * @param dest the destination path to copy to.
  */
-export function copy(src: string, dest: string) {
+export function copy(src: string, dest: string): boolean {
 
-  src = resolve(process.cwd(), src);
-  dest = resolve(process.cwd(), dest);
+  const parsedSrc = getParsed(src);
+  const parsedDest = getParsed(dest);
 
-  const parsedSrc = parse(src);
-  const parsedDest = parse(dest);
-
-  copySync(src, dest);
-
-  // log.info(`successfully copied ${relative(cwd, join(parsedSrc.dir, parsedSrc.base))} to ${relative(cwd, join(parsedDest.dir, parsedDest.base))}.`);
+  try {
+    copySync(src, dest);
+    log.info(`successfully copied ${colurs.magenta(getRelative(parsedSrc))} to ${colurs.green(getRelative(parsedDest))}.`);
+    return true;
+  }
+  catch (ex) {
+    log.info(`failed to copy ${colurs.yellow(getRelative(parsedSrc))} to ${colurs.red(getRelative(parsedDest))}.`);
+    return false;
+  }
 
 }
 
@@ -54,6 +78,32 @@ export function copy(src: string, dest: string) {
  */
 export function copyAll(copies: CopyTuple[] | CopyTuple | IMap<ICopy> | string[]) {
 
+  let success: any = 0;
+  let failed: any = 0;
+  let result;
+
+  function update(_result) {
+    if (!_result)
+      failed++;
+    else
+      success++;
+  }
+
+  function logResults() {
+    // only log if something copied or failed.
+    if (success || failed) {
+      if (failed > success) {
+        if (!success)
+          log.error(`${colurs.red(failed)} copies ${colurs.red('failed')} to processes with 0 succeeding.`);
+        else
+          log.warn(`${colurs.red(failed)} copies ${colurs.red('failed')} to processes with ${colurs.green(success) + 'succeeding'}.`);
+      }
+      else {
+        log.info(`${colurs.green(success)} items ${colurs.green('successfully')} copied with ${colurs.yellow(failed)} copies ${colurs.yellow('failing')}.`);
+      }
+    }
+  }
+
   if (isPlainObject(copies)) {
 
     keys(<IMap<ICopy>>copies).forEach((k) => {
@@ -64,14 +114,18 @@ export function copyAll(copies: CopyTuple[] | CopyTuple | IMap<ICopy> | string[]
       if (itm.src.indexOf('*') !== -1) {
         const arr = glob.sync(itm.src);
         arr.forEach((str) => {
-          copy(str, itm.dest);
+          result = copy(str, itm.dest);
+          update(result);
         });
       }
       else {
-        copy(itm.src, itm.dest);
+        result = copy(itm.src, itm.dest);
+        update(result);
       }
 
     });
+
+    logResults();
 
   }
 
@@ -86,13 +140,17 @@ export function copyAll(copies: CopyTuple[] | CopyTuple | IMap<ICopy> | string[]
       if (tuple[0].indexOf('*') !== -1) {
         const arr = glob.sync(tuple[0]);
         arr.forEach((str) => {
-          copy(str, tuple[1]);
+          result = copy(str, tuple[1]);
+          update(result);
         });
       }
       else {
-        copy(tuple[0], tuple[1]);
+        result = copy(tuple[0], tuple[1]);
+        update(result);
       }
     });
+
+    logResults();
 
   }
   else {
@@ -109,9 +167,14 @@ export function copyAll(copies: CopyTuple[] | CopyTuple | IMap<ICopy> | string[]
  */
 export function pkg(val?: any) {
   const filename = resolve(cwd, 'package.json');
-  if (!val)
-    return _pkg || (_pkg = readJSONSync(filename)) || {};
-  writeJSONSync(filename, val, { spaces: 2 });
+  try {
+    if (!val)
+      return _pkg || (_pkg = readJSONSync(filename));
+    writeJSONSync(filename, val, { spaces: 2 });
+  }
+  catch (ex) {
+    log.error(ex);
+  }
 }
 
 /**
@@ -124,6 +187,9 @@ export function bump() {
 
   const semverKeys = ['major', 'minor', 'patch'];
   const _pkg = pkg();
+
+  if (!_pkg || !_pkg.version)
+    log.error('failed to load package.json, are you sure this is a valid project?').exit();
 
   const origVer = _pkg.version;
   const splitVer = _pkg.version.split('-');
@@ -236,9 +302,93 @@ export function serve(name?: string | bsync.Options, options?: bsync.Options): b
 
   const server = bsync.create(<string>name);
 
-  server.init(options);
+  server.init(options, (err) => {
+    if (err) {
+      log.error(err);
+    }
+    else {
+      log.info(`Browser Sync server ${name} successfully initialized.`);
+    }
+  });
+
 
   return server;
+
+
+}
+
+/**
+ * Layout
+ * Creates a CLI layout much like creating divs in the terminal.
+ * Supports strings with \t \s \n or IUIOptions object.
+ * @see https://www.npmjs.com/package/cliui
+ *
+ * @param width the width of the layout.
+ * @param wrap if the layout should wrap.
+ */
+export function layout(width?: number, wrap?: boolean) {
+
+  // Base width of all divs.
+  width = width || 95;
+
+  const ui = cliui({ width: width, wrap: wrap });
+
+  function invalidExit(element, elements) {
+    if (isString(element) && elements.length && isPlainObject(elements[0]))
+      log.error('invalid element(s) cannot mix string element with element options objects.').exit();
+  }
+
+  function add(type: string, ...elements: any[]) {
+    ui[type](...elements);
+  }
+
+  /**
+   * Div
+   * Adds Div to the UI.
+   *
+   * @param elements array of string or IUIOptions
+   */
+  function div<T>(...elements: T[]) {
+    add('div', ...elements);
+  }
+
+  /**
+   * Span
+   * Adds Span to the UI.
+   *
+   * @param elements array of string or IUIOptions
+   */
+  function span<T>(...elements: T[]) {
+    add('span', ...elements);
+  }
+
+  /**
+   * Get
+   * Gets the defined UI as string.
+   */
+  function getString() {
+    return ui.toString() || '';
+  }
+
+  /**
+   * Render
+   * Renders out the defined UI.
+   * When passing elements in render they default to "div" layout.
+   *
+   * @param elements optional elements to be defined at render.
+   */
+  function render<T>(...elements: T[]) {
+    if (elements.length)
+      add('div', ...elements);
+    console.log(getString());
+  }
+
+  return {
+    ui,
+    div,
+    span,
+    render
+  };
 
 
 }

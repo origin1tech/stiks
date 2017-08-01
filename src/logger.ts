@@ -92,6 +92,8 @@ function error(err) {
     logger('error', msg, stack[0]);
   }
 
+  return methods;
+
 }
 
 /**
@@ -118,7 +120,12 @@ const methods = {
   warn: logger.bind(logger, 'warn'),
   info: logger.bind(logger, 'info'),
   debug: logger.bind(logger, 'debug'),
-  write: function write(...args: any[]) { getConsole()(...args); return methods; },
+  write: function write(...args: any[]) {
+    const consul = getConsole();
+    if (!args.length)
+      args.unshift('');
+    consul(...args); return methods;
+  },
   exit: process.exit,
   depth: (depth?: number) => { if (depth) _depth = depth; else return _depth; },
   level: (level?: number) => { if (level) _level = level; else return _level; }

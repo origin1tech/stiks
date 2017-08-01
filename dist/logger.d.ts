@@ -1,5 +1,5 @@
 declare const methods: {
-    error: (err: any) => void;
+    error: (err: any) => any;
     warn: any;
     info: any;
     debug: any;

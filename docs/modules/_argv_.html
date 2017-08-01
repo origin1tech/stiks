@@ -78,14 +78,15 @@
 								<li class="tsd-kind-variable tsd-parent-kind-external-module tsd-is-not-exported"><a href="_argv_.html#_exclude" class="tsd-kind-icon">_exclude</a></li>
 								<li class="tsd-kind-variable tsd-parent-kind-external-module tsd-is-not-exported"><a href="_argv_.html#_flagexp" class="tsd-kind-icon">_flag<wbr>Exp</a></li>
 								<li class="tsd-kind-variable tsd-parent-kind-external-module tsd-is-not-exported"><a href="_argv_.html#_flags" class="tsd-kind-icon">_flags</a></li>
+								<li class="tsd-kind-variable tsd-parent-kind-external-module tsd-is-not-exported"><a href="_argv_.html#origargs" class="tsd-kind-icon">orig<wbr>Args</a></li>
 							</ul>
 						</section>
-						<section class="tsd-index-section tsd-is-not-exported">
+						<section class="tsd-index-section ">
 							<h3>Functions</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-function tsd-parent-kind-external-module tsd-is-not-exported"><a href="_argv_.html#getflag" class="tsd-kind-icon">get<wbr>Flag</a></li>
-								<li class="tsd-kind-function tsd-parent-kind-external-module tsd-is-not-exported"><a href="_argv_.html#isflag" class="tsd-kind-icon">is<wbr>Flag</a></li>
-								<li class="tsd-kind-function tsd-parent-kind-external-module tsd-is-not-exported"><a href="_argv_.html#parse" class="tsd-kind-icon">parse</a></li>
+								<li class="tsd-kind-function tsd-parent-kind-external-module"><a href="_argv_.html#getflag" class="tsd-kind-icon">get<wbr>Flag</a></li>
+								<li class="tsd-kind-function tsd-parent-kind-external-module"><a href="_argv_.html#isflag" class="tsd-kind-icon">is<wbr>Flag</a></li>
+								<li class="tsd-kind-function tsd-parent-kind-external-module"><a href="_argv_.html#parse" class="tsd-kind-icon">parse</a></li>
 							</ul>
 						</section>
 					</div>
@@ -99,7 +100,7 @@
 					<div class="tsd-signature tsd-kind-icon">_args<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> =&nbsp;process.argv.slice(2)</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/origin1tech/stiks/blob/614ee30/src/argv.ts#L4">argv.ts:4</a></li>
+							<li>Defined in <a href="https://github.com/origin1tech/stiks/blob/d640010/src/argv.ts#L4">argv.ts:4</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -109,7 +110,7 @@
 					<div class="tsd-signature tsd-kind-icon">_cmds<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> =&nbsp;[]</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/origin1tech/stiks/blob/614ee30/src/argv.ts#L7">argv.ts:7</a></li>
+							<li>Defined in <a href="https://github.com/origin1tech/stiks/blob/d640010/src/argv.ts#L8">argv.ts:8</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -119,7 +120,7 @@
 					<div class="tsd-signature tsd-kind-icon">_exclude<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> =&nbsp;[]</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/origin1tech/stiks/blob/614ee30/src/argv.ts#L16">argv.ts:16</a></li>
+							<li>Defined in <a href="https://github.com/origin1tech/stiks/blob/d640010/src/argv.ts#L17">argv.ts:17</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -129,7 +130,7 @@
 					<div class="tsd-signature tsd-kind-icon">_flag<wbr>Exp<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">RegExp</span><span class="tsd-signature-symbol"> =&nbsp;/^--?/</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/origin1tech/stiks/blob/614ee30/src/argv.ts#L13">argv.ts:13</a></li>
+							<li>Defined in <a href="https://github.com/origin1tech/stiks/blob/d640010/src/argv.ts#L14">argv.ts:14</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -139,7 +140,7 @@
 					<div class="tsd-signature tsd-kind-icon">_flags<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/origin1tech/stiks/blob/614ee30/src/argv.ts#L10">argv.ts:10</a></li>
+							<li>Defined in <a href="https://github.com/origin1tech/stiks/blob/d640010/src/argv.ts#L11">argv.ts:11</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-type-declaration">
@@ -148,20 +149,30 @@
 						</ul>
 					</div>
 				</section>
+				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-external-module tsd-is-not-exported">
+					<a name="origargs" class="tsd-anchor"></a>
+					<h3>orig<wbr>Args</h3>
+					<div class="tsd-signature tsd-kind-icon">orig<wbr>Args<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">any</span><span class="tsd-signature-symbol"> =&nbsp;[].slice.call(_args, 0)</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/origin1tech/stiks/blob/d640010/src/argv.ts#L5">argv.ts:5</a></li>
+						</ul>
+					</aside>
+				</section>
 			</section>
-			<section class="tsd-panel-group tsd-member-group tsd-is-not-exported">
+			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Functions</h2>
-				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-external-module tsd-is-not-exported">
+				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-external-module">
 					<a name="getflag" class="tsd-anchor"></a>
 					<h3>get<wbr>Flag</h3>
-					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module tsd-is-not-exported">
-						<li class="tsd-signature tsd-kind-icon">get<wbr>Flag<span class="tsd-signature-symbol">(</span>flag<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, idx<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, args<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span></li>
+					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module">
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Flag<span class="tsd-signature-symbol">(</span>flag<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, idx<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, args<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Object</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/origin1tech/stiks/blob/614ee30/src/argv.ts#L29">argv.ts:29</a></li>
+									<li>Defined in <a href="https://github.com/origin1tech/stiks/blob/d640010/src/argv.ts#L30">argv.ts:30</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -176,21 +187,21 @@
 									<h5>args: <span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">any</span></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Object</span></h4>
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-external-module tsd-is-not-exported">
+				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-external-module">
 					<a name="isflag" class="tsd-anchor"></a>
 					<h3>is<wbr>Flag</h3>
-					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module tsd-is-not-exported">
+					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module">
 						<li class="tsd-signature tsd-kind-icon">is<wbr>Flag<span class="tsd-signature-symbol">(</span>flag<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">false</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"value"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"boolean"</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/origin1tech/stiks/blob/614ee30/src/argv.ts#L19">argv.ts:19</a></li>
+									<li>Defined in <a href="https://github.com/origin1tech/stiks/blob/d640010/src/argv.ts#L20">argv.ts:20</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -208,17 +219,17 @@
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-external-module tsd-is-not-exported">
+				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-external-module">
 					<a name="parse" class="tsd-anchor"></a>
 					<h3>parse</h3>
-					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module tsd-is-not-exported">
+					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module">
 						<li class="tsd-signature tsd-kind-icon">parse<span class="tsd-signature-symbol">(</span>args<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">object</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/origin1tech/stiks/blob/614ee30/src/argv.ts#L46">argv.ts:46</a></li>
+									<li>Defined in <a href="https://github.com/origin1tech/stiks/blob/d640010/src/argv.ts#L50">argv.ts:50</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -229,6 +240,9 @@
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">object</span></h4>
 							<ul class="tsd-parameters">
+								<li class="tsd-parameter">
+									<h5>cmd<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></h5>
+								</li>
 								<li class="tsd-parameter">
 									<h5>cmds<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span></h5>
 								</li>
@@ -289,13 +303,16 @@
 					<li class=" tsd-kind-variable tsd-parent-kind-external-module tsd-is-not-exported">
 						<a href="_argv_.html#_flags" class="tsd-kind-icon">_flags</a>
 					</li>
-					<li class=" tsd-kind-function tsd-parent-kind-external-module tsd-is-not-exported">
+					<li class=" tsd-kind-variable tsd-parent-kind-external-module tsd-is-not-exported">
+						<a href="_argv_.html#origargs" class="tsd-kind-icon">orig<wbr>Args</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-external-module">
 						<a href="_argv_.html#getflag" class="tsd-kind-icon">get<wbr>Flag</a>
 					</li>
-					<li class=" tsd-kind-function tsd-parent-kind-external-module tsd-is-not-exported">
+					<li class=" tsd-kind-function tsd-parent-kind-external-module">
 						<a href="_argv_.html#isflag" class="tsd-kind-icon">is<wbr>Flag</a>
 					</li>
-					<li class=" tsd-kind-function tsd-parent-kind-external-module tsd-is-not-exported">
+					<li class=" tsd-kind-function tsd-parent-kind-external-module">
 						<a href="_argv_.html#parse" class="tsd-kind-icon">parse</a>
 					</li>
 				</ul>

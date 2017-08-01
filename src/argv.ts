@@ -1,7 +1,8 @@
 
-import { castType, getType } from 'chek';
+import { castType, getType, toBoolean } from 'chek';
 
-let _args = process.argv.slice(2);
+let _args: string[] = process.argv.slice(2);
+let origArgs = [].slice.call(_args, 0);
 
 // Array of packages to install
 const _cmds = [];
@@ -16,7 +17,7 @@ const _flagExp = /^--?/;
 const _exclude = [];
 
 // Checks if argument is a flag.
-function isFlag(flag: string) {
+export function isFlag(flag: string) {
   if (_flagExp.test(flag)) {
     if (/^--/.test(flag))
       return 'value';
@@ -26,7 +27,7 @@ function isFlag(flag: string) {
 }
 
 // Gets the flag.
-function getFlag(flag: string, idx: number, args: any[]) {
+export function getFlag(flag: string, idx: number, args: any[]) {
   const flagType = isFlag(flag);
   if (!flagType)
     return false;
@@ -35,7 +36,10 @@ function getFlag(flag: string, idx: number, args: any[]) {
   const nextIdx = idx + 1;
   if (args[nextIdx]) {
     _exclude.push(nextIdx);
-    return args[nextIdx];
+    const val = args[nextIdx];
+    if (val === 'true' || val === 'false')
+      return toBoolean(val);
+    return castType(val, getType(val));
   }
   // fallback to just boolean
   // if next arg not avail.
@@ -43,7 +47,7 @@ function getFlag(flag: string, idx: number, args: any[]) {
 }
 
 // Parse the arguments
-function parse(args?: any[]): { flags: { [key: string]: any }, cmds: any[] } {
+export function parse(args?: any[]): { flags: { [key: string]: any }, cmds: any[], cmd: string } {
   args = args || _args;
   args.forEach((el, idx) => {
     const flag = getFlag(el, idx, args);
@@ -54,12 +58,11 @@ function parse(args?: any[]): { flags: { [key: string]: any }, cmds: any[] } {
   });
   return {
     flags: _flags,
-    cmds: _cmds
+    cmds: _cmds,
+    cmd: _cmds[0] // the primary command.
   };
 }
 
-export {
-  isFlag,
-  getFlag,
-  parse
-};
+
+export { origArgs as args };
+

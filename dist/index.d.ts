@@ -5,4 +5,5 @@ import * as chek from 'chek';
 import * as fs from 'fs-extra';
 import * as argv from './argv';
 export * from './utils';
+export * from './interfaces';
 export { log, npm, chek, colurs, fs, argv };

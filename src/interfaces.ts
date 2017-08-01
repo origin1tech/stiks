@@ -1,4 +1,5 @@
 
+
 export type CopyTuple = [string, string];
 
 export interface IMap<T> {
@@ -96,4 +97,12 @@ export interface INpmCommands {
   view: NpmCommand;
   whoami: NpmCommand;
 
+}
+
+export interface IUIOptions {
+  text: string;
+  width?: number;
+  padding?: number | number[];
+  align?: string;
+  border?: boolean;
 }

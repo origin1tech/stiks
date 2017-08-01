@@ -1,6 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+var chek_1 = require("chek");
 var _args = process.argv.slice(2);
+var origArgs = [].slice.call(_args, 0);
+exports.args = origArgs;
 // Array of packages to install
 var _cmds = [];
 // Flags passed in cli.
@@ -29,7 +32,10 @@ function getFlag(flag, idx, args) {
     var nextIdx = idx + 1;
     if (args[nextIdx]) {
         _exclude.push(nextIdx);
-        return args[nextIdx];
+        var val = args[nextIdx];
+        if (val === 'true' || val === 'false')
+            return chek_1.toBoolean(val);
+        return chek_1.castType(val, chek_1.getType(val));
     }
     // fallback to just boolean
     // if next arg not avail.
@@ -48,7 +54,8 @@ function parse(args) {
     });
     return {
         flags: _flags,
-        cmds: _cmds
+        cmds: _cmds,
+        cmd: _cmds[0] // the primary command.
     };
 }
 exports.parse = parse;

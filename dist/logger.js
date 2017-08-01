@@ -83,6 +83,7 @@ function error(err) {
         var stack = parseStack(err.stack, _depth, true);
         logger('error', msg, stack[0]);
     }
+    return methods;
 }
 /**
  * Logger
@@ -116,7 +117,10 @@ var methods = {
         for (var _i = 0; _i < arguments.length; _i++) {
             args[_i] = arguments[_i];
         }
-        getConsole().apply(void 0, args);
+        var consul = getConsole();
+        if (!args.length)
+            args.unshift('');
+        consul.apply(void 0, args);
         return methods;
     },
     exit: process.exit,

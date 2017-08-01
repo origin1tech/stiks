@@ -15,7 +15,7 @@ export declare function clean(globs: string | string[]): void;
  * @param src the source path to be copied.
  * @param dest the destination path to copy to.
  */
-export declare function copy(src: string, dest: string): void;
+export declare function copy(src: string, dest: string): boolean;
 /**
  * Copy All
  * Takes collection and copies to destination.
@@ -55,3 +55,18 @@ export declare function tsnodeRegister(project?: string | ITSNodeOptions, opts?:
  * @param options the Browser Sync Options.
  */
 export declare function serve(name?: string | bsync.Options, options?: bsync.Options): bsync.BrowserSyncInstance;
+/**
+ * Layout
+ * Creates a CLI layout much like creating divs in the terminal.
+ * Supports strings with \t \s \n or IUIOptions object.
+ * @see https://www.npmjs.com/package/cliui
+ *
+ * @param width the width of the layout.
+ * @param wrap if the layout should wrap.
+ */
+export declare function layout(width?: number, wrap?: boolean): {
+    ui: any;
+    div: <T>(...elements: T[]) => void;
+    span: <T>(...elements: T[]) => void;
+    render: <T>(...elements: T[]) => void;
+};
