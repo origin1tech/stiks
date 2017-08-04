@@ -38,5 +38,4 @@ switch (parsed.cmd) {
       .write()
       .exit();
 
-
 }

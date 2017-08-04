@@ -1,4 +1,4 @@
-import { CopyTuple, IMap, ICopy, ITSNodeOptions, IStringBuilderMethods } from './interfaces';
+import { CopyTuple, IMap, ICopy, ITSNodeOptions, IStringBuilderMethods, ICpu } from './interfaces';
 import * as bsync from 'browser-sync';
 export declare const cwd: string;
 /**
@@ -87,3 +87,15 @@ export declare function stringBuilder(str?: any): IStringBuilderMethods;
  * @param args arguments used for formatting.
  */
 export declare function stringFormat(str: any, ...args: any[]): any;
+/**
+ * Platform
+ * Gets information and paths for the current platform.
+ */
+export declare function platform(): {
+    platform: any;
+    arch: string;
+    release: string;
+    hostname: string;
+    homedir: string;
+    cpu: ICpu;
+};

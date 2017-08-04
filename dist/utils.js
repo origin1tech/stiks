@@ -10,6 +10,7 @@ var glob = require("glob");
 var bsync = require("browser-sync");
 var cliui = require("cliui");
 var clrs = require("colurs");
+var os = require("os");
 var _pkg;
 exports.cwd = process.cwd();
 var colurs = clrs.get();
@@ -435,4 +436,29 @@ function stringFormat(str) {
     });
 }
 exports.stringFormat = stringFormat;
+/**
+ * Platform
+ * Gets information and paths for the current platform.
+ */
+function platform() {
+    var cpus = os.cpus();
+    var cpu = cpus[0];
+    cpu.cores = cpus.length;
+    var tmpPlatform = os.platform();
+    if (/^win/.test(tmpPlatform))
+        tmpPlatform = 'windows';
+    else if (tmpPlatform === 'darwin' || tmpPlatform === 'freebsd')
+        tmpPlatform = 'mac';
+    else if (tmpPlatform === 'linux')
+        tmpPlatform = 'linux';
+    return {
+        platform: tmpPlatform,
+        arch: os.arch(),
+        release: os.release(),
+        hostname: os.hostname(),
+        homedir: os.homedir(),
+        cpu: cpu
+    };
+}
+exports.platform = platform;
 //# sourceMappingURL=utils.js.map

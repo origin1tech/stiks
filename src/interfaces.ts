@@ -1,4 +1,5 @@
 
+import { CpuInfo } from 'os';
 
 export type CopyTuple = [string, string];
 export type StringBuilderAdd = (str: any, styles: string | string[]) => IStringBuilderMethods;
@@ -117,4 +118,8 @@ export interface IUIOptions {
   padding?: number | number[];
   align?: string;
   border?: boolean;
+}
+
+export interface ICpu extends CpuInfo {
+  cores?: number;
 }

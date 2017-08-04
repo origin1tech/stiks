@@ -5,8 +5,6 @@ function __export(m) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var log = require("./logger");
 exports.log = log;
-var npm = require("./npm");
-exports.npm = npm;
 var colurs = require("colurs");
 exports.colurs = colurs;
 var chek = require("chek");
@@ -15,5 +13,7 @@ var fs = require("fs-extra");
 exports.fs = fs;
 var argv = require("./argv");
 exports.argv = argv;
+var npm = require("./npm");
+exports.npm = npm;
 __export(require("./utils"));
 //# sourceMappingURL=index.js.map

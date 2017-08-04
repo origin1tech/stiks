@@ -1,3 +1,5 @@
+/// <reference types="node" />
+import { CpuInfo } from 'os';
 export declare type CopyTuple = [string, string];
 export declare type StringBuilderAdd = (str: any, styles: string | string[]) => IStringBuilderMethods;
 export declare type StringBuilderRender = (char?: string) => string;
@@ -97,4 +99,7 @@ export interface IUIOptions {
     padding?: number | number[];
     align?: string;
     border?: boolean;
+}
+export interface ICpu extends CpuInfo {
+    cores?: number;
 }

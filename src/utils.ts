@@ -1,7 +1,6 @@
 
-import { CopyTuple, IMap, ICopy, ITSNodeOptions, IUIOptions, IStringBuilderMethods } from './interfaces';
-import { readFileSync, readJSONSync, copySync, writeJSONSync } from 'fs-extra';
-import * as npm from './npm';
+import { CopyTuple, IMap, ICopy, ITSNodeOptions, IUIOptions, IStringBuilderMethods, ICpu } from './interfaces';
+import { readFileSync, readJSONSync, copySync, writeJSONSync, existsSync } from 'fs-extra';
 import * as tsnode from 'ts-node';
 import * as del from 'del';
 import { resolve, parse, relative, join } from 'path';
@@ -11,6 +10,7 @@ import * as glob from 'glob';
 import * as bsync from 'browser-sync';
 import * as cliui from 'cliui';
 import * as clrs from 'colurs';
+import * as os from 'os';
 
 let _pkg;
 
@@ -487,5 +487,34 @@ export function stringFormat(str, ...args: any[]) {
     ctr++;
     return val || cur;
   });
+
+}
+
+/**
+ * Platform
+ * Gets information and paths for the current platform.
+ */
+export function platform() {
+
+  const cpus = os.cpus();
+  const cpu: ICpu = cpus[0];
+  cpu.cores = cpus.length;
+  let tmpPlatform: any = os.platform();
+
+  if (/^win/.test(tmpPlatform))
+    tmpPlatform = 'windows';
+  else if (tmpPlatform === 'darwin' || tmpPlatform === 'freebsd')
+    tmpPlatform = 'mac';
+  else if (tmpPlatform === 'linux')
+    tmpPlatform = 'linux';
+
+  return {
+    platform: tmpPlatform,
+    arch: os.arch(),
+    release: os.release(),
+    hostname: os.hostname(),
+    homedir: os.homedir(),
+    cpu: cpu
+  };
 
 }
