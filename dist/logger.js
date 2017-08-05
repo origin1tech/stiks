@@ -1,8 +1,8 @@
-"use strict";
 /**
  * Logger
  * Barebones just for building apps logs only to console.
  */
+"use strict";
 var path_1 = require("path");
 var colurs = require("colurs");
 var chek_1 = require("chek");
