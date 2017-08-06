@@ -13,7 +13,7 @@ var fs = require("fs-extra");
 exports.fs = fs;
 var argv = require("./argv");
 exports.argv = argv;
-var npm = require("./npm");
-exports.npm = npm;
+var exec_1 = require("./exec");
+exports.exec = exec_1.methods;
 __export(require("./utils"));
 //# sourceMappingURL=index.js.map

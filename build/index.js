@@ -22,13 +22,6 @@ switch (parsed.cmd) {
     stiks.clean(build.clean);
     break;
 
-  case 'test':
-    const str =
-      stiks.stringBuilder().add('Bob Jones', 'bgRed.white').add('is my name.').render();
-    console.log(str);
-
-    break;
-
   case 'bump':
     stiks.bump();
     break;
