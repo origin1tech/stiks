@@ -1,6 +1,6 @@
 {
   "name": "stiks",
-  "version": "1.0.10",
+  "version": "1.0.11",
   "description": "Node bundling & workflow utility for building Node apps.",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
@@ -34,6 +34,9 @@
   "build": {
     "clean": [
       "./dist"
+    ],
+    "copy": [
+      "./src/build|./dist/blueprints/build"
     ]
   },
   "devDependencies": {

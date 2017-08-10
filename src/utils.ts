@@ -17,15 +17,61 @@ export const cwd = process.cwd();
 const colurs = clrs.get();
 const log = logger.get();
 
+/**
+ * Get Parsed
+ *
+ * @param filename the filename to path.parse.
+ */
 function getParsed(filename) {
   filename = resolve(cwd, filename);
   return parse(filename);
 }
 
+/**
+ * Get Relative
+ *
+ * @param filename the filename to get relative path for.
+ */
 function getRelative(filename) {
   const parsed = isString(filename) ? getParsed(filename) : filename;
   return relative(cwd, join(parsed.dir, parsed.base || ''));
 }
+
+/**
+ * Seed
+ * Internal method for seeding examples/templates.
+ *
+ * @param type the type of seed to run.
+ * @param dest the optional destination relative to root.
+ */
+function seeder(type: string, dest?: string) {
+
+  const source = resolve(__dirname, join('blueprints', type));
+  dest = dest ? resolve(cwd, dest) : resolve(cwd, type);
+
+  switch (type) {
+
+    case 'build':
+      copyAll([source, dest]);
+      break;
+
+    default:
+      log.warn(`seed type ${type} was not found.`);
+      break;
+
+  }
+
+}
+
+/**
+ * Seed
+ * Seeds known templates/examples.
+ */
+export const seed = {
+
+  build: seeder.bind(null, 'build')
+
+};
 
 /**
  * Clean
@@ -58,15 +104,14 @@ export function clean(globs: string | string[]) {
 export function copy(src: string, dest: string): boolean {
 
   if (!src || !dest)
-    return true;
+    return false;
 
   let parsedSrc, parsedDest;
+  parsedSrc = getParsed(src);
+  parsedDest = getParsed(dest);
 
   try {
-    const parsedSrc = getParsed(src);
-    const parsedDest = getParsed(dest);
     copySync(src, dest);
-    // log.info(`successfully copied ${colurs.magenta(getRelative(parsedSrc))} to ${colurs.green(getRelative(parsedDest))}.`);
     return true;
   }
   catch (ex) {
@@ -139,10 +184,10 @@ export function copyAll(copies: CopyTuple[] | CopyTuple | IMap<ICopy> | string[]
 
     // If not array of tuples convert.
     if (isString(copies[0]))
-      copies = toArray<CopyTuple>(copies);
+      copies = <CopyTuple[]>[copies[0].split('|')];
 
     (copies as CopyTuple[]).forEach((c) => {
-      const tuple = isString(c) ? split(c, '|') : c;
+      const tuple = c;
       if (tuple[0].indexOf('*') !== -1) {
         const arr = glob.sync(tuple[0]);
         arr.forEach((str) => {
@@ -252,37 +297,6 @@ export function bump() {
   // log.info(`bumped ${_pkg.name} from ${colurs.magenta(origVer)} to ${colurs.green(bump.full)}.`);
 
   return { name: _pkg.name, version: _pkg.version, original: origVer };
-
-}
-
-/**
- * TS Node Register
- * Calls ts-node's register method for use with testing frameworks..
- * @see https://github.com/TypeStrong/ts-node#configuration-options
- *
- * @param project the tsconfig.json path or ts-node options.
- * @param opts ts-node options.
- */
-export function tsnodeRegister(project?: string | ITSNodeOptions, opts?: ITSNodeOptions) {
-
-  if (isPlainObject(project)) {
-    opts = <ITSNodeOptions>project;
-    project = undefined;
-  }
-
-  const defaults = {
-    project: './src/tsconfig.spec.json',
-    fast: true
-  };
-
-  opts = extend<ITSNodeOptions>({}, defaults, opts);
-
-  const tsnode = tryRequire('ts-node');
-
-  if (!tsnode)
-    log.error('failed to load root module ts-node, ensure the module is installed.');
-
-  tsnode.register(opts);
 
 }
 
@@ -537,3 +551,4 @@ export function platform() {
   };
 
 }
+

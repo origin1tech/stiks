@@ -1,6 +1,13 @@
-import { CopyTuple, IMap, ICopy, ITSNodeOptions, IStringBuilderMethods, ICpu } from './interfaces';
+import { CopyTuple, IMap, ICopy, IStringBuilderMethods, ICpu } from './interfaces';
 import { Options, BrowserSyncInstance } from 'browser-sync';
 export declare const cwd: string;
+/**
+ * Seed
+ * Seeds known templates/examples.
+ */
+export declare const seed: {
+    build: any;
+};
 /**
  * Clean
  * Removes file(s) using provided glob(s).
@@ -41,15 +48,6 @@ export declare function bump(): {
     version: any;
     original: any;
 };
-/**
- * TS Node Register
- * Calls ts-node's register method for use with testing frameworks..
- * @see https://github.com/TypeStrong/ts-node#configuration-options
- *
- * @param project the tsconfig.json path or ts-node options.
- * @param opts ts-node options.
- */
-export declare function tsnodeRegister(project?: string | ITSNodeOptions, opts?: ITSNodeOptions): void;
 /**
  * Serve
  * Hook to Browser Sync accepts name and options returning a Browser Sync Server Instance.

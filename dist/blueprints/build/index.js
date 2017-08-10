@@ -1,4 +1,4 @@
-const stiks = require('../dist');
+const stiks = require('stiks');
 const log = stiks.log;
 const argv = stiks.argv;
 const colurs = stiks.colurs.get();
@@ -42,13 +42,13 @@ function normalize(cmds, options) {
 const actions = {
 
   clean: () => {
-    // stiks.clean(build.clean);
-    // log.debug(`cleaned ${pkg.name}.`);
+    stiks.clean(build.clean);
+    log.debug(`cleaned ${pkg.name}.`);
     return actions;
   },
 
   copy: () => {
-    stiks.copyAll(build.copy);
+    stiks.copy(build.copy);
     return actions;
   },
 

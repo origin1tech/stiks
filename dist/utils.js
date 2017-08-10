@@ -13,14 +13,50 @@ var _pkg;
 exports.cwd = process.cwd();
 var colurs = clrs.get();
 var log = logger.get();
+/**
+ * Get Parsed
+ *
+ * @param filename the filename to path.parse.
+ */
 function getParsed(filename) {
     filename = path_1.resolve(exports.cwd, filename);
     return path_1.parse(filename);
 }
+/**
+ * Get Relative
+ *
+ * @param filename the filename to get relative path for.
+ */
 function getRelative(filename) {
     var parsed = chek_1.isString(filename) ? getParsed(filename) : filename;
     return path_1.relative(exports.cwd, path_1.join(parsed.dir, parsed.base || ''));
 }
+/**
+ * Seed
+ * Internal method for seeding examples/templates.
+ *
+ * @param type the type of seed to run.
+ * @param dest the optional destination relative to root.
+ */
+function seeder(type, dest) {
+    var source = path_1.resolve(__dirname, path_1.join('blueprints', type));
+    dest = dest ? path_1.resolve(exports.cwd, dest) : path_1.resolve(exports.cwd, type);
+    switch (type) {
+        case 'build':
+            copyAll([source, dest]);
+            break;
+        default:
+            log.warn("seed type " + type + " was not found.");
+            break;
+    }
+}
+/**
+ * Seed
+ * Seeds known templates/examples.
+ */
+exports.seed = {
+    build: seeder.bind(null, 'build')
+};
 /**
  * Clean
  * Removes file(s) using provided glob(s).
@@ -51,13 +87,12 @@ exports.clean = clean;
  */
 function copy(src, dest) {
     if (!src || !dest)
-        return true;
+        return false;
     var parsedSrc, parsedDest;
+    parsedSrc = getParsed(src);
+    parsedDest = getParsed(dest);
     try {
-        var parsedSrc_1 = getParsed(src);
-        var parsedDest_1 = getParsed(dest);
         fs_extra_1.copySync(src, dest);
-        // log.info(`successfully copied ${colurs.magenta(getRelative(parsedSrc))} to ${colurs.green(getRelative(parsedDest))}.`);
         return true;
     }
     catch (ex) {
@@ -117,9 +152,9 @@ function copyAll(copies) {
     else if (chek_1.isArray(copies)) {
         // If not array of tuples convert.
         if (chek_1.isString(copies[0]))
-            copies = chek_1.toArray(copies);
+            copies = [copies[0].split('|')];
         copies.forEach(function (c) {
-            var tuple = chek_1.isString(c) ? chek_1.split(c, '|') : c;
+            var tuple = c;
             if (tuple[0].indexOf('*') !== -1) {
                 var arr = glob.sync(tuple[0]);
                 arr.forEach(function (str) {
@@ -211,30 +246,6 @@ function bump() {
     return { name: _pkg.name, version: _pkg.version, original: origVer };
 }
 exports.bump = bump;
-/**
- * TS Node Register
- * Calls ts-node's register method for use with testing frameworks..
- * @see https://github.com/TypeStrong/ts-node#configuration-options
- *
- * @param project the tsconfig.json path or ts-node options.
- * @param opts ts-node options.
- */
-function tsnodeRegister(project, opts) {
-    if (chek_1.isPlainObject(project)) {
-        opts = project;
-        project = undefined;
-    }
-    var defaults = {
-        project: './src/tsconfig.spec.json',
-        fast: true
-    };
-    opts = chek_1.extend({}, defaults, opts);
-    var tsnode = chek_1.tryRequire('ts-node');
-    if (!tsnode)
-        log.error('failed to load root module ts-node, ensure the module is installed.');
-    tsnode.register(opts);
-}
-exports.tsnodeRegister = tsnodeRegister;
 /**
  * Serve
  * Hook to Browser Sync accepts name and options returning a Browser Sync Server Instance.
