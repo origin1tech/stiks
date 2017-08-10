@@ -11,6 +11,7 @@ export type StringBuilderAdd = (str: any, styles: string | string[]) => IStringB
 export type StringBuilderRender = (char?: string) => string;
 export type StringBuilderJoin = (char?: string) => IStringBuilderMethods;
 export type StringBuilderFormat = (...args: any[]) => IStringBuilderMethods;
+export type Colors = 'white' | 'black' | 'red' | 'green' | 'blue' | 'yellow' | 'magenta' | 'gray';
 
 export interface IMap<T> {
   [key: string]: T;
@@ -77,6 +78,12 @@ export interface ILoggerOptions {
   prettyStack?: boolean;
   miniStack?: boolean;
   timestamp?: boolean | 'date' | 'time';
+  colorMap?: {
+    error?: Colors
+    warn?: Colors
+    info?: Colors
+    debug?: Colors
+  };
 }
 
 export interface IStacktraceFrame {

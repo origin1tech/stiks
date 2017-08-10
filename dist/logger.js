@@ -18,16 +18,14 @@ var DEFAULTS = {
     stackTrace: true,
     prettyStack: false,
     miniStack: true,
-    timestamp: 'time'
+    timestamp: 'time',
+    colorMap: {
+        error: 'red',
+        warn: 'yellow',
+        info: 'green',
+        debug: 'magenta'
+    }
 };
-// Logger types.
-var TYPES = {
-    error: 'red',
-    warn: 'yellow',
-    info: 'green',
-    debug: 'magenta'
-};
-var TYPE_KEYS = chek_1.keys(TYPES);
 var FORMAT_TOKEN_EXP = /(%s|%d|%j|%%)/g;
 var Logger = (function () {
     function Logger(options) {
@@ -183,11 +181,12 @@ var Logger = (function () {
         var stackTrace;
         var err, errMsg, meta, prune, timestamp, msg, normalized, rawMsg;
         var fn = chek_1.noop;
+        var types = chek_1.keys(this.options.colorMap);
         var clone = args.slice(0);
         var result = [];
         var suffix = [];
-        var idx = this.getIndex(type, TYPE_KEYS);
-        var level = this.getIndex(this.options.level, TYPE_KEYS);
+        var idx = this.getIndex(type, types);
+        var level = this.getIndex(this.options.level, types);
         if (idx > level || idx === -1)
             return this;
         if (chek_1.isFunction(chek_1.last(clone))) {
@@ -202,7 +201,7 @@ var Logger = (function () {
         if (this.options.timestamp)
             result.push(this.colorizeIf("[" + timestamp + "]", 'magenta'));
         // Add the type.
-        result.push(this.colorizeIf(type + ":", TYPES[type]));
+        result.push(this.colorizeIf(type + ":", this.options.colorMap[type]));
         // If error we need to build the message.
         if (err) {
             errMsg = (err.name || 'Error') + ': ';

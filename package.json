@@ -1,6 +1,6 @@
 {
   "name": "stiks",
-  "version": "1.0.11",
+  "version": "1.0.12",
   "description": "Node bundling & workflow utility for building Node apps.",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",

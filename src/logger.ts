@@ -22,18 +22,15 @@ const DEFAULTS = {
   stackTrace: true,
   prettyStack: false,
   miniStack: true,
-  timestamp: 'time'
+  timestamp: 'time',
+  colorMap: {
+    error: 'red',
+    warn: 'yellow',
+    info: 'green',
+    debug: 'magenta'
+  }
 };
 
-// Logger types.
-const TYPES = {
-  error: 'red',
-  warn: 'yellow',
-  info: 'green',
-  debug: 'magenta'
-};
-
-const TYPE_KEYS = keys(TYPES);
 const FORMAT_TOKEN_EXP = /(%s|%d|%j|%%)/g;
 
 export class Logger {
@@ -222,11 +219,13 @@ export class Logger {
     let stackTrace: IStacktraceResult;
     let err, errMsg, meta, prune, timestamp, msg, normalized, rawMsg;
     let fn = noop;
+    let types = keys(this.options.colorMap);
+
     const clone = args.slice(0);
     const result = [];
     const suffix = [];
-    const idx = this.getIndex(type, TYPE_KEYS);
-    const level = this.getIndex(this.options.level, TYPE_KEYS);
+    const idx = this.getIndex(type, types);
+    const level = this.getIndex(this.options.level, types);
 
     if (idx > level || idx === -1)
       return this;
@@ -246,7 +245,7 @@ export class Logger {
       result.push(this.colorizeIf(`[${timestamp}]`, 'magenta'));
 
     // Add the type.
-    result.push(this.colorizeIf(`${type}:`, TYPES[type]));
+    result.push(this.colorizeIf(`${type}:`, this.options.colorMap[type]));
 
     // If error we need to build the message.
     if (err) {
