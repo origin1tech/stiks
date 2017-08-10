@@ -1,21 +1,21 @@
 
-import { CopyTuple, IMap, ICopy, ITSNodeOptions, IUIOptions, IStringBuilderMethods, ICpu } from './interfaces';
-import { readFileSync, readJSONSync, copySync, writeJSONSync, existsSync } from 'fs-extra';
-import * as tsnode from 'ts-node';
-import * as del from 'del';
+import * as os from 'os';
 import { resolve, parse, relative, join } from 'path';
-import { toArray, isString, split, isPlainObject, isArray, keys, isNumber, castType, isValue, extend } from 'chek';
-import * as log from './logger';
+import * as del from 'del';
+import { toArray, isString, split, isPlainObject, isArray, keys, isNumber, castType, isValue, extend, tryRequire, tryRootRequire } from 'chek';
+import * as logger from './logger';
 import * as glob from 'glob';
-import * as bsync from 'browser-sync';
 import * as cliui from 'cliui';
 import * as clrs from 'colurs';
-import * as os from 'os';
+import { readFileSync, readJSONSync, copySync, writeJSONSync, existsSync } from 'fs-extra';
+import { CopyTuple, IMap, ICopy, ITSNodeOptions, IUIOptions, IStringBuilderMethods, ICpu } from './interfaces';
+import { Options, BrowserSyncInstance } from 'browser-sync';
 
 let _pkg;
 
 export const cwd = process.cwd();
 const colurs = clrs.get();
+const log = logger.get();
 
 function getParsed(filename) {
   filename = resolve(cwd, filename);
@@ -38,7 +38,9 @@ export function clean(globs: string | string[]) {
   globs.forEach((g) => {
     try {
       del.sync(g);
-      log.info(`successfully cleaned ${getRelative(g)}.`);
+      // Some files may not exist del doesn't throw
+      // error just continues.
+      // log.info(`successfully cleaned or ignored ${getRelative(g)}.`);
     }
     catch (ex) {
       log.info(`failed to clean ${getRelative(g)}.`);
@@ -55,16 +57,20 @@ export function clean(globs: string | string[]) {
  */
 export function copy(src: string, dest: string): boolean {
 
-  const parsedSrc = getParsed(src);
-  const parsedDest = getParsed(dest);
+  if (!src || !dest)
+    return true;
+
+  let parsedSrc, parsedDest;
 
   try {
+    const parsedSrc = getParsed(src);
+    const parsedDest = getParsed(dest);
     copySync(src, dest);
-    log.info(`successfully copied ${colurs.magenta(getRelative(parsedSrc))} to ${colurs.green(getRelative(parsedDest))}.`);
+    // log.info(`successfully copied ${colurs.magenta(getRelative(parsedSrc))} to ${colurs.green(getRelative(parsedDest))}.`);
     return true;
   }
   catch (ex) {
-    log.info(`failed to copy ${colurs.yellow(getRelative(parsedSrc))} to ${colurs.red(getRelative(parsedDest))}.`);
+    log.warn(`failed to copy ${colurs.yellow(getRelative(parsedSrc || 'undefined'))} to ${colurs.red(getRelative(parsedDest || 'undefined'))}.`);
     return false;
   }
 
@@ -243,8 +249,9 @@ export function bump() {
   _pkg.version = bump.full;
   pkg(_pkg);
 
-  log.write(`bumped ${_pkg.name} from ${origVer} to ${bump.full}.`);
+  // log.info(`bumped ${_pkg.name} from ${colurs.magenta(origVer)} to ${colurs.green(bump.full)}.`);
 
+  return { name: _pkg.name, version: _pkg.version, original: origVer };
 
 }
 
@@ -270,6 +277,11 @@ export function tsnodeRegister(project?: string | ITSNodeOptions, opts?: ITSNode
 
   opts = extend<ITSNodeOptions>({}, defaults, opts);
 
+  const tsnode = tryRequire('ts-node');
+
+  if (!tsnode)
+    log.error('failed to load root module ts-node, ensure the module is installed.');
+
   tsnode.register(opts);
 
 }
@@ -282,16 +294,17 @@ export function tsnodeRegister(project?: string | ITSNodeOptions, opts?: ITSNode
  * @param name the name of the server or Browser Sync options.
  * @param options the Browser Sync Options.
  */
-export function serve(name?: string | bsync.Options, options?: bsync.Options): bsync.BrowserSyncInstance {
+export function serve(name?: string | Options, options?: Options | boolean, init?: boolean): BrowserSyncInstance {
 
   const _pkg = pkg();
 
   if (isPlainObject(name)) {
-    options = <bsync.Options>name;
+    init = <boolean>options;
+    options = <Options>name;
     name = undefined;
   }
 
-  const defaults: bsync.Options = {
+  const defaults: Options = {
     server: {
       baseDir: './dist'
     }
@@ -300,16 +313,22 @@ export function serve(name?: string | bsync.Options, options?: bsync.Options): b
   name = name || _pkg.name || 'dev-server';
   options = extend({}, defaults, options);
 
+  const bsync = tryRootRequire('browser-sync');
+
+  if (!bsync)
+    log.error('failed to load root module browser-sync, ensure the module is installed');
+
   const server = bsync.create(<string>name);
 
-  server.init(options, (err) => {
-    if (err) {
-      log.error(err);
-    }
-    else {
-      log.info(`browser Sync server ${name} successfully initialized.`);
-    }
-  });
+  if (init !== false)
+    server.init(<Options>options, (err) => {
+      if (err) {
+        log.error(err);
+      }
+      else {
+        log.info(`browser Sync server ${name} successfully initialized.`);
+      }
+    });
 
   return server;
 

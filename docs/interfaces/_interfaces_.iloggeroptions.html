@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>ITSNodeOptions | Stiks</title>
+	<title>ILoggerOptions | Stiks</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -59,10 +59,10 @@
 					<a href="../modules/_interfaces_.html">&quot;interfaces&quot;</a>
 				</li>
 				<li>
-					<a href="_interfaces_.itsnodeoptions.html">ITSNodeOptions</a>
+					<a href="_interfaces_.iloggeroptions.html">ILoggerOptions</a>
 				</li>
 			</ul>
-			<h1>Interface ITSNodeOptions</h1>
+			<h1>Interface ILoggerOptions</h1>
 		</div>
 	</div>
 </header>
@@ -73,7 +73,7 @@
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">ITSNodeOptions</span>
+						<span class="target">ILoggerOptions</span>
 					</li>
 				</ul>
 			</section>
@@ -84,17 +84,16 @@
 						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_interfaces_.itsnodeoptions.html#cache" class="tsd-kind-icon">cache</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_interfaces_.itsnodeoptions.html#cachedirectory" class="tsd-kind-icon">cache<wbr>Directory</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_interfaces_.itsnodeoptions.html#compiler" class="tsd-kind-icon">compiler</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_interfaces_.itsnodeoptions.html#compileroptions" class="tsd-kind-icon">compiler<wbr>Options</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_interfaces_.itsnodeoptions.html#disablewarnings" class="tsd-kind-icon">disable<wbr>Warnings</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_interfaces_.itsnodeoptions.html#fast" class="tsd-kind-icon">fast</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_interfaces_.itsnodeoptions.html#fileexists" class="tsd-kind-icon">file<wbr>Exists</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_interfaces_.itsnodeoptions.html#getfile" class="tsd-kind-icon">get<wbr>File</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_interfaces_.itsnodeoptions.html#ignore" class="tsd-kind-icon">ignore</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_interfaces_.itsnodeoptions.html#ignorewarnings" class="tsd-kind-icon">ignore<wbr>Warnings</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_interfaces_.itsnodeoptions.html#project" class="tsd-kind-icon">project</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_interfaces_.iloggeroptions.html#colors" class="tsd-kind-icon">colors</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_interfaces_.iloggeroptions.html#depth" class="tsd-kind-icon">depth</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_interfaces_.iloggeroptions.html#errorcapture" class="tsd-kind-icon">error<wbr>Capture</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_interfaces_.iloggeroptions.html#errorexit" class="tsd-kind-icon">error<wbr>Exit</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_interfaces_.iloggeroptions.html#level" class="tsd-kind-icon">level</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_interfaces_.iloggeroptions.html#ministack" class="tsd-kind-icon">mini<wbr>Stack</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_interfaces_.iloggeroptions.html#prettystack" class="tsd-kind-icon">pretty<wbr>Stack</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_interfaces_.iloggeroptions.html#stacktrace" class="tsd-kind-icon">stack<wbr>Trace</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_interfaces_.iloggeroptions.html#stream" class="tsd-kind-icon">stream</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_interfaces_.iloggeroptions.html#timestamp" class="tsd-kind-icon">timestamp</a></li>
 							</ul>
 						</section>
 					</div>
@@ -103,154 +102,102 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Properties</h2>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="cache" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> cache</h3>
-					<div class="tsd-signature tsd-kind-icon">cache<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span></div>
+					<a name="colors" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> colors</h3>
+					<div class="tsd-signature tsd-kind-icon">colors<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/origin1tech/stiks/blob/660d0f8/src/interfaces.ts#L37">interfaces.ts:37</a></li>
+							<li>Defined in <a href="https://github.com/origin1tech/stiks/blob/660d0f8/src/interfaces.ts#L73">interfaces.ts:73</a></li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="cachedirectory" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> cache<wbr>Directory</h3>
-					<div class="tsd-signature tsd-kind-icon">cache<wbr>Directory<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<a name="depth" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> depth</h3>
+					<div class="tsd-signature tsd-kind-icon">depth<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/origin1tech/stiks/blob/660d0f8/src/interfaces.ts#L38">interfaces.ts:38</a></li>
+							<li>Defined in <a href="https://github.com/origin1tech/stiks/blob/660d0f8/src/interfaces.ts#L72">interfaces.ts:72</a></li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="compiler" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> compiler</h3>
-					<div class="tsd-signature tsd-kind-icon">compiler<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<a name="errorcapture" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> error<wbr>Capture</h3>
+					<div class="tsd-signature tsd-kind-icon">error<wbr>Capture<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/origin1tech/stiks/blob/660d0f8/src/interfaces.ts#L39">interfaces.ts:39</a></li>
+							<li>Defined in <a href="https://github.com/origin1tech/stiks/blob/660d0f8/src/interfaces.ts#L75">interfaces.ts:75</a></li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="compileroptions" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> compiler<wbr>Options</h3>
-					<div class="tsd-signature tsd-kind-icon">compiler<wbr>Options<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">any</span></div>
+					<a name="errorexit" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> error<wbr>Exit</h3>
+					<div class="tsd-signature tsd-kind-icon">error<wbr>Exit<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/origin1tech/stiks/blob/660d0f8/src/interfaces.ts#L46">interfaces.ts:46</a></li>
+							<li>Defined in <a href="https://github.com/origin1tech/stiks/blob/660d0f8/src/interfaces.ts#L74">interfaces.ts:74</a></li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="disablewarnings" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> disable<wbr>Warnings</h3>
-					<div class="tsd-signature tsd-kind-icon">disable<wbr>Warnings<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span></div>
+					<a name="level" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> level</h3>
+					<div class="tsd-signature tsd-kind-icon">level<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/origin1tech/stiks/blob/660d0f8/src/interfaces.ts#L43">interfaces.ts:43</a></li>
+							<li>Defined in <a href="https://github.com/origin1tech/stiks/blob/660d0f8/src/interfaces.ts#L71">interfaces.ts:71</a></li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="fast" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> fast</h3>
-					<div class="tsd-signature tsd-kind-icon">fast<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span></div>
+					<a name="ministack" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> mini<wbr>Stack</h3>
+					<div class="tsd-signature tsd-kind-icon">mini<wbr>Stack<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/origin1tech/stiks/blob/660d0f8/src/interfaces.ts#L36">interfaces.ts:36</a></li>
+							<li>Defined in <a href="https://github.com/origin1tech/stiks/blob/660d0f8/src/interfaces.ts#L78">interfaces.ts:78</a></li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="fileexists" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> file<wbr>Exists</h3>
-					<div class="tsd-signature tsd-kind-icon">file<wbr>Exists<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">function</span></div>
+					<a name="prettystack" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> pretty<wbr>Stack</h3>
+					<div class="tsd-signature tsd-kind-icon">pretty<wbr>Stack<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/origin1tech/stiks/blob/660d0f8/src/interfaces.ts#L45">interfaces.ts:45</a></li>
-						</ul>
-					</aside>
-					<div class="tsd-type-declaration">
-						<h4>Type declaration</h4>
-						<ul class="tsd-parameters">
-							<li class="tsd-parameter-siganture">
-								<ul class="tsd-signatures tsd-kind-type-literal tsd-parent-kind-property tsd-is-not-exported">
-									<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>path<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
-								</ul>
-								<ul class="tsd-descriptions">
-									<li class="tsd-description">
-										<h4 class="tsd-parameters-title">Parameters</h4>
-										<ul class="tsd-parameters">
-											<li>
-												<h5>path: <span class="tsd-signature-type">string</span></h5>
-											</li>
-										</ul>
-										<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
-									</li>
-								</ul>
-							</li>
-						</ul>
-					</div>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="getfile" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> get<wbr>File</h3>
-					<div class="tsd-signature tsd-kind-icon">get<wbr>File<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">function</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/origin1tech/stiks/blob/660d0f8/src/interfaces.ts#L44">interfaces.ts:44</a></li>
-						</ul>
-					</aside>
-					<div class="tsd-type-declaration">
-						<h4>Type declaration</h4>
-						<ul class="tsd-parameters">
-							<li class="tsd-parameter-siganture">
-								<ul class="tsd-signatures tsd-kind-type-literal tsd-parent-kind-property tsd-is-not-exported">
-									<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>path<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
-								</ul>
-								<ul class="tsd-descriptions">
-									<li class="tsd-description">
-										<h4 class="tsd-parameters-title">Parameters</h4>
-										<ul class="tsd-parameters">
-											<li>
-												<h5>path: <span class="tsd-signature-type">string</span></h5>
-											</li>
-										</ul>
-										<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
-									</li>
-								</ul>
-							</li>
-						</ul>
-					</div>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="ignore" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> ignore</h3>
-					<div class="tsd-signature tsd-kind-icon">ignore<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/origin1tech/stiks/blob/660d0f8/src/interfaces.ts#L41">interfaces.ts:41</a></li>
+							<li>Defined in <a href="https://github.com/origin1tech/stiks/blob/660d0f8/src/interfaces.ts#L77">interfaces.ts:77</a></li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="ignorewarnings" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> ignore<wbr>Warnings</h3>
-					<div class="tsd-signature tsd-kind-icon">ignore<wbr>Warnings<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span></div>
+					<a name="stacktrace" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> stack<wbr>Trace</h3>
+					<div class="tsd-signature tsd-kind-icon">stack<wbr>Trace<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/origin1tech/stiks/blob/660d0f8/src/interfaces.ts#L42">interfaces.ts:42</a></li>
+							<li>Defined in <a href="https://github.com/origin1tech/stiks/blob/660d0f8/src/interfaces.ts#L76">interfaces.ts:76</a></li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="project" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> project</h3>
-					<div class="tsd-signature tsd-kind-icon">project<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span></div>
+					<a name="stream" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> stream</h3>
+					<div class="tsd-signature tsd-kind-icon">stream<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">WritableStream</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/origin1tech/stiks/blob/660d0f8/src/interfaces.ts#L40">interfaces.ts:40</a></li>
+							<li>Defined in <a href="https://github.com/origin1tech/stiks/blob/660d0f8/src/interfaces.ts#L70">interfaces.ts:70</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="timestamp" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> timestamp</h3>
+					<div class="tsd-signature tsd-kind-icon">timestamp<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"date"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"time"</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/origin1tech/stiks/blob/660d0f8/src/interfaces.ts#L79">interfaces.ts:79</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -296,9 +243,45 @@
 					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
 						<a href="_interfaces_.iexecmethods.html" class="tsd-kind-icon">IExec<wbr>Methods</a>
 					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
+				</ul>
+				<ul class="current">
+					<li class="current tsd-kind-interface tsd-parent-kind-external-module">
 						<a href="_interfaces_.iloggeroptions.html" class="tsd-kind-icon">ILogger<wbr>Options</a>
+						<ul>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="_interfaces_.iloggeroptions.html#colors" class="tsd-kind-icon">colors</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="_interfaces_.iloggeroptions.html#depth" class="tsd-kind-icon">depth</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="_interfaces_.iloggeroptions.html#errorcapture" class="tsd-kind-icon">error<wbr>Capture</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="_interfaces_.iloggeroptions.html#errorexit" class="tsd-kind-icon">error<wbr>Exit</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="_interfaces_.iloggeroptions.html#level" class="tsd-kind-icon">level</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="_interfaces_.iloggeroptions.html#ministack" class="tsd-kind-icon">mini<wbr>Stack</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="_interfaces_.iloggeroptions.html#prettystack" class="tsd-kind-icon">pretty<wbr>Stack</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="_interfaces_.iloggeroptions.html#stacktrace" class="tsd-kind-icon">stack<wbr>Trace</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="_interfaces_.iloggeroptions.html#stream" class="tsd-kind-icon">stream</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="_interfaces_.iloggeroptions.html#timestamp" class="tsd-kind-icon">timestamp</a>
+							</li>
+						</ul>
 					</li>
+				</ul>
+				<ul class="after-current">
 					<li class=" tsd-kind-interface tsd-parent-kind-external-module tsd-has-type-parameter">
 						<a href="_interfaces_.imap.html" class="tsd-kind-icon">IMap</a>
 					</li>
@@ -314,48 +297,9 @@
 					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
 						<a href="_interfaces_.istringbuildermethods.html" class="tsd-kind-icon">IString<wbr>Builder<wbr>Methods</a>
 					</li>
-				</ul>
-				<ul class="current">
-					<li class="current tsd-kind-interface tsd-parent-kind-external-module">
+					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
 						<a href="_interfaces_.itsnodeoptions.html" class="tsd-kind-icon">ITSNode<wbr>Options</a>
-						<ul>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_interfaces_.itsnodeoptions.html#cache" class="tsd-kind-icon">cache</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_interfaces_.itsnodeoptions.html#cachedirectory" class="tsd-kind-icon">cache<wbr>Directory</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_interfaces_.itsnodeoptions.html#compiler" class="tsd-kind-icon">compiler</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_interfaces_.itsnodeoptions.html#compileroptions" class="tsd-kind-icon">compiler<wbr>Options</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_interfaces_.itsnodeoptions.html#disablewarnings" class="tsd-kind-icon">disable<wbr>Warnings</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_interfaces_.itsnodeoptions.html#fast" class="tsd-kind-icon">fast</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_interfaces_.itsnodeoptions.html#fileexists" class="tsd-kind-icon">file<wbr>Exists</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_interfaces_.itsnodeoptions.html#getfile" class="tsd-kind-icon">get<wbr>File</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_interfaces_.itsnodeoptions.html#ignore" class="tsd-kind-icon">ignore</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_interfaces_.itsnodeoptions.html#ignorewarnings" class="tsd-kind-icon">ignore<wbr>Warnings</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_interfaces_.itsnodeoptions.html#project" class="tsd-kind-icon">project</a>
-							</li>
-						</ul>
 					</li>
-				</ul>
-				<ul class="after-current">
 					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
 						<a href="_interfaces_.iuioptions.html" class="tsd-kind-icon">IUIOptions</a>
 					</li>

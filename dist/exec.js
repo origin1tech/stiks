@@ -2,7 +2,8 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 var child_process_1 = require("child_process");
 var chek_1 = require("chek");
-var log = require("./logger");
+var logger = require("./logger");
+var log = logger.get();
 // COMMANDS REFERENCE //
 //   access, adduser, bin, bugs, c, cache, completion, config,
 //   ddp, dedupe, deprecate, dist-tag, docs, edit, explore, get,
@@ -36,8 +37,6 @@ var log = require("./logger");
 // -E: --save-exact
 // -y: --yes
 // -n: --yes false
-// Keys to exclude when building flags.
-var excludeFilters = ['cwd', 'input', 'stdio', 'env', 'uid', 'gid', 'timeout', 'killSignal', 'maxBuffer', 'encoding', 'shell'];
 // Default spawn options.
 var spawnDefaults = {
     cwd: process.cwd(),

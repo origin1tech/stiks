@@ -4,6 +4,7 @@ import { SpawnSyncOptions } from 'child_process';
 export declare type BufferEncoding = 'ascii' | 'utf8' | 'utf16le' | 'ucs2' | 'base64' | 'latin1' | 'binary' | 'hex';
 export declare type NodeCallback = (err?: Error, data?: any) => void;
 export declare type NodeAnyCallback = (...args: any[]) => void;
+export declare type LogCallback = (type: string, args: any[], stackTrace: IStacktraceResult, error: Error) => void;
 export declare type CopyTuple = [string, string];
 export declare type StringBuilderAdd = (str: any, styles: string | string[]) => IStringBuilderMethods;
 export declare type StringBuilderRender = (char?: string) => string;
@@ -53,4 +54,28 @@ export interface IExecMethods {
     command(cmd: string, args: string | string[], options?: boolean | SpawnSyncOptions): any;
     node(args: string | string[], options?: boolean | SpawnSyncOptions): any;
     npm(args: string | string[], options?: boolean | SpawnSyncOptions): any;
+}
+export interface ILoggerOptions {
+    stream?: NodeJS.WritableStream;
+    level?: string;
+    depth?: number;
+    colors?: boolean;
+    errorExit?: boolean;
+    errorCapture?: boolean;
+    stackTrace?: boolean;
+    prettyStack?: boolean;
+    miniStack?: boolean;
+    timestamp?: boolean | 'date' | 'time';
+}
+export interface IStacktraceFrame {
+    method: string;
+    filename: string;
+    relative: string;
+    line: number;
+    column: number;
+}
+export interface IStacktraceResult {
+    frames: IStacktraceFrame[];
+    stack: string[];
+    miniStack: string;
 }

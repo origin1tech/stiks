@@ -1,5 +1,5 @@
 import { CopyTuple, IMap, ICopy, ITSNodeOptions, IStringBuilderMethods, ICpu } from './interfaces';
-import * as bsync from 'browser-sync';
+import { Options, BrowserSyncInstance } from 'browser-sync';
 export declare const cwd: string;
 /**
  * Clean
@@ -36,7 +36,11 @@ export declare function pkg(val?: any): any;
  *
  * @param filename optional filename defaults to package.json in cwd.
  */
-export declare function bump(): void;
+export declare function bump(): {
+    name: any;
+    version: any;
+    original: any;
+};
 /**
  * TS Node Register
  * Calls ts-node's register method for use with testing frameworks..
@@ -54,7 +58,7 @@ export declare function tsnodeRegister(project?: string | ITSNodeOptions, opts?:
  * @param name the name of the server or Browser Sync options.
  * @param options the Browser Sync Options.
  */
-export declare function serve(name?: string | bsync.Options, options?: bsync.Options): bsync.BrowserSyncInstance;
+export declare function serve(name?: string | Options, options?: Options | boolean, init?: boolean): BrowserSyncInstance;
 /**
  * Layout
  * Creates a CLI layout much like creating divs in the terminal.

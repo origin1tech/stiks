@@ -1,9 +1,15 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var chek_1 = require("chek");
-var _args = process.argv.slice(2);
-var origArgs = [].slice.call(_args, 0);
-exports.args = origArgs;
+// The original array.
+var _args = process.argv.slice(0);
+exports.args = _args;
+// The original args with node and executed path stripped.
+var _baseArgs = _args.slice(2);
+exports.normalized = _baseArgs;
+// The original args without node, executed path and first command stripped.
+var _optionArgs = _baseArgs.slice(1);
+exports.options = _optionArgs;
 // Array of packages to install
 var _cmds = [];
 // Flags passed in cli.
@@ -44,7 +50,7 @@ function getFlag(flag, idx, args) {
 exports.getFlag = getFlag;
 // Parse the arguments
 function parse(args) {
-    args = args || _args;
+    args = args || _baseArgs;
     args.forEach(function (el, idx) {
         var flag = getFlag(el, idx, args);
         if (!flag && _exclude.indexOf(idx) === -1)
@@ -59,7 +65,7 @@ function parse(args) {
     };
 }
 exports.parse = parse;
-function findCommand(valid, args) {
+function find(valid, args) {
     // If no command line args passed try to parse them.
     args = args || parse().cmds;
     var i = valid.length;
@@ -70,5 +76,5 @@ function findCommand(valid, args) {
     }
     return found;
 }
-exports.findCommand = findCommand;
+exports.find = find;
 //# sourceMappingURL=argv.js.map

@@ -76,8 +76,11 @@
 								<li class="tsd-kind-interface tsd-parent-kind-external-module"><a href="../interfaces/_interfaces_.icopy.html" class="tsd-kind-icon">ICopy</a></li>
 								<li class="tsd-kind-interface tsd-parent-kind-external-module"><a href="../interfaces/_interfaces_.icpu.html" class="tsd-kind-icon">ICpu</a></li>
 								<li class="tsd-kind-interface tsd-parent-kind-external-module"><a href="../interfaces/_interfaces_.iexecmethods.html" class="tsd-kind-icon">IExec<wbr>Methods</a></li>
+								<li class="tsd-kind-interface tsd-parent-kind-external-module"><a href="../interfaces/_interfaces_.iloggeroptions.html" class="tsd-kind-icon">ILogger<wbr>Options</a></li>
 								<li class="tsd-kind-interface tsd-parent-kind-external-module tsd-has-type-parameter"><a href="../interfaces/_interfaces_.imap.html" class="tsd-kind-icon">IMap</a></li>
 								<li class="tsd-kind-interface tsd-parent-kind-external-module"><a href="../interfaces/_interfaces_.imapany.html" class="tsd-kind-icon">IMap<wbr>Any</a></li>
+								<li class="tsd-kind-interface tsd-parent-kind-external-module"><a href="../interfaces/_interfaces_.istacktraceframe.html" class="tsd-kind-icon">IStacktrace<wbr>Frame</a></li>
+								<li class="tsd-kind-interface tsd-parent-kind-external-module"><a href="../interfaces/_interfaces_.istacktraceresult.html" class="tsd-kind-icon">IStacktrace<wbr>Result</a></li>
 								<li class="tsd-kind-interface tsd-parent-kind-external-module"><a href="../interfaces/_interfaces_.istringbuildermethods.html" class="tsd-kind-icon">IString<wbr>Builder<wbr>Methods</a></li>
 								<li class="tsd-kind-interface tsd-parent-kind-external-module"><a href="../interfaces/_interfaces_.itsnodeoptions.html" class="tsd-kind-icon">ITSNode<wbr>Options</a></li>
 								<li class="tsd-kind-interface tsd-parent-kind-external-module"><a href="../interfaces/_interfaces_.iuioptions.html" class="tsd-kind-icon">IUIOptions</a></li>
@@ -88,6 +91,7 @@
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-type-alias tsd-parent-kind-external-module"><a href="_interfaces_.html#bufferencoding" class="tsd-kind-icon">Buffer<wbr>Encoding</a></li>
 								<li class="tsd-kind-type-alias tsd-parent-kind-external-module"><a href="_interfaces_.html#copytuple" class="tsd-kind-icon">Copy<wbr>Tuple</a></li>
+								<li class="tsd-kind-type-alias tsd-parent-kind-external-module"><a href="_interfaces_.html#logcallback" class="tsd-kind-icon">Log<wbr>Callback</a></li>
 								<li class="tsd-kind-type-alias tsd-parent-kind-external-module"><a href="_interfaces_.html#nodeanycallback" class="tsd-kind-icon">Node<wbr>Any<wbr>Callback</a></li>
 								<li class="tsd-kind-type-alias tsd-parent-kind-external-module"><a href="_interfaces_.html#nodecallback" class="tsd-kind-icon">Node<wbr>Callback</a></li>
 								<li class="tsd-kind-type-alias tsd-parent-kind-external-module"><a href="_interfaces_.html#npmcommand" class="tsd-kind-icon">Npm<wbr>Command</a></li>
@@ -108,7 +112,7 @@
 					<div class="tsd-signature tsd-kind-icon">Buffer<wbr>Encoding<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">"ascii"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"utf8"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"utf16le"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"ucs2"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"base64"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"latin1"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"binary"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"hex"</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/origin1tech/stiks/blob/08b16a4/src/interfaces.ts#L5">interfaces.ts:5</a></li>
+							<li>Defined in <a href="https://github.com/origin1tech/stiks/blob/660d0f8/src/interfaces.ts#L5">interfaces.ts:5</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -118,9 +122,49 @@
 					<div class="tsd-signature tsd-kind-icon">Copy<wbr>Tuple<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">]</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/origin1tech/stiks/blob/08b16a4/src/interfaces.ts#L8">interfaces.ts:8</a></li>
+							<li>Defined in <a href="https://github.com/origin1tech/stiks/blob/660d0f8/src/interfaces.ts#L9">interfaces.ts:9</a></li>
 						</ul>
 					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-type-alias tsd-parent-kind-external-module">
+					<a name="logcallback" class="tsd-anchor"></a>
+					<h3>Log<wbr>Callback</h3>
+					<div class="tsd-signature tsd-kind-icon">Log<wbr>Callback<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">function</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/origin1tech/stiks/blob/660d0f8/src/interfaces.ts#L8">interfaces.ts:8</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-type-declaration">
+						<h4>Type declaration</h4>
+						<ul class="tsd-parameters">
+							<li class="tsd-parameter-siganture">
+								<ul class="tsd-signatures tsd-kind-type-literal tsd-parent-kind-type-alias tsd-is-not-exported">
+									<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, args<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span>, stackTrace<span class="tsd-signature-symbol">: </span><a href="../interfaces/_interfaces_.istacktraceresult.html" class="tsd-signature-type">IStacktraceResult</a>, error<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Error</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+								</ul>
+								<ul class="tsd-descriptions">
+									<li class="tsd-description">
+										<h4 class="tsd-parameters-title">Parameters</h4>
+										<ul class="tsd-parameters">
+											<li>
+												<h5>type: <span class="tsd-signature-type">string</span></h5>
+											</li>
+											<li>
+												<h5>args: <span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span></h5>
+											</li>
+											<li>
+												<h5>stackTrace: <a href="../interfaces/_interfaces_.istacktraceresult.html" class="tsd-signature-type">IStacktraceResult</a></h5>
+											</li>
+											<li>
+												<h5>error: <span class="tsd-signature-type">Error</span></h5>
+											</li>
+										</ul>
+										<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+									</li>
+								</ul>
+							</li>
+						</ul>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-type-alias tsd-parent-kind-external-module">
 					<a name="nodeanycallback" class="tsd-anchor"></a>
@@ -128,7 +172,7 @@
 					<div class="tsd-signature tsd-kind-icon">Node<wbr>Any<wbr>Callback<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">function</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/origin1tech/stiks/blob/08b16a4/src/interfaces.ts#L7">interfaces.ts:7</a></li>
+							<li>Defined in <a href="https://github.com/origin1tech/stiks/blob/660d0f8/src/interfaces.ts#L7">interfaces.ts:7</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-type-declaration">
@@ -159,7 +203,7 @@
 					<div class="tsd-signature tsd-kind-icon">Node<wbr>Callback<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">function</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/origin1tech/stiks/blob/08b16a4/src/interfaces.ts#L6">interfaces.ts:6</a></li>
+							<li>Defined in <a href="https://github.com/origin1tech/stiks/blob/660d0f8/src/interfaces.ts#L6">interfaces.ts:6</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-type-declaration">
@@ -193,7 +237,7 @@
 					<div class="tsd-signature tsd-kind-icon">Npm<wbr>Command<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">function</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/origin1tech/stiks/blob/08b16a4/src/interfaces.ts#L48">interfaces.ts:48</a></li>
+							<li>Defined in <a href="https://github.com/origin1tech/stiks/blob/660d0f8/src/interfaces.ts#L49">interfaces.ts:49</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-type-declaration">
@@ -224,7 +268,7 @@
 					<div class="tsd-signature tsd-kind-icon">String<wbr>Builder<wbr>Add<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">function</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/origin1tech/stiks/blob/08b16a4/src/interfaces.ts#L9">interfaces.ts:9</a></li>
+							<li>Defined in <a href="https://github.com/origin1tech/stiks/blob/660d0f8/src/interfaces.ts#L10">interfaces.ts:10</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-type-declaration">
@@ -258,7 +302,7 @@
 					<div class="tsd-signature tsd-kind-icon">String<wbr>Builder<wbr>Format<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">function</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/origin1tech/stiks/blob/08b16a4/src/interfaces.ts#L12">interfaces.ts:12</a></li>
+							<li>Defined in <a href="https://github.com/origin1tech/stiks/blob/660d0f8/src/interfaces.ts#L13">interfaces.ts:13</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-type-declaration">
@@ -289,7 +333,7 @@
 					<div class="tsd-signature tsd-kind-icon">String<wbr>Builder<wbr>Join<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">function</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/origin1tech/stiks/blob/08b16a4/src/interfaces.ts#L11">interfaces.ts:11</a></li>
+							<li>Defined in <a href="https://github.com/origin1tech/stiks/blob/660d0f8/src/interfaces.ts#L12">interfaces.ts:12</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-type-declaration">
@@ -320,7 +364,7 @@
 					<div class="tsd-signature tsd-kind-icon">String<wbr>Builder<wbr>Render<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">function</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/origin1tech/stiks/blob/08b16a4/src/interfaces.ts#L10">interfaces.ts:10</a></li>
+							<li>Defined in <a href="https://github.com/origin1tech/stiks/blob/660d0f8/src/interfaces.ts#L11">interfaces.ts:11</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-type-declaration">
@@ -369,6 +413,9 @@
 						<a href="_logger_.html">"logger"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
+						<a href="_test_spec_.html">"test.spec"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
 						<a href="_utils_.html">"utils"</a>
 					</li>
 				</ul>
@@ -384,11 +431,20 @@
 					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
 						<a href="../interfaces/_interfaces_.iexecmethods.html" class="tsd-kind-icon">IExec<wbr>Methods</a>
 					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
+						<a href="../interfaces/_interfaces_.iloggeroptions.html" class="tsd-kind-icon">ILogger<wbr>Options</a>
+					</li>
 					<li class=" tsd-kind-interface tsd-parent-kind-external-module tsd-has-type-parameter">
 						<a href="../interfaces/_interfaces_.imap.html" class="tsd-kind-icon">IMap</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
 						<a href="../interfaces/_interfaces_.imapany.html" class="tsd-kind-icon">IMap<wbr>Any</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
+						<a href="../interfaces/_interfaces_.istacktraceframe.html" class="tsd-kind-icon">IStacktrace<wbr>Frame</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
+						<a href="../interfaces/_interfaces_.istacktraceresult.html" class="tsd-kind-icon">IStacktrace<wbr>Result</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
 						<a href="../interfaces/_interfaces_.istringbuildermethods.html" class="tsd-kind-icon">IString<wbr>Builder<wbr>Methods</a>
@@ -404,6 +460,9 @@
 					</li>
 					<li class=" tsd-kind-type-alias tsd-parent-kind-external-module">
 						<a href="_interfaces_.html#copytuple" class="tsd-kind-icon">Copy<wbr>Tuple</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-parent-kind-external-module">
+						<a href="_interfaces_.html#logcallback" class="tsd-kind-icon">Log<wbr>Callback</a>
 					</li>
 					<li class=" tsd-kind-type-alias tsd-parent-kind-external-module">
 						<a href="_interfaces_.html#nodeanycallback" class="tsd-kind-icon">Node<wbr>Any<wbr>Callback</a>

@@ -6,13 +6,14 @@
   "typings": "dist/index.d.ts",
   "scripts": {
     "clean": "node ./build clean",
+    "copy": "node ./build copy",
+    "compile": "node ./build compile",
     "bump": "node ./build bump",
-    "compile": "node ./node_modules/typescript/bin/tsc -p ./src/tsconfig.json",
-    "docs": "node ./node_modules/typedoc/bin/typedoc --out ./docs ./src --options ./typedoc.json --tsconfig ./src/tsconfig.json",
-    "build": "npm run clean && npm run compile && npm run docs",
-    "commit": "git add . && git commit -am 'auto commit' && git push",
-    "release": "npm run build && npm run bump && npm run commit && npm publish",
-    "test": "mocha --opts ./src/mocha.opts"
+    "build": "node ./build build",
+    "commit": "node ./build commit",
+    "docs": "node ./build docs",
+    "release": "node ./build release",
+    "test": "node ./build test"
   },
   "repository": {
     "type": "git",
@@ -42,17 +43,14 @@
     "@types/node": "^8.0.19",
     "chai": "^4.0.2",
     "mocha": "^3.4.2",
-    "tslint": "^5.5.0",
     "typedoc": "^0.7.1",
     "typescript": "^2.4.1"
   },
   "dependencies": {
-    "browser-sync": "^2.18.13",
     "chek": "^1.0.11",
     "cliui": "^3.2.0",
     "colurs": "^1.0.4",
     "del": "^3.0.0",
-    "fs-extra": "^3.0.1",
-    "ts-node": "^3.2.0"
+    "fs-extra": "^3.0.1"
   }
 }

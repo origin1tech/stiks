@@ -1,7 +1,8 @@
 import { spawnSync, SpawnSyncOptions } from 'child_process';
 import { IExecMethods } from './interfaces';
 import { isString, extend } from 'chek';
-import * as log from './logger';
+import * as logger from './logger';
+const log = logger.get();
 
 // COMMANDS REFERENCE //
 
@@ -39,9 +40,6 @@ import * as log from './logger';
 // -E: --save-exact
 // -y: --yes
 // -n: --yes false
-
-// Keys to exclude when building flags.
-const excludeFilters = ['cwd', 'input', 'stdio', 'env', 'uid', 'gid', 'timeout', 'killSignal', 'maxBuffer', 'encoding', 'shell'];
 
 // Default spawn options.
 const spawnDefaults = {

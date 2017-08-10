@@ -1,19 +1,18 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var fs_extra_1 = require("fs-extra");
-var tsnode = require("ts-node");
-var del = require("del");
+var os = require("os");
 var path_1 = require("path");
+var del = require("del");
 var chek_1 = require("chek");
-var log = require("./logger");
+var logger = require("./logger");
 var glob = require("glob");
-var bsync = require("browser-sync");
 var cliui = require("cliui");
 var clrs = require("colurs");
-var os = require("os");
+var fs_extra_1 = require("fs-extra");
 var _pkg;
 exports.cwd = process.cwd();
 var colurs = clrs.get();
+var log = logger.get();
 function getParsed(filename) {
     filename = path_1.resolve(exports.cwd, filename);
     return path_1.parse(filename);
@@ -33,7 +32,9 @@ function clean(globs) {
     globs.forEach(function (g) {
         try {
             del.sync(g);
-            log.info("successfully cleaned " + getRelative(g) + ".");
+            // Some files may not exist del doesn't throw
+            // error just continues.
+            // log.info(`successfully cleaned or ignored ${getRelative(g)}.`);
         }
         catch (ex) {
             log.info("failed to clean " + getRelative(g) + ".");
@@ -49,15 +50,18 @@ exports.clean = clean;
  * @param dest the destination path to copy to.
  */
 function copy(src, dest) {
-    var parsedSrc = getParsed(src);
-    var parsedDest = getParsed(dest);
+    if (!src || !dest)
+        return true;
+    var parsedSrc, parsedDest;
     try {
+        var parsedSrc_1 = getParsed(src);
+        var parsedDest_1 = getParsed(dest);
         fs_extra_1.copySync(src, dest);
-        log.info("successfully copied " + colurs.magenta(getRelative(parsedSrc)) + " to " + colurs.green(getRelative(parsedDest)) + ".");
+        // log.info(`successfully copied ${colurs.magenta(getRelative(parsedSrc))} to ${colurs.green(getRelative(parsedDest))}.`);
         return true;
     }
     catch (ex) {
-        log.info("failed to copy " + colurs.yellow(getRelative(parsedSrc)) + " to " + colurs.red(getRelative(parsedDest)) + ".");
+        log.warn("failed to copy " + colurs.yellow(getRelative(parsedSrc || 'undefined')) + " to " + colurs.red(getRelative(parsedDest || 'undefined')) + ".");
         return false;
     }
 }
@@ -203,7 +207,8 @@ function bump() {
     }
     _pkg.version = bump.full;
     pkg(_pkg);
-    log.write("bumped " + _pkg.name + " from " + origVer + " to " + bump.full + ".");
+    // log.info(`bumped ${_pkg.name} from ${colurs.magenta(origVer)} to ${colurs.green(bump.full)}.`);
+    return { name: _pkg.name, version: _pkg.version, original: origVer };
 }
 exports.bump = bump;
 /**
@@ -224,6 +229,9 @@ function tsnodeRegister(project, opts) {
         fast: true
     };
     opts = chek_1.extend({}, defaults, opts);
+    var tsnode = chek_1.tryRequire('ts-node');
+    if (!tsnode)
+        log.error('failed to load root module ts-node, ensure the module is installed.');
     tsnode.register(opts);
 }
 exports.tsnodeRegister = tsnodeRegister;
@@ -235,9 +243,10 @@ exports.tsnodeRegister = tsnodeRegister;
  * @param name the name of the server or Browser Sync options.
  * @param options the Browser Sync Options.
  */
-function serve(name, options) {
+function serve(name, options, init) {
     var _pkg = pkg();
     if (chek_1.isPlainObject(name)) {
+        init = options;
         options = name;
         name = undefined;
     }
@@ -248,15 +257,19 @@ function serve(name, options) {
     };
     name = name || _pkg.name || 'dev-server';
     options = chek_1.extend({}, defaults, options);
+    var bsync = chek_1.tryRootRequire('browser-sync');
+    if (!bsync)
+        log.error('failed to load root module browser-sync, ensure the module is installed');
     var server = bsync.create(name);
-    server.init(options, function (err) {
-        if (err) {
-            log.error(err);
-        }
-        else {
-            log.info("browser Sync server " + name + " successfully initialized.");
-        }
-    });
+    if (init !== false)
+        server.init(options, function (err) {
+            if (err) {
+                log.error(err);
+            }
+            else {
+                log.info("browser Sync server " + name + " successfully initialized.");
+            }
+        });
     return server;
 }
 exports.serve = serve;

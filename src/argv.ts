@@ -1,8 +1,14 @@
 
 import { castType, getType, toBoolean, contains } from 'chek';
 
-let _args: string[] = process.argv.slice(2);
-let origArgs = [].slice.call(_args, 0);
+// The original array.
+let _args: string[] = process.argv.slice(0);
+
+// The original args with node and executed path stripped.
+let _baseArgs: string[] = _args.slice(2);
+
+// The original args without node, executed path and first command stripped.
+let _optionArgs: string[] = _baseArgs.slice(1);
 
 // Array of packages to install
 const _cmds = [];
@@ -48,7 +54,7 @@ export function getFlag(flag: string, idx: number, args: any[]) {
 
 // Parse the arguments
 export function parse(args?: any[]): { flags: { [key: string]: any }, cmds: any[], cmd: string } {
-  args = args || _args;
+  args = args || _baseArgs;
   args.forEach((el, idx) => {
     const flag = getFlag(el, idx, args);
     if (!flag && _exclude.indexOf(idx) === -1)
@@ -63,7 +69,7 @@ export function parse(args?: any[]): { flags: { [key: string]: any }, cmds: any[
   };
 }
 
-export function findCommand(valid: string[], args?: string[]) {
+export function find(valid: string[], args?: string[]) {
 
   // If no command line args passed try to parse them.
   args = args || parse().cmds;
@@ -77,5 +83,5 @@ export function findCommand(valid: string[], args?: string[]) {
 
 }
 
-export { origArgs as args };
+export { _args as args, _baseArgs as normalized, _optionArgs as options };
 
