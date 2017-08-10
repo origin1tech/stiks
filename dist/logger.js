@@ -35,6 +35,8 @@ var Logger = (function () {
         if (chek_1.isDebug())
             debugOpts = { level: 'debug' };
         this.options = chek_1.extend({}, DEFAULTS, debugOpts, options);
+        if (this.options.errorCapture)
+            this.toggleExceptionHandler(true);
         this.stream = this.options.stream || process.stdout;
     }
     /**
@@ -162,9 +164,9 @@ var Logger = (function () {
      */
     Logger.prototype.toggleExceptionHandler = function (capture) {
         if (!capture)
-            process.removeListener('uncaughtException', this.uncaughtException);
+            process.removeListener('uncaughtException', this.uncaughtException.bind(this));
         else
-            process.on('uncaughtException', this.uncaughtException);
+            process.on('uncaughtException', this.uncaughtException.bind(this));
     };
     /**
      * Logger
@@ -271,13 +273,19 @@ var Logger = (function () {
      * @param value the value for the key.
      */
     Logger.prototype.set = function (key, value) {
+        var toggleExceptionHandler = key === 'errorCapture';
         if (chek_1.isPlainObject(key)) {
+            var _keys = chek_1.keys(key);
             this.options = chek_1.extend({}, this.options, key);
+            if (chek_1.contains(_keys, 'errorCapture'))
+                toggleExceptionHandler = true;
         }
         else {
             if (this.options[key])
                 this.options[key] = value;
         }
+        if (toggleExceptionHandler)
+            this.toggleExceptionHandler(this.options.errorCapture);
     };
     Logger.prototype.error = function () {
         var args = [];

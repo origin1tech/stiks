@@ -7,7 +7,7 @@
 
 import { relative, parse } from 'path';
 import { get as colursInstance } from 'colurs';
-import { extend, isDebug, keys, isBoolean, isPlainObject, isError, first, last, noop, isFunction, isNumber, toArray, toInteger } from 'chek';
+import { extend, isDebug, keys, isBoolean, isPlainObject, isError, first, last, noop, isFunction, isNumber, toArray, toInteger, contains } from 'chek';
 import { ILoggerOptions, IStacktraceFrame, IStacktraceResult, LogCallback } from './interfaces';
 import { format, inspect } from 'util';
 
@@ -49,6 +49,9 @@ export class Logger {
       debugOpts = { level: 'debug' };
 
     this.options = extend({}, DEFAULTS, debugOpts, options);
+
+    if (this.options.errorCapture)
+      this.toggleExceptionHandler(true);
 
     this.stream = this.options.stream || process.stdout;
 
@@ -202,9 +205,9 @@ export class Logger {
    */
   private toggleExceptionHandler(capture?: boolean) {
     if (!capture)
-      process.removeListener('uncaughtException', this.uncaughtException);
+      process.removeListener('uncaughtException', this.uncaughtException.bind(this));
     else
-      process.on('uncaughtException', this.uncaughtException);
+      process.on('uncaughtException', this.uncaughtException.bind(this));
   }
 
   /**
@@ -258,7 +261,7 @@ export class Logger {
     if (clone.length) {
       if (clone.length > 1) {
         if (FORMAT_TOKEN_EXP.test(clone[0])) {
-          rawMsg = format(clone[0], clone.slice(1))
+          rawMsg = format(clone[0], clone.slice(1));
           result.push(rawMsg);
         }
         else {
@@ -328,13 +331,19 @@ export class Logger {
    * @param value the value for the key.
    */
   set(key: string | ILoggerOptions, value: any) {
+    let toggleExceptionHandler = key === 'errorCapture';
     if (isPlainObject(key)) {
+      const _keys = keys(key as ILoggerOptions);
       this.options = extend({}, this.options, key);
+      if (contains(_keys, 'errorCapture'))
+        toggleExceptionHandler = true;
     }
     else {
       if (this.options[<string>key])
         this.options[<string>key] = value;
     }
+    if (toggleExceptionHandler)
+      this.toggleExceptionHandler(this.options.errorCapture);
   }
 
   error(...args: any[]): Logger {
