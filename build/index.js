@@ -70,6 +70,7 @@ const actions = {
 
   bump: () => {
     stiks.bump();
+    log.debug(`bumped ${pkg.name}.`);
     return actions;
   },
 
@@ -101,6 +102,7 @@ const actions = {
   release: () => {
     actions.build()
       .docs()
+      .bump()
       .commit()
       .publish();
     log.info(`published ${pkg.name}.`);
