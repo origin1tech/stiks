@@ -1,5 +1,5 @@
 # Stiks
 
-Cheesy little module for building Node apps. Helpers for common tasks like cleaning dirs, copying files, bumping project version and handling ts-node register calls for use with TypeScript and testing frameworks.
+Cheesy little module for building Node apps. Helpers for common tasks like cleaning dirs, copying files, bumping project version etc.
 
-For now no examples. If you would like to see how this is used see. Look in the "build" directory and it will likely make sense.
+No docs, for the moment. Look in build dir it will give you an idea if you care to brave it in the meantime.
