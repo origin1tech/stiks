@@ -22,7 +22,12 @@ const _flagExp = /^--?/;
 // Holds array of args to be excluded.
 const _exclude = [];
 
-// Checks if argument is a flag.
+/**
+ * Is Flag
+ * Checks if value is type of flag param.
+ *
+ * @param flag the value to inspect to detect if is flag.
+ */
 export function isFlag(flag: string) {
   if (_flagExp.test(flag)) {
     if (/^--/.test(flag))
@@ -32,9 +37,16 @@ export function isFlag(flag: string) {
   return false;
 }
 
-// Gets the flag.
-export function getFlag(flag: string, idx: number, args: any[]) {
-  const flagType = isFlag(flag);
+/**
+ * Parse Element
+ * Inspects value parses value as command or flag.
+ *
+ * @param val the value to inspect/convert to flag.
+ * @param idx the current index position of the value.
+ * @param args the array of argv params.
+ */
+export function parseElement(val: string, idx: number, args: any[]) {
+  const flagType = isFlag(val);
   if (!flagType)
     return false;
   if (flagType === 'boolean')
@@ -47,8 +59,7 @@ export function getFlag(flag: string, idx: number, args: any[]) {
       return toBoolean(val);
     return castType(val, getType(val));
   }
-  // fallback to just boolean
-  // if next arg not avail.
+  // If not next arg is boolean flag.
   return true;
 }
 
@@ -56,7 +67,7 @@ export function getFlag(flag: string, idx: number, args: any[]) {
 export function parse(args?: any[]): { flags: { [key: string]: any }, cmds: any[], cmd: string } {
   args = args || _baseArgs;
   args.forEach((el, idx) => {
-    const flag = getFlag(el, idx, args);
+    const flag = parseElement(el, idx, args);
     if (!flag && _exclude.indexOf(idx) === -1)
       _cmds.push(el);
     else if (flag)
@@ -69,6 +80,13 @@ export function parse(args?: any[]): { flags: { [key: string]: any }, cmds: any[
   };
 }
 
+/**
+ * Find
+ * Iterates expected or valid values stopping if matching value is found in provided args.
+ *
+ * @param valid array of expected valid values.
+ * @param args array of params to inspect.
+ */
 export function find(valid: string[], args?: string[]) {
 
   // If no command line args passed try to parse them.

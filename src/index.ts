@@ -1,4 +1,4 @@
-import { get, Logger } from './logger';
+import { get, Timbr } from './logger';
 import * as colurs from 'colurs';
 import * as chek from 'chek';
 import * as fs from 'fs-extra';
@@ -7,4 +7,4 @@ import { methods as exec } from './exec';
 const log = get();
 export * from './utils';
 export * from './interfaces';
-export { log, chek, colurs, fs, argv, exec, Logger };
+export { log, chek, colurs, fs, argv, exec, Timbr };

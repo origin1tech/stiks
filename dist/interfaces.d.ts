@@ -4,7 +4,12 @@ import { SpawnSyncOptions } from 'child_process';
 export declare type BufferEncoding = 'ascii' | 'utf8' | 'utf16le' | 'ucs2' | 'base64' | 'latin1' | 'binary' | 'hex';
 export declare type NodeCallback = (err?: Error, data?: any) => void;
 export declare type NodeAnyCallback = (...args: any[]) => void;
-export declare type LogCallback = (type: string, args: any[], stackTrace: IStacktraceResult, error: Error) => void;
+export declare type LogCallback = (type: string, msg: string, meta: IMap<any>, info: {
+    timestamp: string;
+    args: any[];
+    stackTrace?: IStacktraceFrame[];
+    error?: Error;
+}) => void;
 export declare type CopyTuple = [string, string];
 export declare type StringBuilderAdd = (str: any, styles: string | string[]) => IStringBuilderMethods;
 export declare type StringBuilderRender = (char?: string) => string;
@@ -58,7 +63,7 @@ export interface IExecMethods {
 }
 export interface ILoggerOptions {
     stream?: NodeJS.WritableStream;
-    level?: string;
+    level?: string | number;
     depth?: number;
     colors?: boolean;
     errorExit?: boolean;
@@ -73,6 +78,7 @@ export interface ILoggerOptions {
         info?: Colors;
         debug?: Colors;
     };
+    onLogged?: LogCallback;
 }
 export interface IStacktraceFrame {
     method: string;

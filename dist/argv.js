@@ -18,7 +18,12 @@ var _flags = {};
 var _flagExp = /^--?/;
 // Holds array of args to be excluded.
 var _exclude = [];
-// Checks if argument is a flag.
+/**
+ * Is Flag
+ * Checks if value is type of flag param.
+ *
+ * @param flag the value to inspect to detect if is flag.
+ */
 function isFlag(flag) {
     if (_flagExp.test(flag)) {
         if (/^--/.test(flag))
@@ -28,9 +33,16 @@ function isFlag(flag) {
     return false;
 }
 exports.isFlag = isFlag;
-// Gets the flag.
-function getFlag(flag, idx, args) {
-    var flagType = isFlag(flag);
+/**
+ * Parse Element
+ * Inspects value parses value as command or flag.
+ *
+ * @param val the value to inspect/convert to flag.
+ * @param idx the current index position of the value.
+ * @param args the array of argv params.
+ */
+function parseElement(val, idx, args) {
+    var flagType = isFlag(val);
     if (!flagType)
         return false;
     if (flagType === 'boolean')
@@ -38,21 +50,20 @@ function getFlag(flag, idx, args) {
     var nextIdx = idx + 1;
     if (args[nextIdx]) {
         _exclude.push(nextIdx);
-        var val = args[nextIdx];
-        if (val === 'true' || val === 'false')
-            return chek_1.toBoolean(val);
-        return chek_1.castType(val, chek_1.getType(val));
+        var val_1 = args[nextIdx];
+        if (val_1 === 'true' || val_1 === 'false')
+            return chek_1.toBoolean(val_1);
+        return chek_1.castType(val_1, chek_1.getType(val_1));
     }
-    // fallback to just boolean
-    // if next arg not avail.
+    // If not next arg is boolean flag.
     return true;
 }
-exports.getFlag = getFlag;
+exports.parseElement = parseElement;
 // Parse the arguments
 function parse(args) {
     args = args || _baseArgs;
     args.forEach(function (el, idx) {
-        var flag = getFlag(el, idx, args);
+        var flag = parseElement(el, idx, args);
         if (!flag && _exclude.indexOf(idx) === -1)
             _cmds.push(el);
         else if (flag)
@@ -65,6 +76,13 @@ function parse(args) {
     };
 }
 exports.parse = parse;
+/**
+ * Find
+ * Iterates expected or valid values stopping if matching value is found in provided args.
+ *
+ * @param valid array of expected valid values.
+ * @param args array of params to inspect.
+ */
 function find(valid, args) {
     // If no command line args passed try to parse them.
     args = args || parse().cmds;

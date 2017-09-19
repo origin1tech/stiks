@@ -394,6 +394,16 @@ export function layout(width?: number, wrap?: boolean) {
   }
 
   /**
+   * Join
+   * Simply joins element args separated by space.
+   *
+   * @param elements the elements to be created.
+   */
+  function join(...elements: any[]) {
+    add('div', elements.join(' '));
+  }
+
+  /**
    * Get
    * Gets the defined UI as string.
    */
@@ -414,11 +424,16 @@ export function layout(width?: number, wrap?: boolean) {
     console.log(getString());
   }
 
+  // Alias for render.
+  const show = render;
+
   return {
-    ui,
     div,
+    join,
     span,
-    render
+    render,
+    show,
+    ui
   };
 
 

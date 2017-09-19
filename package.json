@@ -1,6 +1,6 @@
 {
   "name": "stiks",
-  "version": "1.0.12",
+  "version": "1.0.13",
   "description": "Node bundling & workflow utility for building Node apps.",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
@@ -54,6 +54,7 @@
     "cliui": "^3.2.0",
     "colurs": "^1.0.4",
     "del": "^3.0.0",
-    "fs-extra": "^3.0.1"
+    "fs-extra": "^3.0.1",
+    "timbr": "^1.0.0"
   }
 }

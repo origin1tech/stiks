@@ -1,10 +1,10 @@
-import { Logger } from './logger';
+import { Timbr } from './logger';
 import * as colurs from 'colurs';
 import * as chek from 'chek';
 import * as fs from 'fs-extra';
 import * as argv from './argv';
 import { methods as exec } from './exec';
-declare const log: Logger;
+declare const log: Timbr;
 export * from './utils';
 export * from './interfaces';
-export { log, chek, colurs, fs, argv, exec, Logger };
+export { log, chek, colurs, fs, argv, exec, Timbr };

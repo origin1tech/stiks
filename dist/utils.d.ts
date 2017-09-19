@@ -67,10 +67,12 @@ export declare function serve(name?: string | Options, options?: Options | boole
  * @param wrap if the layout should wrap.
  */
 export declare function layout(width?: number, wrap?: boolean): {
-    ui: any;
     div: <T>(...elements: T[]) => void;
+    join: (...elements: any[]) => void;
     span: <T>(...elements: T[]) => void;
     render: <T>(...elements: T[]) => void;
+    show: <T>(...elements: T[]) => void;
+    ui: any;
 };
 /**
  * String Builder

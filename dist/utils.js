@@ -335,6 +335,19 @@ function layout(width, wrap) {
         add.apply(void 0, ['span'].concat(elements));
     }
     /**
+     * Join
+     * Simply joins element args separated by space.
+     *
+     * @param elements the elements to be created.
+     */
+    function join() {
+        var elements = [];
+        for (var _i = 0; _i < arguments.length; _i++) {
+            elements[_i] = arguments[_i];
+        }
+        add('div', elements.join(' '));
+    }
+    /**
      * Get
      * Gets the defined UI as string.
      */
@@ -357,11 +370,15 @@ function layout(width, wrap) {
             add.apply(void 0, ['div'].concat(elements));
         console.log(getString());
     }
+    // Alias for render.
+    var show = render;
     return {
-        ui: ui,
         div: div,
+        join: join,
         span: span,
-        render: render
+        render: render,
+        show: show,
+        ui: ui
     };
 }
 exports.layout = layout;
