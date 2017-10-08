@@ -7,7 +7,7 @@ import { Timbr, ITimbrOptions } from 'timbr';
 
 let instance: Timbr;
 
-const get = (options?): Timbr => {
+const get = (options?: ITimbrOptions): Timbr => {
   if (instance)
     return instance;
   return new Timbr(options);

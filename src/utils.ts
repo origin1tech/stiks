@@ -44,7 +44,7 @@ function getRelative(filename) {
  * @param type the type of seed to run.
  * @param dest the optional destination relative to root.
  */
-function seeder(type: string, dest?: string) {
+export function seed(type: string, dest?: string) {
 
   const source = resolve(__dirname, join('blueprints', type));
   dest = dest ? resolve(cwd, dest) : resolve(cwd, type);
@@ -62,16 +62,6 @@ function seeder(type: string, dest?: string) {
   }
 
 }
-
-/**
- * Seed
- * Seeds known templates/examples.
- */
-export const seed = {
-
-  build: seeder.bind(null, 'build')
-
-};
 
 /**
  * Clean
@@ -357,87 +347,87 @@ export function serve(name?: string | Options, options?: Options | boolean, init
  * @param width the width of the layout.
  * @param wrap if the layout should wrap.
  */
-export function layout(width?: number, wrap?: boolean) {
+// export function layout(width?: number, wrap?: boolean) {
 
-  // Base width of all divs.
-  width = width || 95;
+//   // Base width of all divs.
+//   width = width || 95;
 
-  const ui = cliui({ width: width, wrap: wrap });
+//   const ui = cliui({ width: width, wrap: wrap });
 
-  function invalidExit(element, elements) {
-    if (isString(element) && elements.length && isPlainObject(elements[0]))
-      log.error('invalid element(s) cannot mix string element with element options objects.').exit();
-  }
+//   function invalidExit(element, elements) {
+//     if (isString(element) && elements.length && isPlainObject(elements[0]))
+//       log.error('invalid element(s) cannot mix string element with element options objects.').exit();
+//   }
 
-  function add(type: string, ...elements: any[]) {
-    ui[type](...elements);
-  }
+//   function add(type: string, ...elements: any[]) {
+//     ui[type](...elements);
+//   }
 
-  /**
-   * Div
-   * Adds Div to the UI.
-   *
-   * @param elements array of string or IUIOptions
-   */
-  function div<T>(...elements: T[]) {
-    add('div', ...elements);
-  }
+//   /**
+//    * Div
+//    * Adds Div to the UI.
+//    *
+//    * @param elements array of string or IUIOptions
+//    */
+//   function div<T>(...elements: T[]) {
+//     add('div', ...elements);
+//   }
 
-  /**
-   * Span
-   * Adds Span to the UI.
-   *
-   * @param elements array of string or IUIOptions
-   */
-  function span<T>(...elements: T[]) {
-    add('span', ...elements);
-  }
+//   /**
+//    * Span
+//    * Adds Span to the UI.
+//    *
+//    * @param elements array of string or IUIOptions
+//    */
+//   function span<T>(...elements: T[]) {
+//     add('span', ...elements);
+//   }
 
-  /**
-   * Join
-   * Simply joins element args separated by space.
-   *
-   * @param elements the elements to be created.
-   */
-  function join(...elements: any[]) {
-    add('div', elements.join(' '));
-  }
+//   /**
+//    * Join
+//    * Simply joins element args separated by space.
+//    *
+//    * @param elements the elements to be created.
+//    */
+//   function join(...elements: any[]) {
+//     add('div', elements.join(' '));
+//   }
 
-  /**
-   * Get
-   * Gets the defined UI as string.
-   */
-  function getString() {
-    return ui.toString() || '';
-  }
+//   /**
+//    * Get
+//    * Gets the defined UI as string.
+//    */
+//   function getString() {
+//     return ui.toString() || '';
+//   }
 
-  /**
-   * Render
-   * Renders out the defined UI.
-   * When passing elements in render they default to "div" layout.
-   *
-   * @param elements optional elements to be defined at render.
-   */
-  function render<T>(...elements: T[]) {
-    if (elements.length)
-      add('div', ...elements);
-    console.log(getString());
-  }
+//   /**
+//    * Render
+//    * Renders out the defined UI.
+//    * When passing elements in render they default to "div" layout.
+//    *
+//    * @param elements optional elements to be defined at render.
+//    */
+//   function render<T>(...elements: T[]) {
+//     if (elements.length)
+//       add('div', ...elements);
+//     console.log(getString());
+//   }
 
-  // Alias for render.
-  const show = render;
+//   // Alias for render.
+//   const show = render;
 
-  return {
-    div,
-    join,
-    span,
-    render,
-    show,
-    ui
-  };
+//   return {
+//     div,
+//     join,
+//     span,
+//     render,
+//     show,
+//     ui
+//   };
 
 
-}
+// }
 
 /**
  * String Builder
@@ -445,77 +435,77 @@ export function layout(width?: number, wrap?: boolean) {
  *
  * @param str the base value to build from if any.
  */
-export function stringBuilder(str?: any): IStringBuilderMethods {
+// export function stringBuilder(str?: any): IStringBuilderMethods {
 
-  const arr = [];
-  str = str || '';
+//   const arr = [];
+//   str = str || '';
 
-  let methods: IStringBuilderMethods;
-  let result;
+//   let methods: IStringBuilderMethods;
+//   let result;
 
-  /**
-   * Add
-   * Adds a value to the collection for rendering.
-   *
-   * @param str the string to be added.
-   * @param styles any colurs styles to be applied.
-   */
-  function add(str: any, styles: string | string[]) {
-    if (isString(styles))
-      styles = (styles as string).split('.');
-    styles = toArray(styles, null, []);
-    if (styles.length)
-      str = colurs.applyAnsi(str, styles);
-    arr.push(str);
-    return methods;
-  }
+//   /**
+//    * Add
+//    * Adds a value to the collection for rendering.
+//    *
+//    * @param str the string to be added.
+//    * @param styles any colurs styles to be applied.
+//    */
+//   function add(str: any, styles: string | string[]) {
+//     if (isString(styles))
+//       styles = (styles as string).split('.');
+//     styles = toArray(styles, null, []);
+//     if (styles.length)
+//       str = colurs.applyAnsi(str, styles);
+//     arr.push(str);
+//     return methods;
+//   }
 
-  /**
-   * Join
-   *
-   * @param char the char used for joining array.
-   */
-  function join(char?: string) {
-    char = char || ' ';
-    result = arr.join(char);
-    return methods;
-  }
+//   /**
+//    * Join
+//    *
+//    * @param char the char used for joining array.
+//    */
+//   function join(char?: string) {
+//     char = char || ' ';
+//     result = arr.join(char);
+//     return methods;
+//   }
 
-  /**
-   * Format
-   *
-   * @param args arguments used to format string.
-   */
-  function format(...args: any[]) {
-    if (!result)
-      join();
-    result = stringFormat(result, args);
-    return methods;
-  }
+//   /**
+//    * Format
+//    *
+//    * @param args arguments used to format string.
+//    */
+//   function format(...args: any[]) {
+//     if (!result)
+//       join();
+//     result = stringFormat(result, args);
+//     return methods;
+//   }
 
-  /**
-   * Render
-   * Joins and renders the built string.
-   *
-   * @param char optional character to join by.
-   */
-  function render(char?: string) {
-    if (result)
-      return result;
-    join();
-    return result;
-  }
+//   /**
+//    * Render
+//    * Joins and renders the built string.
+//    *
+//    * @param char optional character to join by.
+//    */
+//   function render(char?: string) {
+//     if (result)
+//       return result;
+//     join();
+//     return result;
+//   }
 
-  methods = {
-    add,
-    join,
-    format,
-    render
-  };
+//   methods = {
+//     add,
+//     join,
+//     format,
+//     render
+//   };
 
-  return methods;
+//   return methods;
 
-}
+// }
 
 /**
  * String Format
@@ -526,17 +516,17 @@ export function stringBuilder(str?: any): IStringBuilderMethods {
  * @param str the string to be formatted.
  * @param args arguments used for formatting.
  */
-export function stringFormat(str, ...args: any[]) {
+// export function stringFormat(str, ...args: any[]) {
 
-  let ctr = 0;
+//   let ctr = 0;
 
-  return str.replace(/%(s|n)/g, (cur) => {
-    const val = args[ctr];
-    ctr++;
-    return val || cur;
-  });
+//   return str.replace(/%(s|n)/g, (cur) => {
+//     const val = args[ctr];
+//     ctr++;
+//     return val || cur;
+//   });
 
-}
+// }
 
 /**
  * Platform

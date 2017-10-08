@@ -7,4 +7,4 @@ import { methods as exec } from './exec';
 declare const log: Timbr;
 export * from './utils';
 export * from './interfaces';
-export { log, chek, colurs, fs, argv, exec, Timbr };
+export { log, chek, colurs, fs, argv, exec };

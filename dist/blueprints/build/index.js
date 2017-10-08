@@ -43,7 +43,6 @@ const actions = {
 
   clean: () => {
     stiks.clean(build.clean);
-    log.debug(`cleaned ${pkg.name}.`);
     return actions;
   },
 
@@ -56,7 +55,6 @@ const actions = {
     opts = '-p ./src/tsconfig.json'
     cmd = normalize('./node_modules/typescript/bin/tsc', opts);
     exec.node(cmd);
-    log.debug(`compiled ${pkg.name}.`);
     return actions;
   },
 
@@ -64,13 +62,11 @@ const actions = {
     opts = '--out ./docs ./src --options ./typedoc.json';
     cmd = normalize('./node_modules/typedoc/bin/typedoc', opts);
     exec.node(cmd);
-    log.debug(`built typedoc for ${pkg.name}.`);
     return actions;
   },
 
   bump: () => {
     stiks.bump();
-    log.debug(`bumped ${pkg.name}.`);
     return actions;
   },
 
@@ -78,7 +74,6 @@ const actions = {
     actions.clean()
       .copy()
       .compile();
-    log.info(`${pkg.name} was built.`);
     return actions;
   },
 
@@ -89,13 +84,11 @@ const actions = {
     exec.command('git', 'add .');
     exec.command('git', cmd);
     exec.command('git', 'push');
-    log.debug(`committed ${pkg.name}.`);
     return actions;
   },
 
   publish() {
     exec.npm('publish');
-    log.debug(`published ${pkg.name}.`);
     return actions;
   },
 
@@ -105,12 +98,16 @@ const actions = {
       .bump()
       .commit()
       .publish();
-    log.info(`published ${pkg.name}.`);
     return actions;
   },
 
   test: () => {
     exec.command('mocha', '--opts ./src/mocha.opts');
+  },
+
+  serve: () => {
+    const bsOpts = {};
+    const server = stiks.serve('dev-server', bsOpts, true);
   },
 
   exit: (msg) => {

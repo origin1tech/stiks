@@ -1,6 +1,6 @@
 {
   "name": "stiks",
-  "version": "1.0.14",
+  "version": "1.0.15",
   "description": "Node bundling & workflow utility for building Node apps.",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
@@ -42,10 +42,12 @@
   "devDependencies": {
     "@types/browser-sync": "0.0.35",
     "@types/chai": "^4.0.1",
+    "@types/del": "^3.0.0",
     "@types/mocha": "^2.2.41",
     "@types/node": "^8.0.19",
     "chai": "^4.0.2",
     "mocha": "^3.4.2",
+    "ts-node": "^3.3.0",
     "typedoc": "^0.7.1",
     "typescript": "^2.4.1"
   },

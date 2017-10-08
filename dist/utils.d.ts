@@ -1,13 +1,14 @@
-import { CopyTuple, IMap, ICopy, IStringBuilderMethods, ICpu } from './interfaces';
+import { CopyTuple, IMap, ICopy, ICpu } from './interfaces';
 import { Options, BrowserSyncInstance } from 'browser-sync';
 export declare const cwd: string;
 /**
  * Seed
- * Seeds known templates/examples.
+ * Internal method for seeding examples/templates.
+ *
+ * @param type the type of seed to run.
+ * @param dest the optional destination relative to root.
  */
-export declare const seed: {
-    build: any;
-};
+export declare function seed(type: string, dest?: string): void;
 /**
  * Clean
  * Removes file(s) using provided glob(s).
@@ -66,21 +67,12 @@ export declare function serve(name?: string | Options, options?: Options | boole
  * @param width the width of the layout.
  * @param wrap if the layout should wrap.
  */
-export declare function layout(width?: number, wrap?: boolean): {
-    div: <T>(...elements: T[]) => void;
-    join: (...elements: any[]) => void;
-    span: <T>(...elements: T[]) => void;
-    render: <T>(...elements: T[]) => void;
-    show: <T>(...elements: T[]) => void;
-    ui: any;
-};
 /**
  * String Builder
  * Builds string then joins by char with optional colorization.
  *
  * @param str the base value to build from if any.
  */
-export declare function stringBuilder(str?: any): IStringBuilderMethods;
 /**
  * String Format
  * Very simple string formatter by index.
@@ -90,7 +82,6 @@ export declare function stringBuilder(str?: any): IStringBuilderMethods;
  * @param str the string to be formatted.
  * @param args arguments used for formatting.
  */
-export declare function stringFormat(str: any, ...args: any[]): any;
 /**
  * Platform
  * Gets information and paths for the current platform.

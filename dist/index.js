@@ -4,7 +4,6 @@ function __export(m) {
 }
 Object.defineProperty(exports, "__esModule", { value: true });
 var logger_1 = require("./logger");
-exports.Timbr = logger_1.Timbr;
 var colurs = require("colurs");
 exports.colurs = colurs;
 var chek = require("chek");

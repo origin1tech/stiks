@@ -1,4 +1,4 @@
-const stiks = require('../dist');
+const ts = require('ts-node');
 
 /**
  * TS-Node
@@ -14,4 +14,4 @@ const options = {
   fast: true
 };
 
-stiks.tsnodeRegister(options);
+ts.register(options);

@@ -1,4 +1,3 @@
-const stiks = require('stiks');
 const ts = require('ts-node');
 
 /**
