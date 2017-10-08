@@ -42,8 +42,7 @@ function normalize(cmds, options) {
 const actions = {
 
   clean: () => {
-    // stiks.clean(build.clean);
-    // log.debug(`cleaned ${pkg.name}.`);
+    stiks.clean(build.clean);
     return actions;
   },
 
