@@ -76,7 +76,6 @@
 								<li class="tsd-kind-variable tsd-parent-kind-external-module tsd-is-not-exported"><a href="_utils_.html#_pkg" class="tsd-kind-icon">_pkg</a></li>
 								<li class="tsd-kind-variable tsd-parent-kind-external-module tsd-is-not-exported"><a href="_utils_.html#colurs" class="tsd-kind-icon">colurs</a></li>
 								<li class="tsd-kind-variable tsd-parent-kind-external-module"><a href="_utils_.html#cwd" class="tsd-kind-icon">cwd</a></li>
-								<li class="tsd-kind-variable tsd-parent-kind-external-module tsd-is-not-exported"><a href="_utils_.html#log" class="tsd-kind-icon">log</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
@@ -90,7 +89,6 @@
 								<li class="tsd-kind-function tsd-parent-kind-external-module tsd-is-not-exported"><a href="_utils_.html#getrelative" class="tsd-kind-icon">get<wbr>Relative</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-external-module"><a href="_utils_.html#pkg" class="tsd-kind-icon">pkg</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-external-module"><a href="_utils_.html#platform" class="tsd-kind-icon">platform</a></li>
-								<li class="tsd-kind-function tsd-parent-kind-external-module"><a href="_utils_.html#seed" class="tsd-kind-icon">seed</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-external-module"><a href="_utils_.html#serve" class="tsd-kind-icon">serve</a></li>
 							</ul>
 						</section>
@@ -105,17 +103,17 @@
 					<div class="tsd-signature tsd-kind-icon">_pkg<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">any</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/origin1tech/stiks/blob/f1d08a6/src/utils.ts#L14">utils.ts:14</a></li>
+							<li>Defined in <a href="https://github.com/origin1tech/stiks/blob/a681fac/src/utils.ts#L16">utils.ts:16</a></li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-external-module tsd-is-not-exported">
 					<a name="colurs" class="tsd-anchor"></a>
 					<h3>colurs</h3>
-					<div class="tsd-signature tsd-kind-icon">colurs<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">IColurs</span><span class="tsd-signature-symbol"> =&nbsp;clrs.get()</span></div>
+					<div class="tsd-signature tsd-kind-icon">colurs<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">IColurs</span><span class="tsd-signature-symbol"> =&nbsp;new Colurs()</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/origin1tech/stiks/blob/f1d08a6/src/utils.ts#L17">utils.ts:17</a></li>
+							<li>Defined in <a href="https://github.com/origin1tech/stiks/blob/a681fac/src/utils.ts#L20">utils.ts:20</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -125,17 +123,7 @@
 					<div class="tsd-signature tsd-kind-icon">cwd<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;process.cwd()</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/origin1tech/stiks/blob/f1d08a6/src/utils.ts#L16">utils.ts:16</a></li>
-						</ul>
-					</aside>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-external-module tsd-is-not-exported">
-					<a name="log" class="tsd-anchor"></a>
-					<h3>log</h3>
-					<div class="tsd-signature tsd-kind-icon">log<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Timbr</span><span class="tsd-signature-symbol"> =&nbsp;logger.get()</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/origin1tech/stiks/blob/f1d08a6/src/utils.ts#L18">utils.ts:18</a></li>
+							<li>Defined in <a href="https://github.com/origin1tech/stiks/blob/a681fac/src/utils.ts#L18">utils.ts:18</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -146,28 +134,40 @@
 					<a name="bump" class="tsd-anchor"></a>
 					<h3>bump</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module">
-						<li class="tsd-signature tsd-kind-icon">bump<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">object</span></li>
+						<li class="tsd-signature tsd-kind-icon">bump<span class="tsd-signature-symbol">(</span>type<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">"major"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"premajor"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"minor"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"preminor"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"patch"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"prepatch"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"prerelease"</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">object</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/origin1tech/stiks/blob/f1d08a6/src/utils.ts#L227">utils.ts:227</a></li>
+									<li>Defined in <a href="https://github.com/origin1tech/stiks/blob/a681fac/src/utils.ts#L203">utils.ts:203</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
 									<p>Bump
-									Bumps project to next version.</p>
+									: Bumps the package version.</p>
 								</div>
 							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> type: <span class="tsd-signature-type">"major"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"premajor"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"minor"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"preminor"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"patch"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"prepatch"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"prerelease"</span><span class="tsd-signature-symbol"> =&nbsp;&quot;patch&quot;</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>the release type to increment the package by.</p>
+									</div>
+								</li>
+							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">object</span></h4>
 							<ul class="tsd-parameters">
+								<li class="tsd-parameter">
+									<h5>current<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span></h5>
+								</li>
 								<li class="tsd-parameter">
 									<h5>name<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span></h5>
 								</li>
 								<li class="tsd-parameter">
-									<h5>original<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span></h5>
+									<h5>previous<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span></h5>
 								</li>
 								<li class="tsd-parameter">
 									<h5>version<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span></h5>
@@ -186,7 +186,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/origin1tech/stiks/blob/f1d08a6/src/utils.ts#L72">utils.ts:72</a></li>
+									<li>Defined in <a href="https://github.com/origin1tech/stiks/blob/a681fac/src/utils.ts#L48">utils.ts:48</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -218,7 +218,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/origin1tech/stiks/blob/f1d08a6/src/utils.ts#L94">utils.ts:94</a></li>
+									<li>Defined in <a href="https://github.com/origin1tech/stiks/blob/a681fac/src/utils.ts#L70">utils.ts:70</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -250,13 +250,13 @@
 					<a name="copyall" class="tsd-anchor"></a>
 					<h3>copy<wbr>All</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module">
-						<li class="tsd-signature tsd-kind-icon">copy<wbr>All<span class="tsd-signature-symbol">(</span>copies<span class="tsd-signature-symbol">: </span><a href="_interfaces_.html#copytuple" class="tsd-signature-type">CopyTuple</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> | </span><a href="_interfaces_.html#copytuple" class="tsd-signature-type">CopyTuple</a><span class="tsd-signature-symbol"> | </span><a href="../interfaces/_interfaces_.imap.html" class="tsd-signature-type">IMap</a><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/_interfaces_.icopy.html" class="tsd-signature-type">ICopy</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+						<li class="tsd-signature tsd-kind-icon">copy<wbr>All<span class="tsd-signature-symbol">(</span>copies<span class="tsd-signature-symbol">: </span><a href="_interfaces_.html#copytuple" class="tsd-signature-type">CopyTuple</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> | </span><a href="_interfaces_.html#copytuple" class="tsd-signature-type">CopyTuple</a><span class="tsd-signature-symbol"> | </span><a href="../interfaces/_interfaces_.imap.html" class="tsd-signature-type">IMap</a><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/_interfaces_.icopy.html" class="tsd-signature-type">ICopy</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">object</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/origin1tech/stiks/blob/f1d08a6/src/utils.ts#L120">utils.ts:120</a></li>
+									<li>Defined in <a href="https://github.com/origin1tech/stiks/blob/a681fac/src/utils.ts#L96">utils.ts:96</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -274,7 +274,15 @@
 									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">object</span></h4>
+							<ul class="tsd-parameters">
+								<li class="tsd-parameter">
+									<h5>failed<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span></h5>
+								</li>
+								<li class="tsd-parameter">
+									<h5>success<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span></h5>
+								</li>
+							</ul>
 						</li>
 					</ul>
 				</section>
@@ -288,7 +296,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/origin1tech/stiks/blob/f1d08a6/src/utils.ts#L25">utils.ts:25</a></li>
+									<li>Defined in <a href="https://github.com/origin1tech/stiks/blob/a681fac/src/utils.ts#L27">utils.ts:27</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -319,7 +327,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/origin1tech/stiks/blob/f1d08a6/src/utils.ts#L35">utils.ts:35</a></li>
+									<li>Defined in <a href="https://github.com/origin1tech/stiks/blob/a681fac/src/utils.ts#L37">utils.ts:37</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -350,7 +358,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/origin1tech/stiks/blob/f1d08a6/src/utils.ts#L209">utils.ts:209</a></li>
+									<li>Defined in <a href="https://github.com/origin1tech/stiks/blob/a681fac/src/utils.ts#L190">utils.ts:190</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -382,7 +390,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/origin1tech/stiks/blob/f1d08a6/src/utils.ts#L535">utils.ts:535</a></li>
+									<li>Defined in <a href="https://github.com/origin1tech/stiks/blob/a681fac/src/utils.ts#L281">utils.ts:281</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -416,44 +424,6 @@
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-external-module">
-					<a name="seed" class="tsd-anchor"></a>
-					<h3>seed</h3>
-					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module">
-						<li class="tsd-signature tsd-kind-icon">seed<span class="tsd-signature-symbol">(</span>type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, dest<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/origin1tech/stiks/blob/f1d08a6/src/utils.ts#L47">utils.ts:47</a></li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Seed
-									Internal method for seeding examples/templates.</p>
-								</div>
-							</div>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>type: <span class="tsd-signature-type">string</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>the type of seed to run.</p>
-									</div>
-								</li>
-								<li>
-									<h5><span class="tsd-flag ts-flagOptional">Optional</span> dest: <span class="tsd-signature-type">string</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>the optional destination relative to root.</p>
-									</div>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-external-module">
 					<a name="serve" class="tsd-anchor"></a>
 					<h3>serve</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module">
@@ -463,7 +433,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/origin1tech/stiks/blob/f1d08a6/src/utils.ts#L301">utils.ts:301</a></li>
+									<li>Defined in <a href="https://github.com/origin1tech/stiks/blob/a681fac/src/utils.ts#L232">utils.ts:232</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -541,9 +511,6 @@
 					<li class=" tsd-kind-variable tsd-parent-kind-external-module">
 						<a href="_utils_.html#cwd" class="tsd-kind-icon">cwd</a>
 					</li>
-					<li class=" tsd-kind-variable tsd-parent-kind-external-module tsd-is-not-exported">
-						<a href="_utils_.html#log" class="tsd-kind-icon">log</a>
-					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-external-module">
 						<a href="_utils_.html#bump" class="tsd-kind-icon">bump</a>
 					</li>
@@ -567,9 +534,6 @@
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-external-module">
 						<a href="_utils_.html#platform" class="tsd-kind-icon">platform</a>
-					</li>
-					<li class=" tsd-kind-function tsd-parent-kind-external-module">
-						<a href="_utils_.html#seed" class="tsd-kind-icon">seed</a>
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-external-module">
 						<a href="_utils_.html#serve" class="tsd-kind-icon">serve</a>

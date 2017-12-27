@@ -2,14 +2,6 @@ import { CopyTuple, IMap, ICopy, ICpu } from './interfaces';
 import { Options, BrowserSyncInstance } from 'browser-sync';
 export declare const cwd: string;
 /**
- * Seed
- * Internal method for seeding examples/templates.
- *
- * @param type the type of seed to run.
- * @param dest the optional destination relative to root.
- */
-export declare function seed(type: string, dest?: string): void;
-/**
  * Clean
  * Removes file(s) using provided glob(s).
  *
@@ -30,7 +22,10 @@ export declare function copy(src: string, dest: string): boolean;
  *
  * @param copies collection of source and destination targets.
  */
-export declare function copyAll(copies: CopyTuple[] | CopyTuple | IMap<ICopy> | string[]): void;
+export declare function copyAll(copies: CopyTuple[] | CopyTuple | IMap<ICopy> | string[]): {
+    success: any;
+    failed: any;
+};
 /**
  * Pkg
  * Loads the package.json file for project or saves package.json.
@@ -40,14 +35,15 @@ export declare function copyAll(copies: CopyTuple[] | CopyTuple | IMap<ICopy> | 
 export declare function pkg(val?: any): any;
 /**
  * Bump
- * Bumps project to next version.
+ * : Bumps the package version.
  *
- * @param filename optional filename defaults to package.json in cwd.
+ * @param type the release type to increment the package by.
  */
-export declare function bump(): {
+export declare function bump(type?: 'major' | 'premajor' | 'minor' | 'preminor' | 'patch' | 'prepatch' | 'prerelease'): {
     name: any;
     version: any;
-    original: any;
+    previous: any;
+    current: any;
 };
 /**
  * Serve
@@ -58,30 +54,6 @@ export declare function bump(): {
  * @param options the Browser Sync Options.
  */
 export declare function serve(name?: string | Options, options?: Options | boolean, init?: boolean): BrowserSyncInstance;
-/**
- * Layout
- * Creates a CLI layout much like creating divs in the terminal.
- * Supports strings with \t \s \n or IUIOptions object.
- * @see https://www.npmjs.com/package/cliui
- *
- * @param width the width of the layout.
- * @param wrap if the layout should wrap.
- */
-/**
- * String Builder
- * Builds string then joins by char with optional colorization.
- *
- * @param str the base value to build from if any.
- */
-/**
- * String Format
- * Very simple string formatter by index.
- * Supports using %s or %n chars.
- *
- * @private
- * @param str the string to be formatted.
- * @param args arguments used for formatting.
- */
 /**
  * Platform
  * Gets information and paths for the current platform.

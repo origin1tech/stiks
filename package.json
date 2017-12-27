@@ -1,9 +1,13 @@
 {
   "name": "stiks",
-  "version": "1.0.17",
+  "version": "1.0.18",
   "description": "Node bundling & workflow utility for building Node apps.",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
+  "bin": {
+    "stx": "bin/cli",
+    "stiks": "bin/cli"
+  },
   "scripts": {
     "clean": "node ./build clean",
     "copy": "node ./build copy",
@@ -40,11 +44,12 @@
     ]
   },
   "devDependencies": {
-    "@types/browser-sync": "0.0.35",
+    "@types/browser-sync": "0.0.38",
     "@types/chai": "^4.0.1",
     "@types/del": "^3.0.0",
     "@types/mocha": "^2.2.41",
     "@types/node": "^8.0.19",
+    "@types/semver": "^5.4.0",
     "chai": "^4.0.2",
     "mocha": "^3.4.2",
     "ts-node": "^3.3.0",
@@ -52,11 +57,12 @@
     "typescript": "^2.4.1"
   },
   "dependencies": {
+    "@types/log-symbols": "^2.0.0",
     "chek": "^1.0.11",
-    "cliui": "^3.2.0",
     "colurs": "^1.0.4",
     "del": "^3.0.0",
     "fs-extra": "^3.0.1",
-    "timbr": "^1.0.1"
+    "log-symbols": "^2.1.0",
+    "semver": "^5.4.1"
   }
 }

@@ -4,14 +4,15 @@ var os = require("os");
 var path_1 = require("path");
 var del = require("del");
 var chek_1 = require("chek");
-var logger = require("./logger");
+var logger_1 = require("./logger");
 var glob = require("glob");
-var clrs = require("colurs");
+var colurs_1 = require("colurs");
 var fs_extra_1 = require("fs-extra");
+var semver_1 = require("semver");
+var util_1 = require("util");
 var _pkg;
 exports.cwd = process.cwd();
-var colurs = clrs.get();
-var log = logger.get();
+var colurs = new colurs_1.Colurs();
 /**
  * Get Parsed
  *
@@ -31,26 +32,6 @@ function getRelative(filename) {
     return path_1.relative(exports.cwd, path_1.join(parsed.dir, parsed.base || ''));
 }
 /**
- * Seed
- * Internal method for seeding examples/templates.
- *
- * @param type the type of seed to run.
- * @param dest the optional destination relative to root.
- */
-function seed(type, dest) {
-    var source = path_1.resolve(__dirname, path_1.join('blueprints', type));
-    dest = dest ? path_1.resolve(exports.cwd, dest) : path_1.resolve(exports.cwd, type);
-    switch (type) {
-        case 'build':
-            copyAll([source, dest]);
-            break;
-        default:
-            log.warn("seed type " + type + " was not found.");
-            break;
-    }
-}
-exports.seed = seed;
-/**
  * Clean
  * Removes file(s) using provided glob(s).
  *
@@ -66,7 +47,7 @@ function clean(globs) {
             // log.info(`successfully cleaned or ignored ${getRelative(g)}.`);
         }
         catch (ex) {
-            log.info("failed to clean " + getRelative(g) + ".");
+            logger_1.log.info("failed to clean " + getRelative(g) + ".");
         }
     });
 }
@@ -89,7 +70,7 @@ function copy(src, dest) {
         return true;
     }
     catch (ex) {
-        log.warn("failed to copy " + colurs.yellow(getRelative(parsedSrc || 'undefined')) + " to " + colurs.red(getRelative(parsedDest || 'undefined')) + ".");
+        logger_1.log.warn("failed to copy " + colurs.yellow(getRelative(parsedSrc || 'undefined')) + " to " + colurs.red(getRelative(parsedDest || 'undefined')) + ".");
         return false;
     }
 }
@@ -115,12 +96,12 @@ function copyAll(copies) {
         if (success || failed) {
             if (failed > success) {
                 if (!success)
-                    log.error(colurs.red(failed) + " copies " + colurs.red('failed') + " to processes with 0 succeeding.");
+                    logger_1.log.error(colurs.red(failed) + " copies " + colurs.red('failed') + " to processes with 0 succeeding.");
                 else
-                    log.warn(colurs.red(failed) + " copies " + colurs.red('failed') + " to processes with " + (colurs.green(success) + 'succeeding') + ".");
+                    logger_1.log.warn(colurs.red(failed) + " copies " + colurs.red('failed') + " to processes with " + (colurs.green(success) + 'succeeding') + ".");
             }
             else {
-                log.info(colurs.green(success) + " items " + colurs.green('successfully') + " copied with " + colurs.yellow(failed) + " copies " + colurs.yellow('failing') + ".");
+                logger_1.log.info(colurs.green(success) + " items " + colurs.green('successfully') + " copied with " + colurs.yellow(failed) + " copies " + colurs.yellow('failing') + ".");
             }
         }
     }
@@ -140,7 +121,7 @@ function copyAll(copies) {
                 update(result);
             }
         });
-        logResults();
+        // logResults();
     }
     else if (chek_1.isArray(copies)) {
         // If not array of tuples convert.
@@ -160,11 +141,15 @@ function copyAll(copies) {
                 update(result);
             }
         });
-        logResults();
+        // logResults();
     }
     else {
-        log.warn("cannot copy using unknown configuration type of " + typeof copies + ".");
+        logger_1.log.warn("cannot copy using unknown configuration type of " + typeof copies + ".");
     }
+    return {
+        success: success,
+        failed: failed
+    };
 }
 exports.copyAll = copyAll;
 /**
@@ -175,68 +160,29 @@ exports.copyAll = copyAll;
  */
 function pkg(val) {
     var filename = path_1.resolve(exports.cwd, 'package.json');
-    try {
-        if (!val)
-            return _pkg || (_pkg = fs_extra_1.readJSONSync(filename));
-        fs_extra_1.writeJSONSync(filename, val, { spaces: 2 });
-    }
-    catch (ex) {
-        log.error(ex);
-    }
+    if (!val)
+        return _pkg || (_pkg = fs_extra_1.readJSONSync(filename));
+    fs_extra_1.writeJSONSync(filename, val, { spaces: 2 });
 }
 exports.pkg = pkg;
 /**
  * Bump
- * Bumps project to next version.
+ * : Bumps the package version.
  *
- * @param filename optional filename defaults to package.json in cwd.
+ * @param type the release type to increment the package by.
  */
-function bump() {
-    var semverKeys = ['major', 'minor', 'patch'];
+function bump(type) {
+    if (type === void 0) { type = 'patch'; }
     var _pkg = pkg();
     if (!_pkg || !_pkg.version)
-        log.error('failed to load package.json, are you sure this is a valid project?').exit();
+        logger_1.log.error('Failed to load package.json, are you sure this is a valid project?');
     var origVer = _pkg.version;
-    var splitVer = _pkg.version.split('-');
-    var ver = (splitVer[0] || '').replace(/^(=|v|^|~)/, '');
-    var pre = splitVer[1] || '';
-    var verArr = chek_1.castType(chek_1.split(ver), ['integer'], []);
-    var preArr = [];
-    if (pre && pre.length)
-        preArr = chek_1.castType(chek_1.split(pre), ['string', 'integer'], []);
-    var arr = verArr;
-    var isPre = false;
-    if (preArr.length) {
-        arr = [].slice.call(preArr, 1); // remove first arg.
-        isPre = true;
-    }
-    var i = arr.length;
-    var bump;
-    while (i-- && !bump) {
-        var next = arr[i] + 1;
-        arr[i] = next;
-        bump = {
-            type: !isPre ? semverKeys[i] : 'pre',
-            next: next
-        };
-        if (isPre) {
-            bump.preArr = [preArr[0]].concat(arr);
-            bump.pre = bump.preArr.join('.');
-            bump.ver = ver;
-            bump.verArr = verArr;
-        }
-        else {
-            bump.ver = arr.join('.');
-            bump.verArr = arr;
-            bump.preArr = preArr;
-            bump.pre = pre;
-        }
-        bump.full = bump.pre && bump.pre.length ? bump.ver + '-' + bump.pre : bump.ver;
-    }
-    _pkg.version = bump.full;
+    var newVer = semver_1.inc(origVer, type);
+    if (newVer === null)
+        logger_1.log.error('Whoops tried to bump version but got null.');
+    _pkg.version = newVer;
     pkg(_pkg);
-    // log.info(`bumped ${_pkg.name} from ${colurs.magenta(origVer)} to ${colurs.green(bump.full)}.`);
-    return { name: _pkg.name, version: _pkg.version, original: origVer };
+    return { name: _pkg.name, version: _pkg.version, previous: origVer, current: _pkg.version };
 }
 exports.bump = bump;
 /**
@@ -254,191 +200,33 @@ function serve(name, options, init) {
         options = name;
         name = undefined;
     }
+    if (util_1.isBoolean(options)) {
+        init = options;
+        options = undefined;
+    }
     var defaults = {
         server: {
             baseDir: './dist'
         }
     };
-    name = name || _pkg.name || 'dev-server';
+    name = name || 'dev-server';
     options = chek_1.extend({}, defaults, options);
     var bsync = chek_1.tryRootRequire('browser-sync');
     if (!bsync)
-        log.error('failed to load root module browser-sync, ensure the module is installed');
+        logger_1.log.error('failed to load root module browser-sync, ensure the module is installed');
     var server = bsync.create(name);
     if (init !== false)
         server.init(options, function (err) {
             if (err) {
-                log.error(err);
+                logger_1.log.error(err);
             }
             else {
-                log.info("browser Sync server " + name + " successfully initialized.");
+                logger_1.log.info("browser Sync server " + name + " successfully initialized.");
             }
         });
     return server;
 }
 exports.serve = serve;
-/**
- * Layout
- * Creates a CLI layout much like creating divs in the terminal.
- * Supports strings with \t \s \n or IUIOptions object.
- * @see https://www.npmjs.com/package/cliui
- *
- * @param width the width of the layout.
- * @param wrap if the layout should wrap.
- */
-// export function layout(width?: number, wrap?: boolean) {
-//   // Base width of all divs.
-//   width = width || 95;
-//   const ui = cliui({ width: width, wrap: wrap });
-//   function invalidExit(element, elements) {
-//     if (isString(element) && elements.length && isPlainObject(elements[0]))
-//       log.error('invalid element(s) cannot mix string element with element options objects.').exit();
-//   }
-//   function add(type: string, ...elements: any[]) {
-//     ui[type](...elements);
-//   }
-//   /**
-//    * Div
-//    * Adds Div to the UI.
-//    *
-//    * @param elements array of string or IUIOptions
-//    */
-//   function div<T>(...elements: T[]) {
-//     add('div', ...elements);
-//   }
-//   /**
-//    * Span
-//    * Adds Span to the UI.
-//    *
-//    * @param elements array of string or IUIOptions
-//    */
-//   function span<T>(...elements: T[]) {
-//     add('span', ...elements);
-//   }
-//   /**
-//    * Join
-//    * Simply joins element args separated by space.
-//    *
-//    * @param elements the elements to be created.
-//    */
-//   function join(...elements: any[]) {
-//     add('div', elements.join(' '));
-//   }
-//   /**
-//    * Get
-//    * Gets the defined UI as string.
-//    */
-//   function getString() {
-//     return ui.toString() || '';
-//   }
-//   /**
-//    * Render
-//    * Renders out the defined UI.
-//    * When passing elements in render they default to "div" layout.
-//    *
-//    * @param elements optional elements to be defined at render.
-//    */
-//   function render<T>(...elements: T[]) {
-//     if (elements.length)
-//       add('div', ...elements);
-//     console.log(getString());
-//   }
-//   // Alias for render.
-//   const show = render;
-//   return {
-//     div,
-//     join,
-//     span,
-//     render,
-//     show,
-//     ui
-//   };
-// }
-/**
- * String Builder
- * Builds string then joins by char with optional colorization.
- *
- * @param str the base value to build from if any.
- */
-// export function stringBuilder(str?: any): IStringBuilderMethods {
-//   const arr = [];
-//   str = str || '';
-//   let methods: IStringBuilderMethods;
-//   let result;
-//   /**
-//    * Add
-//    * Adds a value to the collection for rendering.
-//    *
-//    * @param str the string to be added.
-//    * @param styles any colurs styles to be applied.
-//    */
-//   function add(str: any, styles: string | string[]) {
-//     if (isString(styles))
-//       styles = (styles as string).split('.');
-//     styles = toArray(styles, null, []);
-//     if (styles.length)
-//       str = colurs.applyAnsi(str, styles);
-//     arr.push(str);
-//     return methods;
-//   }
-//   /**
-//    * Join
-//    *
-//    * @param char the char used for joining array.
-//    */
-//   function join(char?: string) {
-//     char = char || ' ';
-//     result = arr.join(char);
-//     return methods;
-//   }
-//   /**
-//    * Format
-//    *
-//    * @param args arguments used to format string.
-//    */
-//   function format(...args: any[]) {
-//     if (!result)
-//       join();
-//     result = stringFormat(result, args);
-//     return methods;
-//   }
-//   /**
-//    * Render
-//    * Joins and renders the built string.
-//    *
-//    * @param char optional character to join by.
-//    */
-//   function render(char?: string) {
-//     if (result)
-//       return result;
-//     join();
-//     return result;
-//   }
-//   methods = {
-//     add,
-//     join,
-//     format,
-//     render
-//   };
-//   return methods;
-// }
-/**
- * String Format
- * Very simple string formatter by index.
- * Supports using %s or %n chars.
- *
- * @private
- * @param str the string to be formatted.
- * @param args arguments used for formatting.
- */
-// export function stringFormat(str, ...args: any[]) {
-//   let ctr = 0;
-//   return str.replace(/%(s|n)/g, (cur) => {
-//     const val = args[ctr];
-//     ctr++;
-//     return val || cur;
-//   });
-// }
 /**
  * Platform
  * Gets information and paths for the current platform.

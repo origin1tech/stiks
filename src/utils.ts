@@ -3,19 +3,21 @@ import * as os from 'os';
 import { resolve, parse, relative, join } from 'path';
 import * as del from 'del';
 import { toArray, isString, split, isPlainObject, isArray, keys, isNumber, castType, isValue, extend, tryRequire, tryRootRequire } from 'chek';
-import * as logger from './logger';
+import { log } from './logger';
 import * as glob from 'glob';
 import * as cliui from 'cliui';
-import * as clrs from 'colurs';
+import { Colurs } from 'colurs';
 import { readFileSync, readJSONSync, copySync, writeJSONSync, existsSync } from 'fs-extra';
-import { CopyTuple, IMap, ICopy, ITSNodeOptions, IUIOptions, IStringBuilderMethods, ICpu } from './interfaces';
+import { CopyTuple, IMap, ICopy, ICpu } from './interfaces';
 import { Options, BrowserSyncInstance } from 'browser-sync';
+import { inc } from 'semver';
+import { isBoolean } from 'util';
 
 let _pkg;
 
 export const cwd = process.cwd();
-const colurs = clrs.get();
-const log = logger.get();
+
+const colurs = new Colurs();
 
 /**
  * Get Parsed
@@ -38,39 +40,13 @@ function getRelative(filename) {
 }
 
 /**
- * Seed
- * Internal method for seeding examples/templates.
- *
- * @param type the type of seed to run.
- * @param dest the optional destination relative to root.
- */
-export function seed(type: string, dest?: string) {
-
-  const source = resolve(__dirname, join('blueprints', type));
-  dest = dest ? resolve(cwd, dest) : resolve(cwd, type);
-
-  switch (type) {
-
-    case 'build':
-      copyAll([source, dest]);
-      break;
-
-    default:
-      log.warn(`seed type ${type} was not found.`);
-      break;
-
-  }
-
-}
-
-/**
  * Clean
  * Removes file(s) using provided glob(s).
  *
  * @param globs glob or array of glob strings.
  */
 export function clean(globs: string | string[]) {
-  globs = toArray<string>(globs);
+  globs = toArray<string>(globs) as string[];
   globs.forEach((g) => {
     try {
       del.sync(g);
@@ -166,7 +142,7 @@ export function copyAll(copies: CopyTuple[] | CopyTuple | IMap<ICopy> | string[]
 
     });
 
-    logResults();
+    // logResults();
 
   }
 
@@ -191,12 +167,17 @@ export function copyAll(copies: CopyTuple[] | CopyTuple | IMap<ICopy> | string[]
       }
     });
 
-    logResults();
+    // logResults();
 
   }
   else {
     log.warn(`cannot copy using unknown configuration type of ${typeof copies}.`);
   }
+
+  return {
+    success,
+    failed
+  };
 
 }
 
@@ -208,85 +189,35 @@ export function copyAll(copies: CopyTuple[] | CopyTuple | IMap<ICopy> | string[]
  */
 export function pkg(val?: any) {
   const filename = resolve(cwd, 'package.json');
-  try {
-    if (!val)
-      return _pkg || (_pkg = readJSONSync(filename));
-    writeJSONSync(filename, val, { spaces: 2 });
-  }
-  catch (ex) {
-    log.error(ex);
-  }
+  if (!val)
+    return _pkg || (_pkg = readJSONSync(filename));
+  writeJSONSync(filename, val, { spaces: 2 });
 }
 
 /**
  * Bump
- * Bumps project to next version.
+ * : Bumps the package version.
  *
- * @param filename optional filename defaults to package.json in cwd.
+ * @param type the release type to increment the package by.
  */
-export function bump() {
+export function bump(type: 'major' | 'premajor' | 'minor' | 'preminor' | 'patch' | 'prepatch' | 'prerelease' = 'patch') {
 
-  const semverKeys = ['major', 'minor', 'patch'];
   const _pkg = pkg();
 
   if (!_pkg || !_pkg.version)
-    log.error('failed to load package.json, are you sure this is a valid project?').exit();
+    log.error('Failed to load package.json, are you sure this is a valid project?');
 
   const origVer = _pkg.version;
-  const splitVer = _pkg.version.split('-');
-  let ver = (splitVer[0] || '').replace(/^(=|v|^|~)/, '');
-  let pre = splitVer[1] || '';
-  let verArr = castType<number[]>(split(ver), ['integer'], []);
-  let preArr = [];
+  const newVer = inc(origVer, type);
 
-  if (pre && pre.length)
-    preArr = castType<any[]>(split(pre), ['string', 'integer'], []);
+  if (newVer === null)
+    log.error('Whoops tried to bump version but got null.');
 
-  let arr = verArr;
-  let isPre = false;
+  _pkg.version = newVer;
 
-  if (preArr.length) {
-    arr = [].slice.call(preArr, 1); // remove first arg.
-    isPre = true;
-  }
-
-  let i = arr.length;
-  let bump: any;
-
-  while (i-- && !bump) {
-
-    const next = arr[i] + 1;
-
-    arr[i] = next;
-
-    bump = {
-      type: !isPre ? semverKeys[i] : 'pre',
-      next: next
-    };
-
-    if (isPre) {
-      bump.preArr = [preArr[0]].concat(arr);
-      bump.pre = bump.preArr.join('.');
-      bump.ver = ver;
-      bump.verArr = verArr;
-    }
-    else {
-      bump.ver = arr.join('.');
-      bump.verArr = arr;
-      bump.preArr = preArr;
-      bump.pre = pre;
-    }
-
-    bump.full = bump.pre && bump.pre.length ? bump.ver + '-' + bump.pre : bump.ver;
-
-  }
-
-  _pkg.version = bump.full;
   pkg(_pkg);
 
-  // log.info(`bumped ${_pkg.name} from ${colurs.magenta(origVer)} to ${colurs.green(bump.full)}.`);
-
-  return { name: _pkg.name, version: _pkg.version, original: origVer };
+  return { name: _pkg.name, version: _pkg.version, previous: origVer, current: _pkg.version };
 
 }
 
@@ -308,13 +239,18 @@ export function serve(name?: string | Options, options?: Options | boolean, init
     name = undefined;
   }
 
+  if (isBoolean(options)) {
+    init = options;
+    options = undefined;
+  }
+
   const defaults: Options = {
     server: {
       baseDir: './dist'
     }
   };
 
-  name = name || _pkg.name || 'dev-server';
+  name = name || 'dev-server';
   options = extend({}, defaults, options);
 
   const bsync = tryRootRequire('browser-sync');
@@ -337,196 +273,6 @@ export function serve(name?: string | Options, options?: Options | boolean, init
   return server;
 
 }
-
-/**
- * Layout
- * Creates a CLI layout much like creating divs in the terminal.
- * Supports strings with \t \s \n or IUIOptions object.
- * @see https://www.npmjs.com/package/cliui
- *
- * @param width the width of the layout.
- * @param wrap if the layout should wrap.
- */
-// export function layout(width?: number, wrap?: boolean) {
-
-//   // Base width of all divs.
-//   width = width || 95;
-
-//   const ui = cliui({ width: width, wrap: wrap });
-
-//   function invalidExit(element, elements) {
-//     if (isString(element) && elements.length && isPlainObject(elements[0]))
-//       log.error('invalid element(s) cannot mix string element with element options objects.').exit();
-//   }
-
-//   function add(type: string, ...elements: any[]) {
-//     ui[type](...elements);
-//   }
-
-//   /**
-//    * Div
-//    * Adds Div to the UI.
-//    *
-//    * @param elements array of string or IUIOptions
-//    */
-//   function div<T>(...elements: T[]) {
-//     add('div', ...elements);
-//   }
-
-//   /**
-//    * Span
-//    * Adds Span to the UI.
-//    *
-//    * @param elements array of string or IUIOptions
-//    */
-//   function span<T>(...elements: T[]) {
-//     add('span', ...elements);
-//   }
-
-//   /**
-//    * Join
-//    * Simply joins element args separated by space.
-//    *
-//    * @param elements the elements to be created.
-//    */
-//   function join(...elements: any[]) {
-//     add('div', elements.join(' '));
-//   }
-
-//   /**
-//    * Get
-//    * Gets the defined UI as string.
-//    */
-//   function getString() {
-//     return ui.toString() || '';
-//   }
-
-//   /**
-//    * Render
-//    * Renders out the defined UI.
-//    * When passing elements in render they default to "div" layout.
-//    *
-//    * @param elements optional elements to be defined at render.
-//    */
-//   function render<T>(...elements: T[]) {
-//     if (elements.length)
-//       add('div', ...elements);
-//     console.log(getString());
-//   }
-
-//   // Alias for render.
-//   const show = render;
-
-//   return {
-//     div,
-//     join,
-//     span,
-//     render,
-//     show,
-//     ui
-//   };
-
-
-// }
-
-/**
- * String Builder
- * Builds string then joins by char with optional colorization.
- *
- * @param str the base value to build from if any.
- */
-// export function stringBuilder(str?: any): IStringBuilderMethods {
-
-//   const arr = [];
-//   str = str || '';
-
-//   let methods: IStringBuilderMethods;
-//   let result;
-
-//   /**
-//    * Add
-//    * Adds a value to the collection for rendering.
-//    *
-//    * @param str the string to be added.
-//    * @param styles any colurs styles to be applied.
-//    */
-//   function add(str: any, styles: string | string[]) {
-//     if (isString(styles))
-//       styles = (styles as string).split('.');
-//     styles = toArray(styles, null, []);
-//     if (styles.length)
-//       str = colurs.applyAnsi(str, styles);
-//     arr.push(str);
-//     return methods;
-//   }
-
-//   /**
-//    * Join
-//    *
-//    * @param char the char used for joining array.
-//    */
-//   function join(char?: string) {
-//     char = char || ' ';
-//     result = arr.join(char);
-//     return methods;
-//   }
-
-//   /**
-//    * Format
-//    *
-//    * @param args arguments used to format string.
-//    */
-//   function format(...args: any[]) {
-//     if (!result)
-//       join();
-//     result = stringFormat(result, args);
-//     return methods;
-//   }
-
-//   /**
-//    * Render
-//    * Joins and renders the built string.
-//    *
-//    * @param char optional character to join by.
-//    */
-//   function render(char?: string) {
-//     if (result)
-//       return result;
-//     join();
-//     return result;
-//   }
-
-//   methods = {
-//     add,
-//     join,
-//     format,
-//     render
-//   };
-
-//   return methods;
-
-// }
-
-/**
- * String Format
- * Very simple string formatter by index.
- * Supports using %s or %n chars.
- *
- * @private
- * @param str the string to be formatted.
- * @param args arguments used for formatting.
- */
-// export function stringFormat(str, ...args: any[]) {
-
-//   let ctr = 0;
-
-//   return str.replace(/%(s|n)/g, (cur) => {
-//     const val = args[ctr];
-//     ctr++;
-//     return val || cur;
-//   });
-
-// }
 
 /**
  * Platform
@@ -556,4 +302,3 @@ export function platform() {
   };
 
 }
-

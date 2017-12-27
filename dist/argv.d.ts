@@ -1,35 +1,64 @@
-declare let _args: string[];
-declare let _baseArgs: string[];
-declare let _optionArgs: string[];
 /**
- * Is Flag
- * Checks if value is type of flag param.
+ * Cast To Type
+ * : Loosely tries to cast numbers and booleans.
  *
- * @param flag the value to inspect to detect if is flag.
+ * @param val the value to be cast.
  */
-export declare function isFlag(flag: string): false | "value" | "boolean";
+export declare function castToType(val: any): any;
 /**
- * Parse Element
- * Inspects value parses value as command or flag.
+ * Flags To Array
+ * : Convert flag object to array.
  *
- * @param val the value to inspect/convert to flag.
- * @param idx the current index position of the value.
- * @param args the array of argv params.
+ * @param flags object containing flags.
  */
-export declare function parseElement(val: string, idx: number, args: any[]): {};
-export declare function parse(args?: any[]): {
-    flags: {
-        [key: string]: any;
-    };
+export declare function flagsToArray(flags: any): any[];
+/**
+ * Split Args
+ * : Splits string of command arguments honoring quotes.
+ *
+ * @param str the string representing arguments.
+ */
+export declare function splitArgs(str: string | any[]): any[];
+/**
+ * Normalize
+ * : Spreads multi flag arguments and breaks arguments usign = sign.
+ *
+ * @example
+ * -am: returns -a, -m.
+ * --flag=value: returns --flag, value.
+ *
+ * @param args arguments to be normalized.
+ */
+export declare function normalizeArgs(args: any, exclude?: any): any;
+/**
+ * Filter Args
+ * : Filters an array of arguments by exclusion list.
+ *
+ * @param args the arguments to be filtered.
+ * @param exclude the arguments to be excluded.
+ */
+export declare function filterArgs(args: any, exclude: any): any;
+/**
+ * Merge Args
+ * : Merges two sets of command arguments.
+ *
+ * @param def array of default args.
+ * @param args array of new args.
+ */
+export declare function mergeArgs(def: any, args: any, exclude?: any): any;
+/**
+ * Parse
+ * : Parses command arguments.
+ *
+ * @param args the arguments to be parsed if null uses process.argv.slice(2)
+ * @param exclude any flags or commands that should be excluded.
+ */
+export declare function parse(args?: any, exclude?: any): {
+    command: any;
+    commands: any[];
+    cmd: any;
     cmds: any[];
-    cmd: string;
+    flags: {};
+    source: string[];
+    normalized: any;
 };
-/**
- * Find
- * Iterates expected or valid values stopping if matching value is found in provided args.
- *
- * @param valid array of expected valid values.
- * @param args array of params to inspect.
- */
-export declare function find(valid: string[], args?: string[]): any;
-export { _args as args, _baseArgs as normalized, _optionArgs as options };

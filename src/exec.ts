@@ -1,8 +1,8 @@
 import { spawnSync, SpawnSyncOptions } from 'child_process';
 import { IExecMethods } from './interfaces';
 import { isString, extend } from 'chek';
-import * as logger from './logger';
-const log = logger.get();
+import { splitArgs } from './argv';
+import { log } from './logger';
 
 // COMMANDS REFERENCE //
 
@@ -58,37 +58,32 @@ const spawnDefaults = {
  */
 function exec(cmd: string, args: string | string[], options?: boolean | SpawnSyncOptions) {
 
-  // If true user wants stdout to output
+  // If true user wants stdout to output value
   // instead of using inherit outputting
-  // to process.stdout.
+  // to process.stdout stream.
   if (options === true)
     options = { stdio: 'pipe' };
 
   options = extend({}, spawnDefaults, options);
 
   if (isString(args))
-    args = (args as string).split(' ');
+    args = splitArgs(<string>args);
 
   // Ensure command and arguments.
   if (!cmd)
-    log.error('cannot execute process with command or arguments of undefined.').exit();
+    log.error('Cannot execute process with command of undefined.');
 
   // Spawn child.
   const child = spawnSync(cmd, <string[]>args, <SpawnSyncOptions>options);
 
-  // Get the output.
-  let output: string | string[] = child.output || [];
-  output = output.slice(1, 2) || '';
-  output = String(output).replace(/\n/, '');
-
-  return output;
+  if (child.stdout)
+    return child.stdout.toString();
 
 }
 
 export const methods: IExecMethods = {
   command: exec,
   node: exec.bind(null, 'node'),
-  npm: exec.bind(null, 'npm')
+  npm: exec.bind(null, 'npm'),
+  git: exec.bind(null, 'git')
 };
-
-

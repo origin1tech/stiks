@@ -1,0 +1,8 @@
+#!/usr/bin/env node
+
+const {
+  resolve,
+  join
+} = require('path');
+
+require(resolve(join(process.cwd(), 'build')));

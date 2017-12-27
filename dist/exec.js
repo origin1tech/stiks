@@ -2,8 +2,8 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 var child_process_1 = require("child_process");
 var chek_1 = require("chek");
-var logger = require("./logger");
-var log = logger.get();
+var argv_1 = require("./argv");
+var logger_1 = require("./logger");
 // COMMANDS REFERENCE //
 //   access, adduser, bin, bugs, c, cache, completion, config,
 //   ddp, dedupe, deprecate, dist-tag, docs, edit, explore, get,
@@ -52,28 +52,26 @@ var spawnDefaults = {
  * @param options the child process spawn options.
  */
 function exec(cmd, args, options) {
-    // If true user wants stdout to output
+    // If true user wants stdout to output value
     // instead of using inherit outputting
-    // to process.stdout.
+    // to process.stdout stream.
     if (options === true)
         options = { stdio: 'pipe' };
     options = chek_1.extend({}, spawnDefaults, options);
     if (chek_1.isString(args))
-        args = args.split(' ');
+        args = argv_1.splitArgs(args);
     // Ensure command and arguments.
     if (!cmd)
-        log.error('cannot execute process with command or arguments of undefined.').exit();
+        logger_1.log.error('Cannot execute process with command of undefined.');
     // Spawn child.
     var child = child_process_1.spawnSync(cmd, args, options);
-    // Get the output.
-    var output = child.output || [];
-    output = output.slice(1, 2) || '';
-    output = String(output).replace(/\n/, '');
-    return output;
+    if (child.stdout)
+        return child.stdout.toString();
 }
 exports.methods = {
     command: exec,
     node: exec.bind(null, 'node'),
-    npm: exec.bind(null, 'npm')
+    npm: exec.bind(null, 'npm'),
+    git: exec.bind(null, 'git')
 };
 //# sourceMappingURL=exec.js.map

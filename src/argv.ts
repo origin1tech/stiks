@@ -1,17 +1,17 @@
 
-import { castType, getType, toBoolean, contains } from 'chek';
-
-// The original array.
-let _args: string[] = process.argv.slice(0);
+import { isBoolean, isArray, isString, camelcase, toNumber, toBoolean, isValue, get, set, toArray } from 'chek';
+import { log } from './logger';
 
 // The original args with node and executed path stripped.
-let _baseArgs: string[] = _args.slice(2);
+const _args: string[] = process.argv.slice(2);
 
-// The original args without node, executed path and first command stripped.
-let _optionArgs: string[] = _baseArgs.slice(1);
+let _command = null;
 
 // Array of packages to install
-const _cmds = [];
+const _commands = [];
+
+// All arguments normalized
+const _normalized = [];
 
 // Flags passed in cli.
 const _flags = {};
@@ -19,87 +19,203 @@ const _flags = {};
 // Expression for finding flags.
 const _flagExp = /^--?/;
 
-// Holds array of args to be excluded.
-const _exclude = [];
+// Checks if flag is inverse.
+const _noFlagExp = /^--no-/;
 
 /**
- * Is Flag
- * Checks if value is type of flag param.
+ * Cast To Type
+ * : Loosely tries to cast numbers and booleans.
  *
- * @param flag the value to inspect to detect if is flag.
+ * @param val the value to be cast.
  */
-export function isFlag(flag: string) {
-  if (_flagExp.test(flag)) {
-    if (/^--/.test(flag))
-      return 'value';
-    return 'boolean';
-  }
-  return false;
+export function castToType(val: any) {
+  if (/^(true|false)$/.test(val))
+    return toBoolean(val);
+  if (/^[\d\.]+$/.test(val))
+    return toNumber(val);
+  return val;
 }
 
 /**
- * Parse Element
- * Inspects value parses value as command or flag.
+ * Flags To Array
+ * : Convert flag object to array.
  *
- * @param val the value to inspect/convert to flag.
- * @param idx the current index position of the value.
- * @param args the array of argv params.
+ * @param flags object containing flags.
  */
-export function parseElement(val: string, idx: number, args: any[]) {
-  const flagType = isFlag(val);
-  if (!flagType)
-    return false;
-  if (flagType === 'boolean')
-    return true;
-  const nextIdx = idx + 1;
-  if (args[nextIdx]) {
-    _exclude.push(nextIdx);
-    const val = args[nextIdx];
-    if (val === 'true' || val === 'false')
-      return toBoolean(val);
-    return castType(val, getType(val));
+export function flagsToArray(flags: any) {
+  const arr = [];
+  for (const k in flags) {
+    const flag = flags[k];
+    let prefix = flags[k] === false ? '--no-' : k.length > 1 ? '--' : '-';
+    arr.push(prefix + k);
+    if (!isBoolean(flags[k]))
+      arr.push(flags[k]);
   }
-  // If not next arg is boolean flag.
-  return true;
+  return arr;
 }
 
-// Parse the arguments
-export function parse(args?: any[]): { flags: { [key: string]: any }, cmds: any[], cmd: string } {
-  args = args || _baseArgs;
-  args.forEach((el, idx) => {
-    const flag = parseElement(el, idx, args);
-    if (!flag && _exclude.indexOf(idx) === -1)
-      _cmds.push(el);
-    else if (flag)
-      _flags[el.replace(_flagExp, '')] = flag;
+/**
+ * Split Args
+ * : Splits string of command arguments honoring quotes.
+ *
+ * @param str the string representing arguments.
+ */
+export function splitArgs(str: string | any[]): any[] {
+  if (isArray(str))
+    return str as any[];
+  if (!isString(str))
+    return [];
+  let arr = [];
+  (str as string)
+    .split(/(\x22[^\x22]*\x22)/)
+    .filter(x => x)
+    .forEach(s => {
+      if (s.match('\x22'))
+        arr.push(s.replace(/\x22/g, ''));
+      else
+        arr = arr.concat(s.trim().split(' '));
+    });
+  return arr;
+}
+
+/**
+ * Normalize
+ * : Spreads multi flag arguments and breaks arguments usign = sign.
+ *
+ * @example
+ * -am: returns -a, -m.
+ * --flag=value: returns --flag, value.
+ *
+ * @param args arguments to be normalized.
+ */
+export function normalizeArgs(args: any, exclude?: any) {
+  let result = [];
+  args = splitArgs(args || []);
+  exclude = splitArgs(exclude || []);
+  args.slice(0).forEach(arg => {
+    let val;
+    if (~arg.indexOf('=')) {
+      const kv = arg.split('=');
+      arg = kv[0];
+      val = kv[1];
+    }
+    if (/^-{1}[a-z]/i.test(arg)) {
+      const spread = arg.slice(1).split('').map(a => '-' + a);
+      if (val)
+        spread.push(val);
+      result = result.concat(spread);
+    }
+    else {
+      result.push(arg);
+      if (val)
+        result.push(val);
+    }
   });
+  return filterArgs(result, exclude);
+}
+
+/**
+ * Filter Args
+ * : Filters an array of arguments by exclusion list.
+ *
+ * @param args the arguments to be filtered.
+ * @param exclude the arguments to be excluded.
+ */
+export function filterArgs(args: any, exclude: any) {
+  args = splitArgs(args || []);
+  exclude = splitArgs(exclude || []);
+  let clone = args.slice(0);
+  return clone.filter((arg, i) => {
+    if (!~exclude.indexOf(arg))
+      return true;
+    const next = clone[i + 1];
+    if (_flagExp.test(arg) && next && !_flagExp.test(next))
+      clone.splice(i + 1, 1);
+    return false;
+  });
+}
+
+/**
+ * Merge Args
+ * : Merges two sets of command arguments.
+ *
+ * @param def array of default args.
+ * @param args array of new args.
+ */
+export function mergeArgs(def: any, args: any, exclude?: any) {
+  exclude = splitArgs(exclude || []);
+  def = normalizeArgs(def);
+  args = normalizeArgs(args);
+  let clone = def.slice(0);
+  args.forEach((arg, i) => {
+    const next = args[i + 1];
+    const isFlag = _flagExp.test(arg);
+    const isFlagNext = _flagExp.test(next || '');
+    const defIdx = def.indexOf(arg);
+    // Arg exists check if flag that accepts value.
+    if (~defIdx && isFlag && !isFlagNext) {
+      clone[defIdx + 1] = next;
+      args.splice(i + 1, 1);
+    }
+    // new arg just push.
+    else if (!~defIdx) {
+      clone.push(arg);
+    }
+  });
+  return filterArgs(clone, exclude);
+}
+
+/**
+ * Parse
+ * : Parses command arguments.
+ *
+ * @param args the arguments to be parsed if null uses process.argv.slice(2)
+ * @param exclude any flags or commands that should be excluded.
+ */
+export function parse(args?: any, exclude?: any) {
+  const normalized = normalizeArgs(args || _args, exclude);
+  const clone = normalized.slice(0);
+  clone.forEach((arg, i) => {
+    const next = clone[i + 1];
+    const isFlag = _flagExp.test(arg);
+    const isFlagNext = _flagExp.test(next || '');
+    const isNoFlag = _noFlagExp.test(arg);
+    if (isFlag) {
+      let key = isNoFlag ? arg.replace(_noFlagExp, '') : arg.replace(_flagExp, '');
+      key = key.split('.').map(k => camelcase(k)).join('.'); // handle dot keys.
+      let curVal: any = get(_flags, key);
+      let exists = isValue(curVal);
+      if (exists)
+        curVal = toArray(curVal, []);
+      if (!isFlagNext && next) {
+        if (isNoFlag)
+          log.error(`Oops cannot set flag value using inverse (--no-xxx) flag ${arg}.`);
+        let val = castToType(next);
+        if (exists) {
+          curVal.push(val);
+          val = curVal;
+        }
+        set(_flags, key, val);
+        clone.splice(i + 1, 1);
+      }
+      else {
+        set(_flags, key, isNoFlag ? false : true);
+      }
+    }
+    else {
+      _commands.push(castToType(arg));
+    }
+  });
+  if (_commands)
+    _command = _commands.shift();
   return {
+    command: _command,
+    commands: _commands,
+    cmd: _command, // backward compat.
+    cmds: _commands, // backward compat.
     flags: _flags,
-    cmds: _cmds,
-    cmd: _cmds[0] // the primary command.
+    source: _args,
+    normalized: normalized
   };
 }
-
-/**
- * Find
- * Iterates expected or valid values stopping if matching value is found in provided args.
- *
- * @param valid array of expected valid values.
- * @param args array of params to inspect.
- */
-export function find(valid: string[], args?: string[]) {
-
-  // If no command line args passed try to parse them.
-  args = args || parse().cmds;
-  let i = valid.length;
-  let found;
-  while (i-- && !found) {
-    if (contains(args, valid[i]))
-      found = valid[i];
-  }
-  return found;
-
-}
-
-export { _args as args, _baseArgs as normalized, _optionArgs as options };
 
