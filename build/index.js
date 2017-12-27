@@ -30,13 +30,13 @@ const actions = {
 
   clean: () => {
     stiks.clean(build.clean);
-    log('\n' + sym.success, 'Finished clean.\n');
+    log(sym.success, 'Finished clean.');
     return actions;
   },
 
   copy: () => {
     stiks.copyAll(build.copy);
-    log('\n' + sym.success, 'Finished copy.\n');
+    log(sym.success, 'Finished copy.');
     return actions;
   },
 
@@ -45,7 +45,7 @@ const actions = {
     args += (watch ? ' -w' : '');
     args = normalize(args);
     stiks.exec.node(args);
-    log('\n' + sym.success, 'Finished compile.\n');
+    log(sym.success, 'Finished compile.');
     return actions;
   },
 
@@ -59,14 +59,14 @@ const actions = {
     args = './node_modules/typedoc/bin/typedoc --out ./docs ./src --options ./typedoc.json';
     args = normalize(args);
     stiks.exec.node(args);
-    log('\n' + sym.success, 'Finished docs.\n');
+    log(sym.success, 'Finished docs.');
     return actions;
   },
 
   bump: () => {
     const type = flags.semver || 'patch';
     const result = stiks.bump(type);
-    log('\n' + sym.success, `Finished bump from ${result.previous} to ${result.current}.\n`);
+    log(sym.success, `Finished bump from ${result.previous} to ${result.current}.`);
     return actions;
   },
 
@@ -74,7 +74,7 @@ const actions = {
     actions.clean()
       .copy()
       .compile();
-    log('\n' + sym.success, 'Finished build.\n');
+    log('\n' + sym.success, 'Finished build group.\n');
     return actions;
   },
 
@@ -84,13 +84,13 @@ const actions = {
     stiks.exec.command('git', 'add .');
     stiks.exec.command('git', args);
     stiks.exec.command('git', 'push');
-    log('\n' + sym.success, 'Finished commit.\n');
+    log(sym.success, 'Finished commit.');
     return actions;
   },
 
   publish() {
-    exec.npm('publish');
-    log('\n' + sym.success, 'Finished publish.\n');
+    stiks.exec.npm('publish');
+    log(sym.success, 'Finished publish.');
     return actions;
   },
 
@@ -100,7 +100,7 @@ const actions = {
       .bump()
       .commit()
       .publish();
-    log('\n' + sym.success, 'Finished Release.\n');
+    log('\n' + sym.success, 'Finished release group.\n');
     return actions;
   },
 
