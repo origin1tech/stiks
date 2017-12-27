@@ -2,6 +2,7 @@ const stiks = require('../dist');
 const sym = require('log-symbols');
 const log = stiks.log;
 const colurs = stiks.colurs.get();
+const chek = stiks.chek;
 const pkg = stiks.pkg();
 const build = pkg && pkg.build;
 
@@ -18,10 +19,14 @@ const flags = parsed.flags;
 // Get user input less the command.
 const input = parsed.normalized.slice(1);
 
-let args;
+// Don't merge in command line args automatically
+// as will blow up spawn'd process.
+const noMergeCmds = ['build', 'release'];
 
 // Merges default args with any input args.
 function normalize(def) {
+  if (~noMergeCmds.indexOf(command))
+    return stiks.argv.splitArgs(def);
   return stiks.argv.mergeArgs(def, input);
 }
 
@@ -30,43 +35,38 @@ const actions = {
 
   clean: () => {
     stiks.clean(build.clean);
-    log(sym.success, 'Finished clean.');
     return actions;
   },
 
   copy: () => {
     stiks.copyAll(build.copy);
-    log(sym.success, 'Finished copy.');
     return actions;
   },
 
   compile: (watch) => {
-    args = './node_modules/typescript/bin/tsc -p ./src/tsconfig.json'
+    let args = './node_modules/typescript/bin/tsc -p ./src/tsconfig.json'
     args += (watch ? ' -w' : '');
     args = normalize(args);
     stiks.exec.node(args);
-    log(sym.success, 'Finished compile.');
     return actions;
   },
 
   watch: () => {
     actions.compile(true);
-    log('\n' + sym.info, 'Watching for changes.\n');
     return actions;
   },
 
   docs: () => {
-    args = './node_modules/typedoc/bin/typedoc --out ./docs ./src --options ./typedoc.json';
+    let args = './node_modules/typedoc/bin/typedoc --out ./docs ./src --options ./typedoc.json';
     args = normalize(args);
     stiks.exec.node(args);
-    log(sym.success, 'Finished docs.');
     return actions;
   },
 
   bump: () => {
     const type = flags.semver || 'patch';
     const result = stiks.bump(type);
-    log(sym.success, `Finished bump from ${result.previous} to ${result.current}.`);
+    log(`Bumped version from ${result.previous} to ${result.current}.`);
     return actions;
   },
 
@@ -74,23 +74,22 @@ const actions = {
     actions.clean()
       .copy()
       .compile();
-    log('\n' + sym.success, 'Finished build group.\n');
     return actions;
   },
 
   commit: () => {
-    args = `commit -a -m 'auto commit'`;
+    let args = `commit -m "'auto commit'"`;
     args = normalize(args);
+    if (flags.m)
+      args = stiks.argv.mergeArgs(args, ['-m', flags.m]);
     stiks.exec.command('git', 'add .');
     stiks.exec.command('git', args);
     stiks.exec.command('git', 'push');
-    log(sym.success, 'Finished commit.');
     return actions;
   },
 
   publish() {
     stiks.exec.npm('publish');
-    log(sym.success, 'Finished publish.');
     return actions;
   },
 
@@ -98,14 +97,13 @@ const actions = {
     actions.build()
       .docs()
       .bump()
-      .commit()
-      .publish();
-    log('\n' + sym.success, 'Finished release group.\n');
+      .commit();
+    // .publish();
     return actions;
   },
 
   test: () => {
-    args = '--opts ./src/mocha.opts';
+    let args = '--opts ./src/mocha.opts';
     args = normalize(args);
     stiks.exec.command('mocha', args);
   },

@@ -73,6 +73,8 @@ function exec(cmd: string, args: string | string[], options?: boolean | SpawnSyn
   if (!cmd)
     log.error('Cannot execute process with command of undefined.');
 
+  console.log(args);
+
   // Spawn child.
   const child = spawnSync(cmd, <string[]>args, <SpawnSyncOptions>options);
 
