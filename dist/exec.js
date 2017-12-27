@@ -63,6 +63,11 @@ function exec(cmd, args, options) {
     // Ensure command and arguments.
     if (!cmd)
         logger_1.log.error('Cannot execute process with command of undefined.');
+    args = args.map(function (s) {
+        if (/\s/g.test(s))
+            return '"' + s + '"';
+        return s;
+    });
     console.log(args);
     // Spawn child.
     var child = child_process_1.spawnSync(cmd, args, options);

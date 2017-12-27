@@ -78,7 +78,7 @@ const actions = {
   },
 
   commit: () => {
-    let args = `commit -m "'auto commit'"`;
+    let args = `commit -m "auto commit"`;
     args = normalize(args);
     if (flags.m)
       args = stiks.argv.mergeArgs(args, ['-m', flags.m]);

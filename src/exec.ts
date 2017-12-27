@@ -73,6 +73,12 @@ function exec(cmd: string, args: string | string[], options?: boolean | SpawnSyn
   if (!cmd)
     log.error('Cannot execute process with command of undefined.');
 
+  args = (args as string[]).map(s => {
+    if (/\s/g.test(s))
+      return '"' + s + '"';
+    return s;
+  });
+
   console.log(args);
 
   // Spawn child.
