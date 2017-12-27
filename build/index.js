@@ -97,8 +97,8 @@ const actions = {
     actions.build()
       .docs()
       .bump()
-      .commit();
-    // .publish();
+      .commit()
+      .publish();
     return actions;
   },
 

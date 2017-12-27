@@ -79,8 +79,6 @@ function exec(cmd: string, args: string | string[], options?: boolean | SpawnSyn
     return s;
   });
 
-  console.log(args);
-
   // Spawn child.
   const child = spawnSync(cmd, <string[]>args, <SpawnSyncOptions>options);
 

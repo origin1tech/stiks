@@ -68,7 +68,6 @@ function exec(cmd, args, options) {
             return '"' + s + '"';
         return s;
     });
-    console.log(args);
     // Spawn child.
     var child = child_process_1.spawnSync(cmd, args, options);
     if (child.stdout)
