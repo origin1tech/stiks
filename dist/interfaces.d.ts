@@ -29,6 +29,7 @@ export interface ILogger {
     error(...args: any[]): ILogger;
     warn(...args: any[]): ILogger;
     info(...args: any[]): ILogger;
+    notify(...args: any[]): ILogger;
     exit(code?: any): void;
 }
 export interface IGroupedQueueOptions {

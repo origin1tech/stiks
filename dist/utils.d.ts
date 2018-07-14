@@ -66,3 +66,10 @@ export declare function platform(): {
     homedir: string;
     cpu: ICpu;
 };
+/**
+ * Colorizes a value.
+ *
+ * @param val the value to colorize.
+ * @param styles the styles to be applied.
+ */
+export declare function colorize(val: any, ...styles: string[]): string;

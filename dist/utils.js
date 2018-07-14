@@ -7,9 +7,11 @@ var chek_1 = require("chek");
 var logger_1 = require("./logger");
 var glob = require("glob");
 var fs_extra_1 = require("fs-extra");
+var colurs_1 = require("colurs");
 var semver_1 = require("semver");
 var util_1 = require("util");
 var _pkg;
+var colurs = new colurs_1.Colurs();
 exports.cwd = process.cwd();
 /**
  * Get Parsed
@@ -42,10 +44,10 @@ function clean(globs) {
             del.sync(g);
             // Some files may not exist del doesn't throw
             // error just continues.
-            // log.info(`successfully cleaned or ignored ${getRelative(g)}.`);
+            // log.notify(`successfully cleaned or ignored ${getRelative(g)}.`);
         }
         catch (ex) {
-            logger_1.log.info("failed to clean " + getRelative(g) + ".");
+            logger_1.log.notify("failed to clean " + getRelative(g) + ".");
         }
     });
 }
@@ -60,15 +62,13 @@ exports.clean = clean;
 function copy(src, dest) {
     if (!src || !dest)
         return false;
-    var parsedSrc, parsedDest;
-    parsedSrc = getParsed(src);
-    parsedDest = getParsed(dest);
     try {
         fs_extra_1.copySync(src, dest);
+        logger_1.log.notify("copied " + src + " to " + dest + ".");
         return true;
     }
     catch (ex) {
-        logger_1.log.warn("failed to copy " + getRelative(parsedSrc || 'undefined') + " to " + getRelative(parsedDest || 'undefined') + ".");
+        logger_1.log.warn("failed to copy " + src + " to " + dest + ".");
         return false;
     }
 }
@@ -94,12 +94,12 @@ function copyAll(copies) {
         if (success || failed) {
             if (failed > success) {
                 if (!success)
-                    logger_1.log.error(failed + " copies failed to processes with 0 succeeding.");
+                    logger_1.log.error(failed + " failed to copy with 0 succeeding.");
                 else
-                    logger_1.log.warn(failed + " copies failed to processes with " + success + " succeeding.");
+                    logger_1.log.warn(failed + " failed to copy " + success + " succeeded.");
             }
             else {
-                logger_1.log.info(success + " items " + 'successfully' + " copied with " + failed + " copies failing.");
+                logger_1.log.notify(success + " items copied " + failed + " failed.");
             }
         }
     }
@@ -124,7 +124,10 @@ function copyAll(copies) {
     else if (chek_1.isArray(copies)) {
         // If not array of tuples convert.
         if (chek_1.isString(copies[0]))
-            copies = [copies[0].split('|')];
+            copies = copies.reduce(function (a, c) {
+                var tuple = c.split('|');
+                return a.concat([tuple]);
+            }, []);
         copies.forEach(function (c) {
             var tuple = c;
             if (tuple[0].indexOf('*') !== -1) {
@@ -142,7 +145,7 @@ function copyAll(copies) {
         logResults();
     }
     else {
-        logger_1.log.warn("cannot copy using unknown configuration type of " + typeof copies + ".");
+        logger_1.log.warn("copy failed using unknown configuration type.");
     }
     return {
         success: success,
@@ -173,7 +176,7 @@ function bump(type) {
     if (type === void 0) { type = 'patch'; }
     var _pkg = pkg();
     if (!_pkg || !_pkg.version)
-        logger_1.log.error('Failed to load package.json, are you sure this is a valid project?');
+        logger_1.log.error('failed to load package.json, are you sure this is a valid project?');
     var origVer = _pkg.version;
     var newVer = semver_1.inc(origVer, type);
     if (newVer === null)
@@ -198,7 +201,7 @@ function serve(name, options, init) {
         options = name;
         name = undefined;
     }
-    if (util_1.isBoolean(options)) {
+    if (chek_1.isBoolean(options)) {
         init = options;
         options = undefined;
     }
@@ -211,7 +214,7 @@ function serve(name, options, init) {
     options = chek_1.extend({}, defaults, options);
     var bsync = chek_1.tryRootRequire('browser-sync');
     if (!bsync)
-        logger_1.log.error('failed to load root module browser-sync, ensure the module is installed');
+        logger_1.log.error('browser-sync not found try >> npm install browser-sync -s');
     var server = bsync.create(name);
     if (init !== false)
         server.init(options, function (err) {
@@ -219,7 +222,7 @@ function serve(name, options, init) {
                 logger_1.log.error(err);
             }
             else {
-                logger_1.log.info("browser Sync server " + name + " successfully initialized.");
+                logger_1.log.notify("browser Sync server " + name + " started.");
             }
         });
     return server;
@@ -250,4 +253,23 @@ function platform() {
     };
 }
 exports.platform = platform;
+/**
+ * Colorizes a value.
+ *
+ * @param val the value to colorize.
+ * @param styles the styles to be applied.
+ */
+function colorize(val) {
+    var styles = [];
+    for (var _i = 1; _i < arguments.length; _i++) {
+        styles[_i - 1] = arguments[_i];
+    }
+    styles = chek_1.flatten(styles);
+    if (chek_1.isObject(val))
+        return util_1.inspect(val, null, null, true);
+    if (/\./.test(styles[0]))
+        styles = styles[0].split('.');
+    return colurs.applyAnsi(val, styles);
+}
+exports.colorize = colorize;
 //# sourceMappingURL=utils.js.map

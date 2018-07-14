@@ -1,4 +1,4 @@
-const stiks = require('stiks');
+const stiks = require('../dist');
 const {
   resolve
 } = require('path');
@@ -8,7 +8,7 @@ const build = pkg && pkg.build;
 
 // Ensure build info.
 if (!build)
-  log.error('Whoops looks like you forgot to configure package.json "build".');
+  log.error('whoops looks like you forgot to add the "build" key in package.json.');
 
 // Parse command line arguments.
 const parsed = stiks.argv.parse();
@@ -52,6 +52,7 @@ const actions = {
   },
 
   watch: () => {
+    log.notify('starting watch.');
     actions.compile(true);
     return actions;
   },
@@ -64,10 +65,10 @@ const actions = {
     return actions;
   },
 
-  bump: () => {
-    const type = flags.semver || 'patch';
+  bump: (type) => {
+    type = type || commands[0] || flags.bump || 'patch';
     const result = stiks.bump(type);
-    log(`Bumped version from ${result.previous} to ${result.current}.`);
+    log.notify(`bumped version from ${result.previous} to ${result.current}.`);
     return actions;
   },
 
@@ -75,11 +76,14 @@ const actions = {
     actions.clean()
       .copy()
       .compile();
+    if (flags.docs)
+      actions.docs();
+    log.notify('build cleaned, copied and compiled.');
     return actions;
   },
 
   commit: () => {
-    let args = `commit -am "no comment"`;
+    let args = `commit -am 'no comment'`;
     args = normalize(args);
     if (flags.m)
       args = stiks.argv.mergeArgs(args.slice(0), ['-m', flags.m]);
@@ -100,6 +104,7 @@ const actions = {
       .bump()
       .commit()
       .publish();
+    log.notify('release cleaned, copied, compiled, doc\'d, bumped, committed and published.');
     return actions;
   },
 
@@ -115,9 +120,13 @@ const actions = {
   },
 
   open: (url) => {
-    url = url || resolve('docs/index.html'); // docs url.
+    url = url || commands[0] || flags.url || flags.u || resolve('docs/index.html'); // docs url.
     const start = (process.platform == 'darwin' ? 'open' : process.platform == 'win32' ? 'start' : 'xdg-open');
     require('child_process').exec(start + ' ' + url);
+  },
+
+  platform: () => {
+    log(stiks.colorize(stiks.platform()));
   },
 
   exit: (msg, code) => {
@@ -128,5 +137,8 @@ const actions = {
 
 };
 
+if (!actions[command])
+  return log.error(`fubar! command "${command}" is unknown.`);
+
 // Start the chain.
-actions[command || 'build']();
+actions[command]();

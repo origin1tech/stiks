@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>ICpu | Stiks</title>
+	<title>&quot;queue&quot; | Stiks</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -56,112 +56,62 @@
 					<a href="../globals.html">Globals</a>
 				</li>
 				<li>
-					<a href="../modules/_interfaces_.html">&quot;interfaces&quot;</a>
-				</li>
-				<li>
-					<a href="_interfaces_.icpu.html">ICpu</a>
+					<a href="_queue_.html">&quot;queue&quot;</a>
 				</li>
 			</ul>
-			<h1>Interface ICpu</h1>
+			<h1>External module &quot;queue&quot;</h1>
 		</div>
 	</div>
 </header>
 <div class="container container-main">
 	<div class="row">
 		<div class="col-8 col-content">
-			<section class="tsd-panel tsd-hierarchy">
-				<h3>Hierarchy</h3>
-				<ul class="tsd-hierarchy">
-					<li>
-						<span class="tsd-signature-type">CpuInfo</span>
-						<ul class="tsd-hierarchy">
-							<li>
-								<span class="target">ICpu</span>
-							</li>
-						</ul>
-					</li>
-				</ul>
-			</section>
 			<section class="tsd-panel-group tsd-index-group">
 				<h2>Index</h2>
 				<section class="tsd-panel tsd-index-panel">
 					<div class="tsd-index-content">
 						<section class="tsd-index-section ">
-							<h3>Properties</h3>
+							<h3>Functions</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_interfaces_.icpu.html#cores" class="tsd-kind-icon">cores</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="_interfaces_.icpu.html#model" class="tsd-kind-icon">model</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="_interfaces_.icpu.html#speed" class="tsd-kind-icon">speed</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="_interfaces_.icpu.html#times" class="tsd-kind-icon">times</a></li>
+								<li class="tsd-kind-function tsd-parent-kind-external-module"><a href="_queue_.html#createqueue" class="tsd-kind-icon">create<wbr>Queue</a></li>
 							</ul>
 						</section>
 					</div>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
-				<h2>Properties</h2>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="cores" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> cores</h3>
-					<div class="tsd-signature tsd-kind-icon">cores<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/origin1tech/stiks/blob/067daf0/src/interfaces.ts#L22">interfaces.ts:22</a></li>
-						</ul>
-					</aside>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
-					<a name="model" class="tsd-anchor"></a>
-					<h3>model</h3>
-					<div class="tsd-signature tsd-kind-icon">model<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
-					<aside class="tsd-sources">
-						<p>Inherited from CpuInfo.model</p>
-						<ul>
-							<li>Defined in /Volumes/DATA/Projects/Apps/stiks/node_modules/@types/node/index.d.ts:1575</li>
-						</ul>
-					</aside>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
-					<a name="speed" class="tsd-anchor"></a>
-					<h3>speed</h3>
-					<div class="tsd-signature tsd-kind-icon">speed<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
-					<aside class="tsd-sources">
-						<p>Inherited from CpuInfo.speed</p>
-						<ul>
-							<li>Defined in /Volumes/DATA/Projects/Apps/stiks/node_modules/@types/node/index.d.ts:1576</li>
-						</ul>
-					</aside>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
-					<a name="times" class="tsd-anchor"></a>
-					<h3>times</h3>
-					<div class="tsd-signature tsd-kind-icon">times<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
-					<aside class="tsd-sources">
-						<p>Inherited from CpuInfo.times</p>
-						<ul>
-							<li>Defined in /Volumes/DATA/Projects/Apps/stiks/node_modules/@types/node/index.d.ts:1577</li>
-						</ul>
-					</aside>
-					<div class="tsd-type-declaration">
-						<h4>Type declaration</h4>
-						<ul class="tsd-parameters">
-							<li class="tsd-parameter">
-								<h5>idle<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></h5>
-							</li>
-							<li class="tsd-parameter">
-								<h5>irq<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></h5>
-							</li>
-							<li class="tsd-parameter">
-								<h5>nice<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></h5>
-							</li>
-							<li class="tsd-parameter">
-								<h5>sys<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></h5>
-							</li>
-							<li class="tsd-parameter">
-								<h5>user<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></h5>
-							</li>
-						</ul>
-					</div>
+				<h2>Functions</h2>
+				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-external-module">
+					<a name="createqueue" class="tsd-anchor"></a>
+					<h3>create<wbr>Queue</h3>
+					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module">
+						<li class="tsd-signature tsd-kind-icon">create<wbr>Queue<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">...</span>queues<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/_interfaces_.igroupedqueue.html" class="tsd-signature-type">IGroupedQueue</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/origin1tech/stiks/blob/067daf0/src/queue.ts#L12">queue.ts:12</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Create
+									: Creates a new Grouped Queue.</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5><span class="tsd-flag ts-flagRest">Rest</span> <span class="tsd-signature-symbol">...</span>queues: <span class="tsd-signature-symbol">(</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">[]</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>the sub queue names to be run.</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="../interfaces/_interfaces_.igroupedqueue.html" class="tsd-signature-type">IGroupedQueue</a></h4>
+						</li>
+					</ul>
 				</section>
 			</section>
 		</div>
@@ -172,80 +122,32 @@
 						<a href="../globals.html"><em>Globals</em></a>
 					</li>
 					<li class=" tsd-kind-external-module">
-						<a href="../modules/_argv_.html">"argv"</a>
+						<a href="_argv_.html">"argv"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
-						<a href="../modules/_exec_.html">"exec"</a>
+						<a href="_exec_.html">"exec"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
-						<a href="../modules/_index_.html">"index"</a>
+						<a href="_index_.html">"index"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="_interfaces_.html">"interfaces"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="_logger_.html">"logger"</a>
 					</li>
 					<li class="current tsd-kind-external-module">
-						<a href="../modules/_interfaces_.html">"interfaces"</a>
+						<a href="_queue_.html">"queue"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
-						<a href="../modules/_logger_.html">"logger"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/_queue_.html">"queue"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/_utils_.html">"utils"</a>
+						<a href="_utils_.html">"utils"</a>
 					</li>
 				</ul>
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
-					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
-						<a href="_interfaces_.icopy.html" class="tsd-kind-icon">ICopy</a>
-					</li>
-				</ul>
-				<ul class="current">
-					<li class="current tsd-kind-interface tsd-parent-kind-external-module">
-						<a href="_interfaces_.icpu.html" class="tsd-kind-icon">ICpu</a>
-						<ul>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_interfaces_.icpu.html#cores" class="tsd-kind-icon">cores</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
-								<a href="_interfaces_.icpu.html#model" class="tsd-kind-icon">model</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
-								<a href="_interfaces_.icpu.html#speed" class="tsd-kind-icon">speed</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
-								<a href="_interfaces_.icpu.html#times" class="tsd-kind-icon">times</a>
-							</li>
-						</ul>
-					</li>
-				</ul>
-				<ul class="after-current">
-					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
-						<a href="_interfaces_.iexecmethods.html" class="tsd-kind-icon">IExec<wbr>Methods</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
-						<a href="_interfaces_.igroupedqueue.html" class="tsd-kind-icon">IGrouped<wbr>Queue</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
-						<a href="_interfaces_.igroupedqueueoptions.html" class="tsd-kind-icon">IGrouped<wbr>Queue<wbr>Options</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
-						<a href="_interfaces_.ilogger.html" class="tsd-kind-icon">ILogger</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-external-module tsd-has-type-parameter">
-						<a href="_interfaces_.imap.html" class="tsd-kind-icon">IMap</a>
-					</li>
-					<li class=" tsd-kind-type-alias tsd-parent-kind-external-module">
-						<a href="../modules/_interfaces_.html#copytuple" class="tsd-kind-icon">Copy<wbr>Tuple</a>
-					</li>
-					<li class=" tsd-kind-type-alias tsd-parent-kind-external-module">
-						<a href="../modules/_interfaces_.html#nodeanycallback" class="tsd-kind-icon">Node<wbr>Any<wbr>Callback</a>
-					</li>
-					<li class=" tsd-kind-type-alias tsd-parent-kind-external-module">
-						<a href="../modules/_interfaces_.html#nodecallback" class="tsd-kind-icon">Node<wbr>Callback</a>
-					</li>
-					<li class=" tsd-kind-type-alias tsd-parent-kind-external-module">
-						<a href="../modules/_interfaces_.html#npmcommand" class="tsd-kind-icon">Npm<wbr>Command</a>
+					<li class=" tsd-kind-function tsd-parent-kind-external-module">
+						<a href="_queue_.html#createqueue" class="tsd-kind-icon">create<wbr>Queue</a>
 					</li>
 				</ul>
 			</nav>

@@ -9,6 +9,7 @@ const {
 const stiks = require('../dist');
 const cwd = process.cwd();
 const log = stiks.log;
+const srcDir = join(__dirname, '../', '/src/build');
 const buildDir = resolve(join(cwd, 'build'));
 const argv = process.argv.slice(2);
 
@@ -23,11 +24,30 @@ if (!stiks.fs.existsSync(buildDir)) {
 
   // Init by copying in build files.
   else {
-    const srcDir = join(__dirname, '../', '/src/build');
     stiks.copyAll([srcDir + '|' + buildDir]);
     log.notify('successfully copied build tools!');
+    return;
   }
 
+}
+
+if (~argv.indexOf('--patch')) {
+  const patchSrc = join(buildDir, 'index.js');
+  const patchDest = join(srcDir, 'index.js');
+  stiks.copyAll([patchSrc + '|' + patchDest]);
+  log.notify(`patched stiks index.js from ${patchSrc}.`);
+  return;
+}
+
+if (~argv.indexOf('--upgrade')) {
+  const copies = [
+    join(buildDir, 'index.js') + '|' + join(buildDir, 'index.js.bak'),
+    join(buildDir, 'spec.js') + '|' + join(buildDir, 'spec.js.bak'),
+    join(srcDir, 'index.js') + '|' + join(buildDir, 'index.js'),
+    join(srcDir, 'spec.js') + '|' + join(buildDir, 'spec.js'),
+  ];
+  stiks.copyAll(copies);
+  return;
 }
 
 // Require the build tools.
