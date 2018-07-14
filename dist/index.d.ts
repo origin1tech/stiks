@@ -6,4 +6,5 @@ import { methods as exec } from './exec';
 export * from './logger';
 export * from './utils';
 export * from './interfaces';
+export * from './queue';
 export { chek, colurs, fs, argv, exec };

@@ -7,8 +7,6 @@ var _args = process.argv.slice(2);
 var _command = null;
 // Array of packages to install
 var _commands = [];
-// All arguments normalized
-var _normalized = [];
 // Flags passed in cli.
 var _flags = {};
 // Expression for finding flags.
@@ -87,12 +85,12 @@ function normalizeArgs(args, exclude) {
     exclude = splitArgs(exclude || []);
     args.slice(0).forEach(function (arg) {
         var val;
-        if (~arg.indexOf('=')) {
+        if (arg && arg.indexOf && ~arg.indexOf('=')) {
             var kv = arg.split('=');
             arg = kv[0];
             val = kv[1];
         }
-        if (/^-{1}[a-z]/i.test(arg)) {
+        if (/^-{1}[a-z]+/i.test(arg)) {
             var spread = arg.slice(1).split('').map(function (a) { return '-' + a; });
             if (val)
                 spread.push(val);
@@ -150,6 +148,7 @@ function mergeArgs(def, args, exclude) {
             clone[defIdx + 1] = next;
             args.splice(i + 1, 1);
         }
+        // new arg just push.
         else if (!~defIdx) {
             clone.push(arg);
         }

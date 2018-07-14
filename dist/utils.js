@@ -6,13 +6,11 @@ var del = require("del");
 var chek_1 = require("chek");
 var logger_1 = require("./logger");
 var glob = require("glob");
-var colurs_1 = require("colurs");
 var fs_extra_1 = require("fs-extra");
 var semver_1 = require("semver");
 var util_1 = require("util");
 var _pkg;
 exports.cwd = process.cwd();
-var colurs = new colurs_1.Colurs();
 /**
  * Get Parsed
  *
@@ -70,7 +68,7 @@ function copy(src, dest) {
         return true;
     }
     catch (ex) {
-        logger_1.log.warn("failed to copy " + colurs.yellow(getRelative(parsedSrc || 'undefined')) + " to " + colurs.red(getRelative(parsedDest || 'undefined')) + ".");
+        logger_1.log.warn("failed to copy " + getRelative(parsedSrc || 'undefined') + " to " + getRelative(parsedDest || 'undefined') + ".");
         return false;
     }
 }
@@ -96,12 +94,12 @@ function copyAll(copies) {
         if (success || failed) {
             if (failed > success) {
                 if (!success)
-                    logger_1.log.error(colurs.red(failed) + " copies " + colurs.red('failed') + " to processes with 0 succeeding.");
+                    logger_1.log.error(failed + " copies failed to processes with 0 succeeding.");
                 else
-                    logger_1.log.warn(colurs.red(failed) + " copies " + colurs.red('failed') + " to processes with " + (colurs.green(success) + 'succeeding') + ".");
+                    logger_1.log.warn(failed + " copies failed to processes with " + success + " succeeding.");
             }
             else {
-                logger_1.log.info(colurs.green(success) + " items " + colurs.green('successfully') + " copied with " + colurs.yellow(failed) + " copies " + colurs.yellow('failing') + ".");
+                logger_1.log.info(success + " items " + 'successfully' + " copied with " + failed + " copies failing.");
             }
         }
     }
@@ -121,7 +119,7 @@ function copyAll(copies) {
                 update(result);
             }
         });
-        // logResults();
+        logResults();
     }
     else if (chek_1.isArray(copies)) {
         // If not array of tuples convert.
@@ -141,7 +139,7 @@ function copyAll(copies) {
                 update(result);
             }
         });
-        // logResults();
+        logResults();
     }
     else {
         logger_1.log.warn("cannot copy using unknown configuration type of " + typeof copies + ".");

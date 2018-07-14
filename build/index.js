@@ -1,8 +1,8 @@
-const stiks = require('../dist');
-const sym = require('log-symbols');
+const stiks = require('stiks');
+const {
+  resolve
+} = require('path');
 const log = stiks.log;
-const colurs = stiks.colurs.get();
-const chek = stiks.chek;
 const pkg = stiks.pkg();
 const build = pkg && pkg.build;
 
@@ -12,7 +12,7 @@ if (!build)
 
 // Parse command line arguments.
 const parsed = stiks.argv.parse();
-const command = parsed.command;
+let command = parsed.command;
 const commands = parsed.commands;
 const flags = parsed.flags;
 
@@ -44,7 +44,7 @@ const actions = {
   },
 
   compile: (watch) => {
-    let args = './node_modules/typescript/bin/tsc -p ./src/tsconfig.json'
+    let args = './node_modules/typescript/bin/tsc -p ./src/tsconfig.json';
     args += (watch ? ' -w' : '');
     args = normalize(args);
     stiks.exec.node(args);
@@ -60,6 +60,7 @@ const actions = {
     let args = './node_modules/typedoc/bin/typedoc --out ./docs ./src --options ./typedoc.json';
     args = normalize(args);
     stiks.exec.node(args);
+    stiks.exec.command('touch', './docs/.nojekyll');
     return actions;
   },
 
@@ -78,10 +79,10 @@ const actions = {
   },
 
   commit: () => {
-    let args = `commit -m "auto commit"`;
+    let args = `commit -am "no comment"`;
     args = normalize(args);
     if (flags.m)
-      args = stiks.argv.mergeArgs(args, ['-m', flags.m]);
+      args = stiks.argv.mergeArgs(args.slice(0), ['-m', flags.m]);
     stiks.exec.command('git', 'add .');
     stiks.exec.command('git', args);
     stiks.exec.command('git', 'push');
@@ -103,9 +104,9 @@ const actions = {
   },
 
   test: () => {
-    let args = '--opts ./src/mocha.opts';
+    let args = 'mocha --opts ./src/mocha.opts';
     args = normalize(args);
-    stiks.exec.command('mocha', args);
+    stiks.exec.command('nyc', args);
   },
 
   serve: () => {
@@ -113,16 +114,19 @@ const actions = {
     const server = stiks.serve('dev-server', opts, true);
   },
 
+  open: (url) => {
+    url = url || resolve('docs/index.html'); // docs url.
+    const start = (process.platform == 'darwin' ? 'open' : process.platform == 'win32' ? 'start' : 'xdg-open');
+    require('child_process').exec(start + ' ' + url);
+  },
+
   exit: (msg, code) => {
     if (msg)
-      log(msg)
+      log(msg);
     process.exit(code || 0);
   }
 
 };
 
-if (!actions[command])
-  log.error(`Failed to run command "${command}", the command does not exist.`);
-
 // Start the chain.
-actions[command]();
+actions[command || 'build']();

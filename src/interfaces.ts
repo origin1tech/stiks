@@ -1,6 +1,7 @@
 
 import { CpuInfo } from 'os';
 import { SpawnSyncOptions } from 'child_process';
+import { EventEmitter } from 'events';
 
 export type NodeCallback = (err?: Error, data?: any) => void;
 export type NodeAnyCallback = (...args: any[]) => void;
@@ -36,4 +37,14 @@ export interface ILogger {
   warn(...args: any[]): ILogger;
   info(...args: any[]): ILogger;
   exit(code?): void;
+}
+
+export interface IGroupedQueueOptions {
+  once?: string;
+  run?: boolean;
+}
+export interface IGroupedQueue extends EventEmitter {
+  (subQueues?: string | string[]): IGroupedQueue;
+  add(name?: string, task?: Function, options?: IGroupedQueueOptions): void;
+  run(): void;
 }

@@ -1,6 +1,6 @@
 import { spawnSync, SpawnSyncOptions } from 'child_process';
-import { IExecMethods } from './interfaces';
 import { isString, extend } from 'chek';
+import { IExecMethods } from './interfaces';
 import { splitArgs } from './argv';
 import { log } from './logger';
 
@@ -93,3 +93,4 @@ export const methods: IExecMethods = {
   npm: exec.bind(null, 'npm'),
   git: exec.bind(null, 'git')
 };
+

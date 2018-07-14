@@ -10,9 +10,6 @@ let _command = null;
 // Array of packages to install
 const _commands = [];
 
-// All arguments normalized
-const _normalized = [];
-
 // Flags passed in cli.
 const _flags = {};
 
@@ -94,12 +91,12 @@ export function normalizeArgs(args: any, exclude?: any) {
   exclude = splitArgs(exclude || []);
   args.slice(0).forEach(arg => {
     let val;
-    if (~arg.indexOf('=')) {
+    if (arg && arg.indexOf && ~arg.indexOf('=')) {
       const kv = arg.split('=');
       arg = kv[0];
       val = kv[1];
     }
-    if (/^-{1}[a-z]/i.test(arg)) {
+    if (/^-{1}[a-z]+/i.test(arg)) {
       const spread = arg.slice(1).split('').map(a => '-' + a);
       if (val)
         spread.push(val);

@@ -2,7 +2,33 @@
 
 const {
   resolve,
+  relative,
   join
 } = require('path');
 
-require(resolve(join(process.cwd(), 'build')));
+const stiks = require('../dist');
+const cwd = process.cwd();
+const log = stiks.log;
+const buildDir = resolve(join(cwd, 'build'));
+const argv = process.argv.slice(2);
+
+// Build doesn't exist create it.
+if (!stiks.fs.existsSync(buildDir)) {
+
+  // Warn suggest init.
+  if (!~argv.indexOf('--init')) {
+    log.warn(`stiks is missing build dir, use --init to initialize.`);
+    return;
+  }
+
+  // Init by copying in build files.
+  else {
+    const srcDir = join(__dirname, '../', '/src/build');
+    stiks.copyAll([srcDir + '|' + buildDir]);
+    log.notify('successfully copied build tools!');
+  }
+
+}
+
+// Require the build tools.
+require(resolve(join(cwd, 'build')));

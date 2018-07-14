@@ -45,8 +45,8 @@ function logger(type, ...args: any[]): ILogger {
     if (fn) fn(msg, obj);
     msg.stack = msg.stack.split('\n').map((s, i) => {
       if (i === 0)
-        return colurs.applyAnsi(s, _log.colors[type || 'error']);
-      return colurs.applyAnsi(s, 'gray');
+        return colurs.applyAnsi('[error]', _log.colors.error) + ' ' + (msg.name || 'Error') + ': ' + msg.message;
+      return s;
     }).join('\n');
     throw msg;
   }
@@ -60,7 +60,7 @@ function logger(type, ...args: any[]): ILogger {
   }
 
   if (type && _log.colors[type])
-    msg = colurs.applyAnsi(type.toUpperCase() + ': ', _log.colors[type]) + msg;
+    msg = colurs.applyAnsi('[' + type + ']: ', _log.colors[type]) + msg;
 
   process.stderr.write(msg + '\n');
 
@@ -75,13 +75,14 @@ const _log: any = function (...args: any[]) {
 
 _log.colors = {
   error: 'red',
-  warn: 'yellow',
-  info: 'green'
+  warn: ['yellow', 'dim'],
+  notify: 'blue'
 };
 _log.colorize = true;
 _log.error = logger.bind(_log, 'error');
 _log.warn = logger.bind(_log, 'warn');
-_log.info = logger.bind(_log, 'info');
+_log.info = logger.bind(_log, 'notify'); // backward compat.
+_log.notify = logger.bind(_log, 'notify');
 _log.exit = process.exit;
 
 export const log: ILogger = _log;

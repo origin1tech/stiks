@@ -15,4 +15,5 @@ var exec_1 = require("./exec");
 exports.exec = exec_1.methods;
 __export(require("./logger"));
 __export(require("./utils"));
+__export(require("./queue"));
 //# sourceMappingURL=index.js.map
